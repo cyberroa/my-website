@@ -1,57 +1,196 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Business Website</title>
+  <title>Titan Imaging</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial;
-      text-align: center;
-      padding: 40px;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #1F1F1F; /* Dark background */
+      color: #FFFFFF; /* White text */
     }
 
-    input {
-      padding: 10px;
-      width: 250px;
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
-    button {
-      padding: 10px 20px;
-      background: blue;
-      color: white;
-      border: none;
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: #111; /* Slightly darker than page */
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+
+    nav h1 {
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
       cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
     }
 
-    #result {
-      margin-top: 20px;
+    nav ul li:hover {
+      color: #00FFD5; /* Tech accent color */
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 120px 20px 80px;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero p {
       font-size: 18px;
+      color: #BBBBBB; /* Secondary text */
+      margin-bottom: 50px;
+    }
+
+    /* Search Bar */
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 15px;
+      border: 1px solid #333;
+      border-radius: 8px 0 0 8px;
+      background: #2A2A2A;
+      color: #FFFFFF;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .search-bar input:focus {
+      border-color: #00FFD5;
+    }
+
+    .search-bar button {
+      padding: 15px 25px;
+      background: #00FFD5;
+      color: #111;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .search-bar button:hover {
+      box-shadow: 0 0 10px #00FFD5;
+      transform: translateY(-2px);
+    }
+
+    /* Results */
+    #result {
+      margin-top: 40px;
+      font-size: 18px;
+      text-align: center;
+      background: #2A2A2A;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #result span.in-stock {
+      color: #00FFD5;
+      font-weight: 600;
+    }
+
+    #result span.out-stock {
+      color: #FF4C4C;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #777777;
+      background: #111;
     }
   </style>
 </head>
 
 <body>
 
-<h1>Welcome to My Business</h1>
+<!-- Navbar -->
+<nav>
+  <h1>Titan Imaging</h1>
+  <ul>
+    <li>Contact Us</li>
+    <li>Sell To Us</li>
+    <li>About Us</li>
+    <li>Services</li>
+    <li>Testimonials</li>
+  </ul>
+</nav>
 
-<p>Search Our Parts Inventory</p>
+<!-- Hero Section -->
+<section class="hero">
+  <h2>Precision Imaging Parts. Instantly.</h2>
+  <p>Search our inventory to see real-time availability of all parts.</p>
 
-<hr>
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <input id="searchBox" type="text" placeholder="Enter part number or name">
+    <button onclick="search()">Search</button>
+  </div>
 
-<p>
-  Contact Us | Sell To Us | About Us | Services | Testimonials
-</p>
+  <!-- Results -->
+  <div id="result"></div>
+</section>
 
-<hr>
-
-<input id="searchBox" type="text" placeholder="Enter part number">
-
-<button onclick="search()">Search</button>
-
-<div id="result"></div>
+<!-- Footer -->
+<footer>
+  &copy; 2026 Titan Imaging. All Rights Reserved.
+</footer>
 
 <script>
-
 const parts = [
   { id: "CT1001", name: "CT Board", stock: 5 },
   { id: "MRI2002", name: "MRI Coil", stock: 0 },
@@ -59,41 +198,29 @@ const parts = [
 ];
 
 function search() {
-
-  const input =
-    document.getElementById("searchBox").value.toLowerCase();
-
+  const input = document.getElementById("searchBox").value.toLowerCase();
   let found = false;
 
   for (let part of parts) {
-
-    if (
-      part.id.toLowerCase().includes(input) ||
-      part.name.toLowerCase().includes(input)
-    ) {
-
+    if (part.id.toLowerCase().includes(input) || part.name.toLowerCase().includes(input)) {
       found = true;
-
       if (part.stock > 0) {
         document.getElementById("result").innerHTML =
-          "✅ " + part.name + " — In Stock (" + part.stock + ")";
+          `<span class="in-stock">✅ ${part.name} — In Stock (${part.stock})</span>`;
       } else {
         document.getElementById("result").innerHTML =
-          "❌ " + part.name + " — Out of Stock";
+          `<span class="out-stock">❌ ${part.name} — Out of Stock</span>`;
       }
-
     }
-
   }
 
   if (!found) {
     document.getElementById("result").innerHTML =
-      "❓ Part not found. Please contact us.";
+      `<span class="out-stock">❓ Part not found. Please contact us.</span>`;
   }
-
 }
-
 </script>
 
 </body>
 </html>
+
