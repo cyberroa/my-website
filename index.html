@@ -80,7 +80,7 @@
 
     .hero p {
       font-size: 16px;
-      color: #BBBBBB;
+      color: #FFFFFF; /* subtext now also white */
       margin-bottom: 50px;
     }
 
@@ -143,16 +143,7 @@
       max-width: 400px;
       margin-left: auto;
       margin-right: auto;
-    }
-
-    #result span.in-stock {
-      color: #00FFD5;
-      font-weight: 600;
-    }
-
-    #result span.out-stock {
-      color: #FF4C4C;
-      font-weight: 600;
+      color: #FFFFFF; /* all result text white */
     }
 
     /* Footer */
@@ -215,19 +206,13 @@ function search() {
   for (let part of parts) {
     if (part.id.toLowerCase().includes(input) || part.name.toLowerCase().includes(input)) {
       found = true;
-      if (part.stock > 0) {
-        document.getElementById("result").innerHTML =
-          `<span class="in-stock">${part.name} — In Stock (${part.stock})</span>`;
-      } else {
-        document.getElementById("result").innerHTML =
-          `<span class="out-stock">${part.name} — Out of Stock</span>`;
-      }
+      document.getElementById("result").innerHTML =
+        `${part.name} — ${part.stock > 0 ? 'In Stock (' + part.stock + ')' : 'Out of Stock'}`;
     }
   }
 
   if (!found) {
-    document.getElementById("result").innerHTML =
-      `<span class="out-stock">Part not found. Please contact us.</span>`;
+    document.getElementById("result").innerHTML = "Part not found. Please contact us.";
   }
 }
 </script>
