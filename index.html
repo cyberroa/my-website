@@ -74,8 +74,8 @@
       font-weight: 700;
       margin-bottom: 15px;
       line-height: 1.2;
-      color: #FFFFFF; /* changed to plain white */
-      text-shadow: none; /* removed glow */
+      color: #FFFFFF; /* plain white headline */
+      text-shadow: none;
     }
 
     .hero p {
@@ -105,7 +105,7 @@
     }
 
     .search-bar input:focus {
-      border-color: #B0B0B0; /* matches titanium theme */
+      border-color: #B0B0B0;
       box-shadow: 0 0 8px #B0B0B0;
     }
 
@@ -217,17 +217,17 @@ function search() {
       found = true;
       if (part.stock > 0) {
         document.getElementById("result").innerHTML =
-          `<span class="in-stock">✅ ${part.name} — In Stock (${part.stock})</span>`;
+          `<span class="in-stock">${part.name} — In Stock (${part.stock})</span>`;
       } else {
         document.getElementById("result").innerHTML =
-          `<span class="out-stock">❌ ${part.name} — Out of Stock</span>`;
+          `<span class="out-stock">${part.name} — Out of Stock</span>`;
       }
     }
   }
 
   if (!found) {
     document.getElementById("result").innerHTML =
-      `<span class="out-stock">❓ Part not found. Please contact us.</span>`;
+      `<span class="out-stock">Part not found. Please contact us.</span>`;
   }
 }
 </script>
