@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact Us - TITAN IMAGING</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #1F1F1F;
+      color: #FFFFFF;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: #111;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+
+    nav h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    nav ul li:hover {
+      color: #00FFD5;
+    }
+
+    /* Hero / Page Header */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 40px;
+    }
+
+    .hero h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: #BBBBBB;
+    }
+
+    /* Contact Form */
+    .contact-container {
+      max-width: 600px;
+      margin: 40px auto 80px;
+      padding: 20px;
+      background: #2A2A2A;
+      border-radius: 10px;
+    }
+
+    .contact-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .contact-container input,
+    .contact-container textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background: #1F1F1F;
+      color: #FFFFFF;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .contact-container input:focus,
+    .contact-container textarea:focus {
+      border-color: #B0B0B0;
+      box-shadow: 0 0 8px #B0B0B0;
+    }
+
+    .contact-container button {
+      padding: 15px 25px;
+      background: #B0B0B0; /* titanium color */
+      color: #111;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      animation: pulse 2s infinite;
+    }
+
+    .contact-container button:hover {
+      box-shadow: 0 0 15px #B0B0B0;
+      transform: translateY(-2px);
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 5px #B0B0B0; }
+      50% { box-shadow: 0 0 20px #B0B0B0; }
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #777777;
+      background: #111;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav>
+  <h1>TITAN IMAGING</h1>
+  <ul>
+    <li>Contact Us</li>
+    <li>Sell To Us</li>
+    <li>About Us</li>
+    <li>Services</li>
+    <li>Testimonials</li>
+  </ul>
+</nav>
+
+<!-- Page Header -->
+<section class="hero">
+  <h2>Contact Us</h2>
+  <p>Have questions or need support? Send us a message and we'll get back to you promptly.</p>
+</section>
+
+<!-- Contact Form -->
+<div class="contact-container">
+  <form id="contactForm">
+    <label for="name">Name</label>
+    <input type="text" id="name" placeholder="Your Name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="your@email.com" required>
+
+    <label for="subject">Subject</label>
+    <input type="text" id="subject" placeholder="Subject" required>
+
+    <label for="message">Message</label>
+    <textarea id="message" rows="6" placeholder="Your message here..." required></textarea>
+
+    <button type="submit">Send Message</button>
+  </form>
+  <div id="formResult" style="margin-top:20px; color:#FFFFFF; text-align:center;"></div>
+</div>
+
+<!-- Footer -->
+<footer>
+  &copy; 2026 TITAN IMAGING. All Rights Reserved.
+</footer>
+
+<script>
+  // Simple front-end form submission
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+
+    // For now, just show a confirmation message
+    document.getElementById('formResult').innerText = `Thank you, ${name}! Your message has been sent.`;
+
+    // Clear form
+    document.getElementById('contactForm').reset();
+  });
+</script>
+
+</body>
+</html>
