@@ -2,31 +2,98 @@
 <html>
 <head>
   <title>My Business Website</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      padding: 40px;
+    }
+
+    input {
+      padding: 10px;
+      width: 250px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: blue;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <h1>Titan Imaging</h1>
+<h1>Welcome to My Business</h1>
 
-  <p>Find Parts</p>
+<p>Search Our Parts Inventory</p>
 
-  <hr>
+<hr>
 
-  <p>
-    <a href="#">Contact Us</a> |
-    <a href="#">Sell To Us</a> |
-    <a href="#">About Us</a> |
-    <a href="#">Services</a> |
-    <a href="#">Testimonials</a>
-  </p>
+<p>
+  Contact Us | Sell To Us | About Us | Services | Testimonials
+</p>
 
-  <hr>
+<hr>
 
-  <h2>Search for a Part</h2>
+<input id="searchBox" type="text" placeholder="Enter part number">
 
-  <input type="text" placeholder="Type part number here">
+<button onclick="search()">Search</button>
 
-  <button>Search</button>
+<div id="result"></div>
+
+<script>
+
+const parts = [
+  { id: "CT1001", name: "CT Board", stock: 5 },
+  { id: "MRI2002", name: "MRI Coil", stock: 0 },
+  { id: "PET3321", name: "PET Sensor", stock: 3 }
+];
+
+function search() {
+
+  const input =
+    document.getElementById("searchBox").value.toLowerCase();
+
+  let found = false;
+
+  for (let part of parts) {
+
+    if (
+      part.id.toLowerCase().includes(input) ||
+      part.name.toLowerCase().includes(input)
+    ) {
+
+      found = true;
+
+      if (part.stock > 0) {
+        document.getElementById("result").innerHTML =
+          "✅ " + part.name + " — In Stock (" + part.stock + ")";
+      } else {
+        document.getElementById("result").innerHTML =
+          "❌ " + part.name + " — Out of Stock";
+      }
+
+    }
+
+  }
+
+  if (!found) {
+    document.getElementById("result").innerHTML =
+      "❓ Part not found. Please contact us.";
+  }
+
+}
+
+</script>
 
 </body>
 </html>
