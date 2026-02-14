@@ -55,13 +55,14 @@
     }
 
     nav ul li:hover {
-      color: #00FFD5;
+      color: #B0B0B0;
+      text-shadow: 0 0 8px #B0B0B0;
     }
 
-    /* Hero / Page Header */
+    /* Page Header */
     .hero {
       text-align: center;
-      padding: 80px 20px 40px;
+      padding: 80px 20px 30px;
     }
 
     .hero h2 {
@@ -74,13 +75,30 @@
     .hero p {
       font-size: 16px;
       color: #BBBBBB;
+      margin-bottom: 10px;
+    }
+
+    /* Phone Section */
+    .phone-info {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .phone-info span {
+      color: #B0B0B0;
+      font-weight: 600;
+    }
+
+    .phone-info a:hover {
+      text-shadow: 0 0 8px #B0B0B0;
     }
 
     /* Contact Form */
     .contact-container {
       max-width: 600px;
-      margin: 40px auto 80px;
-      padding: 20px;
+      margin: 0 auto 80px;
+      padding: 25px;
       background: #2A2A2A;
       border-radius: 10px;
     }
@@ -111,9 +129,10 @@
       box-shadow: 0 0 8px #B0B0B0;
     }
 
+    /* Submit Button */
     .contact-container button {
       padding: 15px 25px;
-      background: #B0B0B0; /* titanium color */
+      background: #B0B0B0;
       color: #111;
       border: none;
       border-radius: 8px;
@@ -121,6 +140,7 @@
       font-weight: 600;
       transition: all 0.3s;
       animation: pulse 2s infinite;
+      width: 100%;
     }
 
     .contact-container button:hover {
@@ -150,25 +170,35 @@
 
 <!-- Navbar -->
 <nav>
-  <h1>TITAN IMAGING</h1>
+  <h1><a href="index.html">TITAN IMAGING</a></h1>
   <ul>
-    <li>Contact Us</li>
-    <li>Sell To Us</li>
-    <li>About Us</li>
-    <li>Services</li>
-    <li>Testimonials</li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="#">Sell To Us</a></li>
+    <li><a href="#">About Us</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Testimonials</a></li>
   </ul>
 </nav>
 
 <!-- Page Header -->
 <section class="hero">
   <h2>Contact Us</h2>
-  <p>Have questions or need support? Send us a message and we'll get back to you promptly.</p>
+  <p>Have questions or need support? Send us a message.</p>
 </section>
+
+<!-- Phone Number -->
+<div class="phone-info">
+  Or call us directly at:
+  <br>
+  <span>
+    <a href="tel:9047426265">(904) 742-6265</a>
+  </span>
+</div>
 
 <!-- Contact Form -->
 <div class="contact-container">
   <form id="contactForm">
+
     <label for="name">Name</label>
     <input type="text" id="name" placeholder="Your Name" required>
 
@@ -182,8 +212,10 @@
     <textarea id="message" rows="6" placeholder="Your message here..." required></textarea>
 
     <button type="submit">Send Message</button>
+
   </form>
-  <div id="formResult" style="margin-top:20px; color:#FFFFFF; text-align:center;"></div>
+
+  <div id="formResult" style="margin-top:20px; text-align:center;"></div>
 </div>
 
 <!-- Footer -->
@@ -192,18 +224,14 @@
 </footer>
 
 <script>
-  // Simple front-end form submission
   document.getElementById('contactForm').addEventListener('submit', function(e){
     e.preventDefault();
+
     const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
 
-    // For now, just show a confirmation message
-    document.getElementById('formResult').innerText = `Thank you, ${name}! Your message has been sent.`;
+    document.getElementById('formResult').innerText =
+      `Thank you, ${name}! Your message has been sent.`;
 
-    // Clear form
     document.getElementById('contactForm').reset();
   });
 </script>
