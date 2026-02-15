@@ -8,9 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -19,10 +17,7 @@
       color: #FFFFFF;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    a { text-decoration: none; color: inherit; }
 
     /* Navbar */
     nav {
@@ -41,6 +36,7 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 26px;
       letter-spacing: 2px;
+      text-transform: uppercase;
       cursor: pointer;
     }
 
@@ -55,10 +51,9 @@
     nav ul li {
       font-weight: 600;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    nav ul li:hover {
+    nav ul li a:hover {
       color: #A9B4C2;
       text-shadow: 0 0 6px rgba(169,180,194,0.6);
     }
@@ -122,6 +117,8 @@
       box-shadow: 0 0 6px rgba(169,180,194,0.4);
     }
 
+    select { background: #1F1F1F; }
+
     textarea {
       resize: vertical;
       min-height: 100px;
@@ -171,14 +168,13 @@
 
 <!-- Navbar -->
 <nav>
-  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
-
+  <h1><a href="index.html">TITAN IMAGING</a></h1>
   <ul>
-    <li onclick="window.location.href='contact.html'">Contact Us</li>
-    <li onclick="window.location.href='sell.html'">Sell To Us</li>
-    <li onclick="window.location.href='about.html'">About Us</li>
-    <li onclick="window.location.href='services.html'">Services</li>
-    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="sell.html">Sell To Us</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="testimonials.html">Testimonials</a></li>
   </ul>
 </nav>
 
@@ -186,14 +182,12 @@
 <div class="container">
 
   <h2>Sell to Us</h2>
-
   <p class="subtitle">
     Submit your surplus CT and PET components for a fast, professional quote.
   </p>
 
   <!-- Form -->
   <form id="sellForm">
-
     <div class="form-group">
       <label>Part Name</label>
       <input type="text" required>
@@ -235,7 +229,6 @@
     </div>
 
     <button type="submit">Submit Request</button>
-
   </form>
 
   <!-- Success -->
@@ -252,17 +245,14 @@
 </footer>
 
 <script>
-
 const form = document.getElementById("sellForm");
 const success = document.getElementById("success");
 
 form.addEventListener("submit", function(e) {
   e.preventDefault();
-
   form.style.display = "none";
   success.style.display = "block";
 });
-
 </script>
 
 </body>
