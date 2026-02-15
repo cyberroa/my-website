@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TITAN IMAGING | About Us</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #1F1F1F;
+      color: #FFFFFF;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: #111;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+
+    nav h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 26px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    nav ul li a:hover {
+      color: #A9B4C2;
+      text-shadow: 0 0 6px rgba(169,180,194,0.6);
+    }
+
+    /* Main container */
+    .container {
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      color: #BBBBBB;
+      font-size: 17px;
+      margin-bottom: 50px;
+    }
+
+    p {
+      color: #CCCCCC;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      padding: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+      background: #111;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav>
+  <h1><a href="index.html">TITAN IMAGING</a></h1>
+  <ul>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="sell.html">Sell To Us</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="testimonials.html">Testimonials</a></li>
+  </ul>
+</nav>
+
+<!-- Main content -->
+<div class="container">
+
+  <h2>About Us</h2>
+  <p class="subtitle">Learn more about Titan Imaging and our commitment to high-quality CT and PET services.</p>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo, nibh a tincidunt dapibus, nulla sapien dignissim ligula, a viverra erat justo sed nisi. Curabitur sit amet velit non purus varius dignissim.</p>
+
+  <p>Fusce efficitur, tortor eget facilisis dictum, libero elit imperdiet nibh, a imperdiet mauris ligula ut lorem. Maecenas euismod eros at tellus malesuada, vitae volutpat nulla vulputate.</p>
+
+  <p>More content about the company, team, mission, and values will go here once finalized.</p>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  &copy; 2026 TITAN IMAGING. All Rights Reserved.
+</footer>
+
+</body>
+</html>
