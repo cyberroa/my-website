@@ -4,25 +4,21 @@
   <meta charset="UTF-8">
   <title>TITAN IMAGING</title>
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
       background: #1F1F1F;
       color: #FFFFFF;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    a { text-decoration: none; color: inherit; }
 
     /* Navbar */
     nav {
@@ -55,9 +51,9 @@
     }
 
     nav ul li {
-      font-weight: 600;
       cursor: pointer;
-      transition: 0.3s;
+      font-weight: 600;
+      transition: all 0.3s;
     }
 
     nav ul li a:hover {
@@ -72,7 +68,7 @@
     }
 
     .hero h2 {
-      font-size: 42px;
+      font-size: 40px;
       font-weight: 700;
       margin-bottom: 20px;
       line-height: 1.2;
@@ -122,14 +118,14 @@
     }
 
     .search-bar button:hover {
-      box-shadow: 0 0 12px #A9B4C2;
+      box-shadow: 0 0 10px #A9B4C2;
       transform: translateY(-2px);
     }
 
     @keyframes pulse {
-      0% { box-shadow: 0 0 5px #A9B4C2; }
-      50% { box-shadow: 0 0 15px #A9B4C2; }
-      100% { box-shadow: 0 0 5px #A9B4C2; }
+      0% { box-shadow: 0 0 10px #A9B4C2; }
+      50% { box-shadow: 0 0 20px #A9B4C2; }
+      100% { box-shadow: 0 0 10px #A9B4C2; }
     }
 
     /* Results */
@@ -143,7 +139,6 @@
       max-width: 400px;
       margin-left: auto;
       margin-right: auto;
-      color: #FFFFFF;
     }
 
     /* Footer */
@@ -156,8 +151,79 @@
       background: #111;
     }
 
+    /* MOBILE RESPONSIVE STYLES */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      nav ul li {
+        width: 100%;
+      }
+
+      .hero {
+        padding: 80px 15px 60px;
+      }
+
+      .hero h2 {
+        font-size: 32px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .search-bar {
+        flex-direction: column;
+        max-width: 100%;
+      }
+
+      .search-bar input,
+      .search-bar button {
+        width: 100%;
+        border-radius: 8px;
+        margin: 5px 0;
+      }
+
+      #result {
+        max-width: 90%;
+        font-size: 16px;
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav h1 {
+        font-size: 24px;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      .search-bar input,
+      .search-bar button {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+
   </style>
 </head>
+
 <body>
 
 <!-- Navbar -->
@@ -166,9 +232,9 @@
   <ul>
     <li><a href="contact.html">Contact Us</a></li>
     <li><a href="sell.html">Sell To Us</a></li>
-    <li><a href="#">About Us</a></li>
-    <li><a href="#">Services</a></li>
-    <li><a href="#">Testimonials</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="testimonials.html">Testimonials</a></li>
   </ul>
 </nav>
 
