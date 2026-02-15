@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>TITAN IMAGING | About Us</title>
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -48,11 +48,6 @@
       padding: 0;
     }
 
-    nav ul li {
-      font-weight: 600;
-      cursor: pointer;
-    }
-
     nav ul li a:hover {
       color: #A9B4C2;
       text-shadow: 0 0 6px rgba(169,180,194,0.6);
@@ -63,25 +58,26 @@
       max-width: 900px;
       margin: 80px auto;
       padding: 0 20px;
-      text-align: center;
     }
 
     h2 {
       font-size: 36px;
+      text-align: center;
       margin-bottom: 20px;
     }
 
     .subtitle {
       color: #BBBBBB;
-      font-size: 17px;
+      text-align: center;
       margin-bottom: 50px;
+      font-size: 17px;
     }
 
     p {
-      color: #CCCCCC;
       font-size: 16px;
+      color: #DDDDDD;
       line-height: 1.6;
-      margin-bottom: 25px;
+      text-align: center;
     }
 
     /* Footer */
@@ -92,6 +88,40 @@
       font-size: 14px;
       color: #777;
       background: #111;
+    }
+
+    /* MOBILE RESPONSIVE STYLES */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      nav h1 { margin-bottom: 10px; }
+
+      .container {
+        margin: 60px 15px;
+        padding: 0 15px;
+      }
+
+      h2 { font-size: 32px; }
+      .subtitle { font-size: 16px; }
+      p { font-size: 15px; }
+    }
+
+    @media (max-width: 480px) {
+      nav h1 { font-size: 24px; }
+      h2 { font-size: 28px; }
+      .subtitle { font-size: 14px; }
+      p { font-size: 14px; }
     }
 
   </style>
@@ -111,18 +141,13 @@
   </ul>
 </nav>
 
-<!-- Main content -->
+<!-- Main container -->
 <div class="container">
-
   <h2>About Us</h2>
-  <p class="subtitle">Learn more about Titan Imaging and our commitment to high-quality CT and PET services.</p>
-
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo, nibh a tincidunt dapibus, nulla sapien dignissim ligula, a viverra erat justo sed nisi. Curabitur sit amet velit non purus varius dignissim.</p>
-
-  <p>Fusce efficitur, tortor eget facilisis dictum, libero elit imperdiet nibh, a imperdiet mauris ligula ut lorem. Maecenas euismod eros at tellus malesuada, vitae volutpat nulla vulputate.</p>
-
-  <p>More content about the company, team, mission, and values will go here once finalized.</p>
-
+  <p class="subtitle">Learn more about Titan Imaging</p>
+  <p>
+    Placeholder text: Titan Imaging is dedicated to providing exceptional CT and PET imaging solutions, combining cutting-edge technology with a highly knowledgeable team. More content will be added here soon.
+  </p>
 </div>
 
 <!-- Footer -->
