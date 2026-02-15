@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>TITAN IMAGING | Sell To Us</title>
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -48,17 +48,12 @@
       padding: 0;
     }
 
-    nav ul li {
-      font-weight: 600;
-      cursor: pointer;
-    }
-
     nav ul li a:hover {
       color: #A9B4C2;
       text-shadow: 0 0 6px rgba(169,180,194,0.6);
     }
 
-    /* Main */
+    /* Main container */
     .container {
       max-width: 800px;
       margin: 80px auto;
@@ -97,9 +92,7 @@
       font-size: 14px;
     }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       width: 100%;
       padding: 12px;
       border-radius: 6px;
@@ -110,21 +103,13 @@
       outline: none;
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
+    input:focus, select:focus, textarea:focus {
       border-color: #A9B4C2;
       box-shadow: 0 0 6px rgba(169,180,194,0.4);
     }
 
-    select { background: #1F1F1F; }
+    textarea { resize: vertical; min-height: 100px; }
 
-    textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    /* Button */
     button {
       width: 100%;
       padding: 15px;
@@ -136,11 +121,18 @@
       font-weight: 600;
       cursor: pointer;
       transition: 0.3s;
+      animation: pulse 2s infinite;
     }
 
     button:hover {
       box-shadow: 0 0 15px rgba(169,180,194,0.6);
       transform: translateY(-2px);
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px #A9B4C2; }
+      50% { box-shadow: 0 0 20px #A9B4C2; }
+      100% { box-shadow: 0 0 10px #A9B4C2; }
     }
 
     /* Success Message */
@@ -161,6 +153,39 @@
       background: #111;
     }
 
+    /* MOBILE RESPONSIVE STYLES */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      nav h1 { margin-bottom: 10px; }
+
+      .container {
+        margin: 60px 15px;
+        padding: 0 15px;
+      }
+
+      h2 { font-size: 32px; }
+      .subtitle { font-size: 16px; }
+      button { font-size: 14px; padding: 12px; }
+    }
+
+    @media (max-width: 480px) {
+      nav h1 { font-size: 24px; }
+      h2 { font-size: 28px; }
+      .subtitle { font-size: 14px; }
+    }
+
   </style>
 </head>
 
@@ -178,16 +203,15 @@
   </ul>
 </nav>
 
-<!-- Main -->
+<!-- Main container -->
 <div class="container">
 
   <h2>Sell to Us</h2>
-  <p class="subtitle">
-    Submit your surplus CT and PET components for a fast, professional quote.
-  </p>
+  <p class="subtitle">Submit your surplus CT and PET components for a fast, professional quote.</p>
 
   <!-- Form -->
   <form id="sellForm">
+
     <div class="form-group">
       <label>Part Name</label>
       <input type="text" required>
@@ -231,7 +255,7 @@
     <button type="submit">Submit Request</button>
   </form>
 
-  <!-- Success -->
+  <!-- Success Message -->
   <div id="success">
     Thank you! Your submission has been received.<br>
     Our team will contact you shortly.
