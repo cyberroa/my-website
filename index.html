@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,7 +69,7 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hero Section */
+/* Hero */
 
 .hero {
   min-height: 85vh;
@@ -90,13 +91,13 @@ nav li:hover {
 }
 
 .hero h2 {
-  font-size: 48px;
+  font-size: 46px;
   margin-bottom: 20px;
   font-weight: 700;
 }
 
 .hero p {
-  font-size: 20px;
+  font-size: 19px;
   color: #DDD;
   margin-bottom: 40px;
 }
@@ -155,9 +156,27 @@ nav li:hover {
   align-items: center;
 }
 
+/* Accent Image Styling */
+
 .about-preview img {
   width: 100%;
-  border-radius: 12px;
+  max-width: 600px;
+  height: auto;
+
+  border-radius: 10px;
+
+  opacity: 0.85;
+
+  box-shadow:
+    0 0 25px rgba(169,180,194,0.12),
+    inset 0 0 0 1px rgba(255,255,255,0.05);
+
+  transition: 0.3s ease;
+}
+
+.about-preview img:hover {
+  opacity: 1;
+  transform: scale(1.02);
 }
 
 .about-preview h3 {
@@ -252,7 +271,7 @@ footer {
   }
 
   .hero h2 {
-    font-size: 36px;
+    font-size: 34px;
   }
 
   .hero p {
@@ -344,7 +363,8 @@ footer {
 
   </div>
 
-  <img src="scan.png" alt="CT/PET Imaging">
+  <!-- Accent Image -->
+  <img src="scan.png" alt="CT/PET Imaging Equipment">
 
 </section>
 
