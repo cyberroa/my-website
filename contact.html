@@ -17,7 +17,7 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #1F1F1F;
+      background: #121212; /* updated to black */
       color: #FFFFFF;
       line-height: 1.6;
     }
@@ -83,10 +83,25 @@
       border-radius: 6px;
     }
 
-    .banner h2 {
+    .banner-text {
+      text-align: center;
       color: #FFFFFF;
+      max-width: 700px;
+      padding: 0 15px;
+    }
+
+    .banner-text h2 {
       font-size: 32px;
       font-weight: 700;
+      margin-bottom: 15px;
+      text-shadow: 0 0 8px rgba(0,0,0,0.7);
+    }
+
+    .banner-text p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #CCCCCC;
+      text-shadow: 0 0 4px rgba(0,0,0,0.6);
     }
 
     /* Main container */
@@ -94,12 +109,6 @@
       max-width: 800px;
       margin: 0 auto 80px;
       padding: 0 20px;
-    }
-
-    h2 {
-      font-size: 36px;
-      margin-bottom: 15px;
-      text-align: center;
     }
 
     /* Form */
@@ -209,13 +218,12 @@
         height: 140px;
       }
 
-      .banner h2 {
+      .banner-text h2 {
         font-size: 24px;
-        padding: 0 10px;
       }
 
-      h2 {
-        font-size: 28px;
+      .banner-text p {
+        font-size: 14px;
       }
     }
   </style>
@@ -238,7 +246,11 @@
 
 <!-- Banner -->
 <div class="banner">
-  <h2>How can we help?</h2>
+  <div class="banner-text">
+    <h2>How can we help?</h2>
+    <p>Contact us to learn how we can help you with your medical equipment needs.<br>
+       Want to talk to someone? Call us at <a href="tel:9047426265">(904) 742-6265</a>.</p>
+  </div>
 </div>
 
 <!-- Main Container -->
@@ -271,19 +283,12 @@
     Our team will contact you shortly.
   </div>
 
-  <!-- Info Text Below Form -->
-  <div class="contact-info">
-    <p>Contact us to learn how we can help you with your medical equipment needs.</p>
-    <p>Want to talk to someone? Call us at <a href="tel:9047426265">(904) 742-6265</a>.</p>
-    <p><strong>NOTE:</strong> Please be cautious of anyone impersonating any member of the Titan Imaging Service team. There are a number of scams going on, especially now with AI tools. If you suspect anything, please call our main number <a href="tel:9047426265">(904) 742-6265</a> or e-mail <a href="mailto:info@test.com">info@test.com</a> for confirmation.</p>
-  </div>
+  <!-- Footer -->
+  <footer>
+    &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
+  </footer>
 
 </div>
-
-<!-- Footer -->
-<footer>
-  &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
-</footer>
 
 <script>
   const form = document.getElementById("contactForm");
