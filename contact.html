@@ -2,22 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TITAN IMAGING | Contact Us</title>
 
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background: #1F1F1F;
       color: #FFFFFF;
+      line-height: 1.6;
     }
 
-    a { text-decoration: none; color: inherit; }
+    a {
+      text-decoration: none;
+      color: #A9B4C2;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
 
     /* Navbar */
     nav {
@@ -36,7 +48,6 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 26px;
       letter-spacing: 2px;
-      text-transform: uppercase;
       cursor: pointer;
     }
 
@@ -44,11 +55,15 @@
       list-style: none;
       display: flex;
       gap: 30px;
-      margin: 0;
-      padding: 0;
     }
 
-    nav ul li a:hover {
+    nav li {
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    nav li:hover {
       color: #A9B4C2;
       text-shadow: 0 0 6px rgba(169,180,194,0.6);
     }
@@ -58,18 +73,28 @@
       max-width: 800px;
       margin: 80px auto;
       padding: 0 20px;
-      text-align: center;
     }
 
     h2 {
       font-size: 36px;
       margin-bottom: 15px;
+      text-align: center;
     }
 
     .subtitle {
       color: #BBBBBB;
-      margin-bottom: 50px;
-      font-size: 17px;
+      margin-bottom: 30px;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    /* Info text */
+    .contact-info {
+      background: #111;
+      padding: 20px 25px;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      color: #CCC;
     }
 
     /* Form */
@@ -92,7 +117,9 @@
       font-size: 14px;
     }
 
-    input, textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
       padding: 12px;
       border-radius: 6px;
@@ -103,7 +130,9 @@
       outline: none;
     }
 
-    input:focus, textarea:focus {
+    input:focus,
+    select:focus,
+    textarea:focus {
       border-color: #A9B4C2;
       box-shadow: 0 0 6px rgba(169,180,194,0.4);
     }
@@ -113,6 +142,7 @@
       min-height: 100px;
     }
 
+    /* Button */
     button {
       width: 100%;
       padding: 15px;
@@ -124,7 +154,6 @@
       font-weight: 600;
       cursor: pointer;
       transition: 0.3s;
-      animation: pulse 2s infinite;
     }
 
     button:hover {
@@ -132,18 +161,13 @@
       transform: translateY(-2px);
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 10px #A9B4C2; }
-      50% { box-shadow: 0 0 20px #A9B4C2; }
-      100% { box-shadow: 0 0 10px #A9B4C2; }
-    }
-
-    /* Success Message */
+    /* Success message */
     #success {
       display: none;
       margin-top: 40px;
       font-size: 18px;
       color: #A9B4C2;
+      text-align: center;
     }
 
     /* Footer */
@@ -156,47 +180,15 @@
       background: #111;
     }
 
-    /* MOBILE RESPONSIVE STYLES */
-    @media (max-width: 768px) {
+    /* Mobile */
+    @media (max-width: 900px) {
       nav {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 20px;
+        padding: 20px 25px;
       }
 
       nav ul {
-        flex-direction: column;
         gap: 15px;
-        width: 100%;
-        margin-top: 10px;
-      }
-
-      nav h1 {
-        margin-bottom: 10px;
-      }
-
-      .container {
-        margin: 60px 15px;
-        padding: 0 15px;
-      }
-
-      h2 {
-        font-size: 32px;
-      }
-
-      .subtitle {
-        font-size: 16px;
-      }
-
-      button {
         font-size: 14px;
-        padding: 12px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      nav h1 {
-        font-size: 24px;
       }
 
       h2 {
@@ -207,7 +199,6 @@
         font-size: 14px;
       }
     }
-
   </style>
 </head>
 
@@ -215,51 +206,52 @@
 
 <!-- Navbar -->
 <nav>
-  <h1><a href="index.html">TITAN IMAGING</a></h1>
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
   <ul>
-    <li><a href="inventory.html">Inventory</a></li>
-    <li><a href="contact.html">Contact Us</a></li>
-    <li><a href="sell.html">Sell To Us</a></li>
-    <li><a href="about.html">About Us</a></li>
-    <li><a href="services.html">Services</a></li>
-    <li><a href="testimonials.html">Testimonials</a></li>
+    <li onclick="window.location.href='inventory.html'">Inventory</li>
+    <li onclick="window.location.href='contact.html'">Contact</li>
+    <li onclick="window.location.href='sell.html'">Sell</li>
+    <li onclick="window.location.href='services.html'">Services</li>
+    <li onclick="window.location.href='about.html'">About</li>
+    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
 
-<!-- Main container -->
+<!-- Main Container -->
 <div class="container">
 
-  <h2>Contact Us</h2>
-  <p class="subtitle">Please write a detailed message and we will respond quickly to your inquiry.</p>
+  <h2>Contact Titan Imaging</h2>
 
-  <!-- Form -->
+  <div class="contact-info">
+    <p>Contact us to learn how we can help you with your medical equipment needs.</p>
+    <p>Want to talk to someone? Call us at <a href="tel:9047426265">(904) 742-6265</a>.</p>
+    <p><strong>NOTE:</strong> Please be cautious of anyone impersonating any member of the Titan Imaging Service team. There are a number of scams going on, especially now with ai tools. If you suspect anything, please call our main number <a href="tel:9047426265">(904) 742-6265</a> or e-mail <a href="mailto:info@test.com">info@test.com</a> for confirmation.</p>
+  </div>
+
+  <!-- Contact Form -->
   <form id="contactForm">
     <div class="form-group">
       <label>Name</label>
       <input type="text" required>
     </div>
-
     <div class="form-group">
       <label>Email</label>
       <input type="email" required>
     </div>
-
     <div class="form-group">
       <label>Phone</label>
       <input type="tel">
     </div>
-
     <div class="form-group">
       <label>Message</label>
-      <textarea required></textarea>
+      <textarea></textarea>
     </div>
-
-    <button type="submit">Send Message</button>
+    <button type="submit">Submit</button>
   </form>
 
   <!-- Success Message -->
   <div id="success">
-    Thank you! Your message has been received.<br>
+    Thank you! Your submission has been received.<br>
     Our team will contact you shortly.
   </div>
 
@@ -267,18 +259,18 @@
 
 <!-- Footer -->
 <footer>
-  &copy; 2026 TITAN IMAGING. All Rights Reserved.
+  &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
 
 <script>
-const form = document.getElementById("contactForm");
-const success = document.getElementById("success");
+  const form = document.getElementById("contactForm");
+  const success = document.getElementById("success");
 
-form.addEventListener("submit", function(e) {
-  e.preventDefault();
-  form.style.display = "none";
-  success.style.display = "block";
-});
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    form.style.display = "none";
+    success.style.display = "block";
+  });
 </script>
 
 </body>
