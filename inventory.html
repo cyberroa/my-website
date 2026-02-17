@@ -1,261 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TITAN IMAGING | Inventory</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TITAN IMAGING | Inventory</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
-  <style>
-    * { box-sizing: border-box; margin:0; padding:0; }
+<style>
+* { box-sizing: border-box; margin:0; padding:0; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #1F1F1F;
-      color: #FFFFFF;
-    }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #1F1F1F;
+  color: #FFFFFF;
+}
 
-    a { text-decoration: none; color: inherit; }
+a { text-decoration: none; color: inherit; }
 
-    /* Navbar */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 50px;
-      background: #111;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    }
+/* Navbar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: #111;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
 
-    nav h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      font-size: 28px;
-      letter-spacing: 2px;
-      cursor: pointer;
-    }
+nav h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-      margin: 0;
-      padding: 0;
-    }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
 
-    nav ul li {
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s;
-    }
+nav ul li {
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
 
-    nav ul li a:hover {
-      color: #A9B4C2;
-      text-shadow: 0 0 6px rgba(169,180,194,0.6);
-    }
+nav ul li a:hover {
+  color: #A9B4C2;
+  text-shadow: 0 0 6px rgba(169,180,194,0.6);
+}
 
-    /* Hero / Banner Section */
-    .hero {
-      text-align: center;
-      padding: 80px 20px 60px;
-      background:
-        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-        url("inventorybanner.png") no-repeat center center;
-      background-size: cover;
-      border-radius: 12px;
-      margin: 40px auto;
-      max-width: 900px;
-    }
+/* Hero Section */
+.hero {
+  position: relative;
+  min-height: 400px;
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+              url("inventorybanner.png") center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 20px;
+}
 
-    .hero h2 {
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 15px;
-      line-height: 1.2;
-    }
+.hero h2 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
 
-    .hero p {
-      font-size: 16px;
-      color: #DDD;
-      margin-bottom: 40px;
-    }
+.hero p {
+  font-size: 18px;
+  color: #DDD;
+  margin-bottom: 40px;
+}
 
-    /* Search Bar */
-    .search-bar {
-      display: flex;
-      justify-content: center;
-      max-width: 500px;
-      margin: 0 auto;
-    }
+/* Search Bar on Hero */
+.search-bar {
+  display: flex;
+  max-width: 500px;
+  width: 100%;
+  background: rgba(30,30,30,0.85);
+  border-radius: 10px;
+  overflow: hidden;
+}
 
-    .search-bar input {
-      flex: 1;
-      padding: 15px;
-      border: 1px solid #333;
-      border-radius: 8px 0 0 8px;
-      background: rgba(42,42,42,0.9);
-      color: #FFFFFF;
-      font-size: 16px;
-      outline: none;
-      transition: border-color 0.3s;
-    }
+.search-bar input {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  background: transparent;
+  color: #FFF;
+  font-size: 16px;
+  outline: none;
+}
 
-    .search-bar input:focus {
-      border-color: #A9B4C2;
-    }
+.search-bar button {
+  padding: 15px 25px;
+  background: #A9B4C2;
+  color: #111;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
 
-    .search-bar button {
-      padding: 15px 25px;
-      background: #A9B4C2;
-      color: #111;
-      border: none;
-      border-radius: 0 8px 8px 0;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s;
-      animation: pulse 2s infinite;
-    }
+.search-bar button:hover {
+  box-shadow: 0 0 15px #A9B4C2;
+  transform: translateY(-2px);
+}
 
-    .search-bar button:hover {
-      box-shadow: 0 0 10px #A9B4C2;
-      transform: translateY(-2px);
-    }
+/* Results below banner */
+#result {
+  margin: 40px auto;
+  max-width: 600px;
+  padding: 20px;
+  background: #2A2A2A;
+  border-radius: 10px;
+  font-size: 18px;
+  text-align: center;
+}
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 10px #A9B4C2; }
-      50% { box-shadow: 0 0 20px #A9B4C2; }
-      100% { box-shadow: 0 0 10px #A9B4C2; }
-    }
+/* Footer */
+footer {
+  margin-top: 80px;
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #777777;
+  background: #111;
+}
 
-    /* Results */
-    #result {
-      margin-top: 40px;
-      font-size: 18px;
-      text-align: center;
-      background: #2A2A2A;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* Footer */
-    footer {
-      margin-top: 80px;
-      padding: 40px 20px;
-      text-align: center;
-      font-size: 14px;
-      color: #777777;
-      background: #111;
-    }
-
-    /* Mobile */
-    @media (max-width: 768px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 20px;
-      }
-
-      nav ul {
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-        margin-top: 10px;
-      }
-
-      nav ul li {
-        width: 100%;
-      }
-
-      .hero {
-        padding: 60px 15px 40px;
-      }
-
-      .hero h2 {
-        font-size: 28px;
-      }
-
-      .hero p {
-        font-size: 14px;
-      }
-
-      .search-bar {
-        flex-direction: column;
-        max-width: 100%;
-      }
-
-      .search-bar input,
-      .search-bar button {
-        width: 100%;
-        border-radius: 8px;
-        margin: 5px 0;
-      }
-
-      #result {
-        max-width: 90%;
-        font-size: 16px;
-        padding: 15px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      nav h1 {
-        font-size: 24px;
-      }
-
-      .hero h2 {
-        font-size: 24px;
-      }
-
-      .hero p {
-        font-size: 14px;
-      }
-
-      .search-bar input,
-      .search-bar button {
-        font-size: 14px;
-        padding: 12px;
-      }
-    }
-  </style>
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { flex-direction: column; align-items: flex-start; padding: 15px 20px; }
+  nav ul { flex-direction: column; gap: 15px; width: 100%; margin-top: 10px; }
+  .hero { min-height: 300px; padding: 60px 15px; }
+  .hero h2 { font-size: 32px; }
+  .hero p { font-size: 16px; }
+  .search-bar { flex-direction: column; }
+  .search-bar input, .search-bar button { width: 100%; border-radius: 0; margin: 5px 0; }
+  #result { max-width: 90%; font-size: 16px; padding: 15px; }
+}
+</style>
 </head>
-
 <body>
 
 <!-- Navbar -->
 <nav>
-  <h1><a href="index.html">TITAN IMAGING</a></h1>
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
   <ul>
     <li><a href="inventory.html">Inventory</a></li>
-    <li><a href="contact.html">Contact Us</a></li>
-    <li><a href="sell.html">Sell To Us</a></li>
-    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="sell.html">Sell</a></li>
+    <li><a href="about.html">About</a></li>
     <li><a href="services.html">Services</a></li>
     <li><a href="testimonials.html">Testimonials</a></li>
   </ul>
 </nav>
 
-<!-- Hero Section with Search -->
+<!-- Hero / Banner -->
 <section class="hero">
   <h2>We have what You need</h2>
   <p>Search our inventory to see real-time availability of all parts.</p>
 
-  <!-- Search Bar -->
   <div class="search-bar">
     <input id="searchBox" type="text" placeholder="Enter part number or name">
     <button onclick="search()">Search</button>
   </div>
-
-  <!-- Results -->
-  <div id="result"></div>
 </section>
+
+<!-- Search Results -->
+<div id="result"></div>
 
 <!-- Footer -->
 <footer>
@@ -272,23 +198,22 @@ const parts = [
 function search() {
   const input = document.getElementById("searchBox").value.toLowerCase();
   let found = false;
+  let resultDiv = document.getElementById("result");
 
   for (let part of parts) {
     if (part.id.toLowerCase().includes(input) || part.name.toLowerCase().includes(input)) {
       found = true;
       if (part.stock > 0) {
-        document.getElementById("result").innerHTML =
-          `${part.name} — In Stock (${part.stock})`;
+        resultDiv.innerHTML = `${part.name} — In Stock (${part.stock})`;
       } else {
-        document.getElementById("result").innerHTML =
-          `${part.name} — Out of Stock`;
+        resultDiv.innerHTML = `${part.name} — Out of Stock`;
       }
+      break;
     }
   }
 
   if (!found) {
-    document.getElementById("result").innerHTML =
-      `Part not found. Please contact us.`;
+    resultDiv.innerHTML = "Part not found. Please contact us.";
   }
 }
 </script>
