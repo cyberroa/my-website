@@ -12,11 +12,7 @@
 <style>
 
 /* Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* Base */
 body {
@@ -26,13 +22,9 @@ body {
   line-height: 1.6;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+a { text-decoration: none; color: inherit; }
 
 /* ================= NAV ================= */
-
 nav {
   display: flex;
   justify-content: space-between;
@@ -70,37 +62,13 @@ nav li:hover {
 }
 
 /* ================= MAIN ================= */
-
 .container {
   max-width: 1200px;
   margin: 80px auto;
   padding: 0 25px;
 }
 
-/* Page Title */
-
-.page-title {
-  text-align: center;
-  margin-bottom: 60px;
-}
-
-.page-title h2 {
-  font-size: 40px;
-  margin-bottom: 12px;
-}
-
-.page-title p {
-  font-size: 18px;
-  color: #DDD;
-}
-
-.page-title a {
-  color: #A9B4C2;
-  text-decoration: underline;
-}
-
 /* Split Layout */
-
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -109,7 +77,6 @@ nav li:hover {
 }
 
 /* Left Image */
-
 .contact-image {
   background:
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
@@ -142,7 +109,6 @@ nav li:hover {
 }
 
 /* ================= FORM ================= */
-
 form {
   background: #111;
   padding: 40px;
@@ -179,13 +145,9 @@ textarea:focus {
   box-shadow: 0 0 6px rgba(169,180,194,0.4);
 }
 
-textarea {
-  resize: vertical;
-  min-height: 120px;
-}
+textarea { resize: vertical; min-height: 120px; }
 
 /* Button */
-
 button {
   width: 100%;
   padding: 15px;
@@ -205,7 +167,6 @@ button:hover {
 }
 
 /* ================= SUCCESS ================= */
-
 #success {
   display: none;
   margin-top: 30px;
@@ -215,7 +176,6 @@ button:hover {
 }
 
 /* ================= INFO ================= */
-
 .contact-info {
   margin-top: 50px;
   text-align: center;
@@ -229,7 +189,6 @@ button:hover {
 }
 
 /* ================= FOOTER ================= */
-
 footer {
   margin-top: 80px;
   padding: 30px;
@@ -240,38 +199,12 @@ footer {
 }
 
 /* ================= MOBILE ================= */
-
 @media (max-width: 900px) {
-
-  nav {
-    padding: 20px 25px;
-  }
-
-  nav ul {
-    gap: 15px;
-    font-size: 14px;
-  }
-
-  .page-title h2 {
-    font-size: 30px;
-  }
-
-  .page-title p {
-    font-size: 16px;
-  }
-
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-image {
-    min-height: 300px;
-  }
-
-  form {
-    padding: 25px;
-  }
-
+  nav { padding: 20px 25px; }
+  nav ul { gap: 15px; font-size: 14px; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-image { min-height: 300px; }
+  form { padding: 25px; }
 }
 
 </style>
@@ -280,10 +213,8 @@ footer {
 <body>
 
 <!-- ================= NAV ================= -->
-
 <nav>
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
-
   <ul>
     <li onclick="window.location.href='inventory.html'">Inventory</li>
     <li onclick="window.location.href='contact.html'">Contact Us</li>
@@ -294,117 +225,74 @@ footer {
 </nav>
 
 <!-- ================= MAIN ================= -->
-
 <div class="container">
-
-  <!-- Title -->
-
-  <div class="page-title">
-
-    <h2>How Can We Help?</h2>
-
-    <p>
-      Call us at <a href="tel:9047426265">(904) 742-6265</a> or email
-      <a href="mailto:info@test.com">info@test.com</a>
-    </p>
-
-  </div>
-
   <div class="contact-grid">
 
     <!-- Left Image -->
-
     <div class="contact-image">
-
       <div class="contact-image-content">
-
-        <h3>Let’s Start the Conversation</h3>
-
+        <h3>How Can We Help?</h3>
         <p>
-          Our team is ready to assist you with equipment, service,
+          Let's start a conversation. Our team is ready to assist you with expert equipment, service,
           and technical support.
         </p>
-
         <p>
           📞 <a href="tel:9047426265">(904) 742-6265</a><br>
           ✉️ <a href="mailto:info@test.com">info@test.com</a>
         </p>
-
       </div>
-
     </div>
 
     <!-- Form -->
-
     <form id="contactForm">
-
       <div class="form-group">
         <label>Name</label>
         <input type="text" required>
       </div>
-
       <div class="form-group">
         <label>Email</label>
         <input type="email" required>
       </div>
-
       <div class="form-group">
         <label>Phone</label>
         <input type="tel">
       </div>
-
       <div class="form-group">
         <label>Message</label>
         <textarea></textarea>
       </div>
-
       <button type="submit">Submit</button>
-
-      <div id="success">
-        Thank you! Your message has been received.
-      </div>
-
+      <div id="success">Thank you! Your message has been received.</div>
     </form>
 
   </div>
 
   <!-- Info -->
-
   <div class="contact-info">
-
     <p>
       <strong>NOTE:</strong> Please be cautious of impersonators.
       If unsure, call <a href="tel:9047426265">(904) 742-6265</a> or email
       <a href="mailto:info@test.com">info@test.com</a>.
     </p>
-
   </div>
 
 </div>
 
 <!-- ================= FOOTER ================= -->
-
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
 
 <!-- ================= SCRIPT ================= -->
-
 <script>
-
 const form = document.getElementById("contactForm");
 const success = document.getElementById("success");
 
 form.addEventListener("submit", function(e) {
-
   e.preventDefault();
-
   success.style.display = "block";
-
   form.reset();
-
 });
-
 </script>
 
 </body>
