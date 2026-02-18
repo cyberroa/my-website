@@ -18,46 +18,62 @@ body {
   background: url("selltous.png") center center fixed;
   background-size: cover;
   background-attachment: fixed;
+  overflow-x: hidden;
 }
 
-/* Navbar */
-nav {
+/* ================= NAVBAR ================= */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 50px;
   background: #111;
-  position: sticky;
+  position: fixed;
   top: 0;
+  width: 100%;
   z-index: 100;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
-nav h1 {
+.navbar h1 {
   font-family: 'Orbitron', sans-serif;
   font-size: 24px;
   letter-spacing: 2px;
   cursor: pointer;
 }
 
-nav ul {
+.nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
 }
 
-nav li {
+.nav-links li a {
   font-weight: 600;
-  cursor: pointer;
   transition: 0.3s;
 }
 
-nav li:hover {
+.nav-links li a:hover {
   color: #A9B4C2;
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hero Banner */
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: #FFF;
+  transition: 0.3s;
+}
+
+/* ================= HERO ================= */
 .hero {
   position: relative;
   width: 100%;
@@ -83,10 +99,10 @@ nav li:hover {
   margin-bottom: 40px;
 }
 
-/* Main Container */
+/* ================= MAIN ================= */
 .container {
   max-width: 800px;
-  margin: 40px auto;
+  margin: 140px auto 40px auto;
   padding: 0 20px;
 }
 
@@ -127,12 +143,8 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 6px rgba(169,180,194,0.4);
 }
 
-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
+textarea { resize: vertical; min-height: 100px; }
 
-/* Button */
 button {
   width: 100%;
   padding: 15px;
@@ -151,7 +163,7 @@ button:hover {
   transform: translateY(-2px);
 }
 
-/* Info text */
+/* Info Text */
 .contact-info {
   color: #CCC;
   text-align: center;
@@ -160,7 +172,7 @@ button:hover {
   margin-top: 20px;
 }
 
-/* Success message */
+/* Success Message */
 #success {
   display: none;
   margin-top: 40px;
@@ -179,13 +191,46 @@ footer {
   background: #111;
 }
 
-/* Mobile */
+/* ================= MOBILE ================= */
 @media (max-width: 900px) {
-  nav { padding: 20px 25px; }
-  nav ul { gap: 15px; font-size: 14px; }
 
-  .hero h2 { font-size: 32px; }
-  .hero p { font-size: 16px; }
+  .navbar {
+    padding: 15px 25px;
+    flex-wrap: wrap;
+  }
+
+  .navbar h1 {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li a {
+    white-space: nowrap;
+    display: block;
+    padding: 12px 0;
+  }
+
+  .hero {
+    min-height: 300px;
+    padding: 60px 15px;
+  }
+
+  .hero h2 {
+    font-size: 32px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
 
   form { padding: 30px; }
 }
@@ -194,28 +239,32 @@ footer {
 
 <body>
 
-<!-- Navbar -->
-<nav>
-  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
-  <ul>
-    <li onclick="window.location.href='inventory.html'">Inventory</li>
-    <li onclick="window.location.href='contact.html'">Contact Us</li>
-    <li onclick="window.location.href='sell.html'">Sell to Us</li>
-    <li onclick="window.location.href='services.html'">Services</li>
-    <li onclick="window.location.href='about.html'">About Us</li>
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
+  <ul class="nav-links">
+    <li><a href="inventory.html">Inventory</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="sell.html">Sell to Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About Us</a></li>
   </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </nav>
 
-<!-- Hero / Banner -->
+<!-- ================= HERO ================= -->
 <section class="hero">
   <h2>Sell Your Equipment with Confidence</h2>
   <p>Submit your equipment details and we’ll get back to you promptly.</p>
 </section>
 
-<!-- Main Container -->
+<!-- ================= MAIN CONTAINER ================= -->
 <div class="container">
 
-  <!-- Contact Form -->
   <form id="sellForm">
     <div class="form-group">
       <label>Name</label>
@@ -236,13 +285,11 @@ footer {
     <button type="submit">Submit</button>
   </form>
 
-  <!-- Success Message -->
   <div id="success">
     Thank you! Your submission has been received.<br>
     Our team will contact you shortly.
   </div>
 
-  <!-- Info Text -->
   <div class="contact-info">
     <p>Want to talk to someone? Call us at <a href="tel:9047426265">(904) 742-6265</a>.</p>
     <p><strong>NOTE:</strong> Please be cautious of anyone impersonating any member of the Titan Imaging Service team. If you suspect anything, please call our main number <a href="tel:9047426265">(904) 742-6265</a> or e-mail <a href="mailto:info@test.com">info@test.com</a> for confirmation.</p>
@@ -250,12 +297,18 @@ footer {
 
 </div>
 
-<!-- Footer -->
+<!-- ================= FOOTER ================= -->
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
 
+<!-- ================= SCRIPT ================= -->
 <script>
+function toggleMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  navLinks.classList.toggle('active');
+}
+
 const form = document.getElementById("sellForm");
 const success = document.getElementById("success");
 
