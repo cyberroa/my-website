@@ -1,199 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TITAN IMAGING | Services</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TITAN IMAGING | Services</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
-  <style>
-    * { box-sizing: border-box; }
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #1F1F1F;
-      color: #FFFFFF;
-    }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #000000;
+  color: #FFFFFF;
+  line-height: 1.6;
+}
 
-    a { text-decoration: none; color: inherit; }
+a { text-decoration: none; color: inherit; }
 
-    /* Navbar */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 50px;
-      background: #111;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    }
+/* Navbar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: #111;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
 
-    nav h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 26px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
+nav h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-      margin: 0;
-      padding: 0;
-    }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
 
-    nav ul li a:hover {
-      color: #A9B4C2;
-      text-shadow: 0 0 6px rgba(169,180,194,0.6);
-    }
+nav li {
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    /* Main container */
-    .container {
-      max-width: 900px;
-      margin: 80px auto;
-      padding: 0 20px;
-    }
+nav li:hover {
+  color: #A9B4C2;
+  text-shadow: 0 0 6px rgba(169,180,194,0.6);
+}
 
-    h2 {
-      font-size: 36px;
-      text-align: center;
-      margin-bottom: 15px;
-    }
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 25px;
+}
 
-    .subtitle {
-      color: #BBBBBB;
-      text-align: center;
-      margin-bottom: 50px;
-      font-size: 17px;
-    }
+/* Headings */
+h2 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 40px;
+}
 
-    /* Service items */
-    .service {
-      background: #111;
-      padding: 25px 30px;
-      margin-bottom: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.03);
-    }
+/* Services Grid */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 30px;
+}
 
-    .service h3 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #A9B4C2;
-    }
+.service-card {
+  background: #0b2442;
+  padding: 30px;
+  border-radius: 10px;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
 
-    .service p {
-      font-size: 15px;
-      color: #DDDDDD;
-      line-height: 1.5;
-    }
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(169,180,194,0.6);
+}
 
-    /* Footer */
-    footer {
-      margin-top: 80px;
-      padding: 30px;
-      text-align: center;
-      font-size: 14px;
-      color: #777;
-      background: #111;
-    }
+.service-card h4 {
+  margin-bottom: 15px;
+}
 
-    /* MOBILE RESPONSIVE STYLES */
-    @media (max-width: 768px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 20px;
-      }
+.service-card p {
+  color: #BBB;
+  font-size: 15px;
+}
 
-      nav ul {
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-        margin-top: 10px;
-      }
+/* Footer */
+footer {
+  margin-top: 60px;
+  padding: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  background: #111;
+}
 
-      nav h1 { margin-bottom: 10px; }
-
-      .container {
-        margin: 60px 15px;
-        padding: 0 15px;
-      }
-
-      h2 { font-size: 32px; }
-      .subtitle { font-size: 16px; }
-
-      .service h3 { font-size: 20px; }
-      .service p { font-size: 14px; }
-    }
-
-    @media (max-width: 480px) {
-      nav h1 { font-size: 24px; }
-      h2 { font-size: 28px; }
-      .subtitle { font-size: 14px; }
-      .service h3 { font-size: 18px; }
-      .service p { font-size: 13px; }
-    }
-
-  </style>
+/* Mobile */
+@media (max-width: 900px) {
+  nav { padding: 20px 25px; }
+  nav ul { gap: 15px; font-size: 14px; }
+  h2 { font-size: 28px; }
+  .service-grid { gap: 20px; }
+  .service-card { padding: 20px; }
+}
+</style>
 </head>
-
 <body>
 
 <!-- Navbar -->
 <nav>
-  <h1><a href="index.html">TITAN IMAGING</a></h1>
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
   <ul>
-    <li><a href="inventory.html">Inventory</a></li>
-    <li><a href="contact.html">Contact Us</a></li>
-    <li><a href="sell.html">Sell To Us</a></li>
-    <li><a href="about.html">About Us</a></li>
-    <li><a href="services.html">Services</a></li>
-    <li><a href="testimonials.html">Testimonials</a></li>
+    <li onclick="window.location.href='inventory.html'">Inventory</li>
+    <li onclick="window.location.href='contact.html'">Contact</li>
+    <li onclick="window.location.href='sell.html'">Sell</li>
+    <li onclick="window.location.href='services.html'">Services</li>
+    <li onclick="window.location.href='about.html'">About</li>
+    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
 
-<!-- Main container -->
+<!-- Page Heading -->
 <div class="container">
-  <h2>Services</h2>
-  <p class="subtitle">SERVICES provided by Titan Imaging for CT & PET Scanners. Our knowledgeable team ensures you get the parts and support you need quickly and efficiently.</p>
+  <h2>Our Core Services</h2>
 
-  <div class="service">
-    <h3>De-Install / Re-Install</h3>
-    <p>We provide a plan, coordinate with your team, and ensure any changes needed with your modalities are delivered on time and within budget.</p>
+  <!-- Services Grid -->
+  <div class="service-grid">
+    <div class="service-card">
+      <h4>Parts Sourcing</h4>
+      <p>OEM and refurbished CT/PET components available for fast delivery.</p>
+    </div>
+    <div class="service-card">
+      <h4>System Sales</h4>
+      <p>Pre-owned and refurbished systems for medical facilities.</p>
+    </div>
+    <div class="service-card">
+      <h4>Installation</h4>
+      <p>Professional de-installation and re-installation services.</p>
+    </div>
+    <div class="service-card">
+      <h4>Partner With Us</h4>
+      <p>Collaborate with Titan Imaging Service to expand your services, share expertise, and grow your network.</p>
+    </div>
   </div>
-
-  <div class="service">
-    <h3>Transportation</h3>
-    <p>Delivering your imaging equipment safely, securely, and on schedule is what we provide every time.</p>
-  </div>
-
-  <div class="service">
-    <h3>Training</h3>
-    <p>We educate your imaging team on new protocols and applications. Whether in-house or remote, our training ensures hands-on experience and knowledge transfer.</p>
-  </div>
-
-  <div class="service">
-    <h3>System Sales</h3>
-    <p>We provide pre-owned and refurbished diagnostic imaging systems (CT & PET/CT) to hospitals, imaging centers, and private practices.</p>
-  </div>
-
-  <div class="service">
-    <h3>Service Contracts</h3>
-    <p>Our expertise in CT and PET/CT ensures maximum uptime and ongoing support, protecting patient care and operational efficiency.</p>
-  </div>
-
-  <div class="service">
-    <h3>Flexible Shipping & Support</h3>
-    <p>We ship parts anywhere via overnight, courier, or next-flight-out services. Our “Warranty of Excellence” ensures reliable operation and peace of mind.</p>
-  </div>
-
 </div>
 
 <!-- Footer -->
