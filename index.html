@@ -288,6 +288,89 @@ footer {
   }
 }
 
+/* ================= CHAT WIDGET ================= */
+#chat-bubble {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #A9B4C2;
+  color: #111;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+#chat-window {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  max-width: 90%;
+  background: #111;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  color: #FFF;
+  z-index: 1001;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+#chat-header {
+  background: #A9B4C2;
+  color: #111;
+  padding: 12px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#chat-close {
+  cursor: pointer;
+}
+
+#chat-messages {
+  padding: 10px;
+  height: 200px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+#chat-input {
+  border: none;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid #333;
+  background: #222;
+  color: #FFF;
+}
+#chat-input:focus {
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  #chat-window {
+    width: 90%;
+    bottom: 80px;
+  }
+
+  #chat-bubble {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+}
+
 </style>
 </head>
 
@@ -427,11 +510,56 @@ footer {
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
 
+<!-- ================= CHAT WIDGET ================= -->
+<div id="chat-bubble">💬</div>
+
+<div id="chat-window">
+  <div id="chat-header">
+    AI Support
+    <span id="chat-close">&times;</span>
+  </div>
+  <div id="chat-messages">
+    <p>Hi! Ask me anything about Titan Imaging services.</p>
+  </div>
+  <input type="text" id="chat-input" placeholder="Type your question..." />
+</div>
+
 <script>
 function toggleMenu() {
   const navLinks = document.querySelector('.nav-links');
   navLinks.classList.toggle('active');
 }
+
+// Chat widget logic
+const bubble = document.getElementById('chat-bubble');
+const chatWindow = document.getElementById('chat-window');
+const closeChat = document.getElementById('chat-close');
+const chatInput = document.getElementById('chat-input');
+const chatMessages = document.getElementById('chat-messages');
+
+bubble.addEventListener('click', () => {
+  chatWindow.style.display = 'flex';
+});
+
+closeChat.addEventListener('click', () => {
+  chatWindow.style.display = 'none';
+});
+
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && chatInput.value.trim() !== '') {
+    const userText = chatInput.value;
+    chatMessages.innerHTML += `<p><strong>You:</strong> ${userText}</p>`;
+
+    // Placeholder AI response
+    let reply = "I'm not sure about that. Please contact support for more info.";
+    if(userText.toLowerCase().includes('hours')) reply = "Our office hours are 9am-5pm EST.";
+    if(userText.toLowerCase().includes('contact')) reply = "You can reach us at (904) 742-6265 or info@test.com.";
+
+    chatMessages.innerHTML += `<p><strong>AI:</strong> ${reply}</p>`;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatInput.value = '';
+  }
+});
 </script>
 
 </body>
