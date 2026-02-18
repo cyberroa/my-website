@@ -39,8 +39,9 @@ a {
   align-items: center;
   padding: 20px 50px;
   background: #111;
-  position: sticky;
+  position: fixed;
   top: 0;
+  width: 100%;
   z-index: 100;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
@@ -66,6 +67,21 @@ a {
 .nav-links li a:hover {
   color: #A9B4C2;
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: #FFF;
+  transition: 0.3s;
 }
 
 /* ================= HERO ================= */
@@ -168,17 +184,32 @@ footer {
 @media (max-width: 900px) {
 
   .navbar {
-    padding: 20px 25px;
+    padding: 15px 25px;
     flex-wrap: wrap;
   }
 
+  .navbar h1 {
+    font-size: 20px;
+  }
+
   .nav-links {
-    gap: 15px;
-    font-size: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: none;
+    flex-direction: column;
     width: 100%;
-    margin-top: 10px;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li a {
+    white-space: nowrap;
+    display: block;
+    padding: 12px 0;
+  }
+
+  .hamburger {
+    display: flex;
   }
 
   .hero {
@@ -219,7 +250,7 @@ footer {
 
 <nav class="navbar">
 
-  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
 
   <ul class="nav-links">
     <li><a href="inventory.html">Inventory</a></li>
@@ -228,6 +259,12 @@ footer {
     <li><a href="services.html">Services</a></li>
     <li><a href="about.html">About Us</a></li>
   </ul>
+
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 
 </nav>
 
@@ -261,6 +298,10 @@ footer {
 <!-- ================= SCRIPT ================= -->
 
 <script>
+function toggleMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  navLinks.classList.toggle('active');
+}
 
 const parts = [
   { id: "CT1001", name: "CT Board", stock: 5 },
@@ -305,7 +346,6 @@ function search() {
       "Part not found. Please contact us.";
   }
 }
-
 </script>
 
 </body>
