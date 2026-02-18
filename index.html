@@ -6,12 +6,12 @@
 
 <title>TITAN IMAGING | CT & PET Parts & Services</title>
 
-<!-- Fonts -->
+<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* Reset */
+/* ================= RESET ================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,8 +20,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #000000;
-  color: #FFFFFF;
+  background: #000;
+  color: #FFF;
   line-height: 1.6;
 }
 
@@ -30,8 +30,9 @@ a {
   color: inherit;
 }
 
-/* Navbar */
-nav {
+/* ================= NAVBAR ================= */
+
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,38 +44,37 @@ nav {
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
-nav h1 {
+.navbar h1 {
   font-family: 'Orbitron', sans-serif;
   font-size: 24px;
   letter-spacing: 2px;
   cursor: pointer;
 }
 
-nav ul {
+.nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
 }
 
-nav li {
+.nav-links li a {
   font-weight: 600;
-  cursor: pointer;
   transition: 0.3s;
 }
 
-nav li:hover {
+.nav-links li a:hover {
   color: #A9B4C2;
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hero Section */
+/* ================= HERO ================= */
+
 .hero {
   min-height: 85vh;
   background:
     linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-    url("titanimagebanner.png");
-  background-size: cover;
-  background-position: center;
+    url("titanimagebanner.png") center/cover no-repeat;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -88,8 +88,8 @@ nav li:hover {
 
 .hero h2 {
   font-size: 48px;
-  margin-bottom: 20px;
   font-weight: 700;
+  margin-bottom: 20px;
 }
 
 .hero p {
@@ -109,9 +109,9 @@ nav li:hover {
   padding: 14px 28px;
   border-radius: 6px;
   font-weight: 600;
-  transition: 0.3s;
   border: none;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .primary-btn {
@@ -135,14 +135,16 @@ nav li:hover {
   color: #111;
 }
 
-/* Section Base */
+/* ================= SECTIONS ================= */
+
 .section {
   max-width: 1200px;
   margin: 100px auto;
   padding: 0 25px;
 }
 
-/* About Preview */
+/* About */
+
 .about-preview {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -166,6 +168,7 @@ nav li:hover {
 }
 
 /* Services */
+
 .services {
   text-align: center;
 }
@@ -194,7 +197,6 @@ nav li:hover {
   box-shadow: 0 0 20px rgba(169,180,194,0.6);
 }
 
-
 .service-card h4 {
   margin-bottom: 15px;
 }
@@ -204,7 +206,8 @@ nav li:hover {
   font-size: 15px;
 }
 
-/* CTA */
+/* ================= CTA ================= */
+
 .cta {
   background: #111;
   text-align: center;
@@ -222,7 +225,8 @@ nav li:hover {
   margin-bottom: 30px;
 }
 
-/* Footer */
+/* ================= FOOTER ================= */
+
 footer {
   background: #111;
   padding: 30px;
@@ -232,15 +236,22 @@ footer {
   margin-top: 80px;
 }
 
-/* Mobile */
+/* ================= MOBILE ================= */
+
 @media (max-width: 900px) {
-  nav {
+
+  .navbar {
     padding: 20px 25px;
+    flex-wrap: wrap;
   }
 
-  nav ul {
+  .nav-links {
     gap: 15px;
     font-size: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
   }
 
   .hero h2 {
@@ -261,80 +272,131 @@ footer {
 
 <body>
 
-<!-- Navbar -->
-<nav>
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
 
-  <ul>
-    <li onclick="window.location.href='inventory.html'">Inventory</li>
-    <li onclick="window.location.href='contact.html'">Contact</li>
-    <li onclick="window.location.href='sell.html'">Sell</li>
-    <li onclick="window.location.href='services.html'">Services</li>
-    <li onclick="window.location.href='about.html'">About</li>
-    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
+  <ul class="nav-links">
+    <li><a href="inventory.html">Inventory</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="sell.html">Sell</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="testimonials.html">Testimonials</a></li>
   </ul>
+
 </nav>
 
-<!-- Hero -->
+<!-- ================= HERO ================= -->
+
 <section class="hero">
+
   <div class="hero-content">
+
     <h2>Seamless Service. Every Time.</h2>
-    <p>Trusted sourcing, repair, and support for medical imaging systems nationwide.</p>
+
+    <p>
+      Trusted sourcing, repair, and support for medical imaging systems nationwide.
+    </p>
+
     <div class="hero-buttons">
-      <button class="hero-btn primary-btn" onclick="window.location.href='inventory.html'">Browse Inventory</button>
-      <button class="hero-btn secondary-btn" onclick="window.location.href='contact.html'">Request Support</button>
+
+      <button class="hero-btn primary-btn"
+        onclick="window.location.href='inventory.html'">
+        Browse Inventory
+      </button>
+
+      <button class="hero-btn secondary-btn"
+        onclick="window.location.href='contact.html'">
+        Request Support
+      </button>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- About Preview -->
+<!-- ================= ABOUT ================= -->
+
 <section class="section about-preview">
+
   <div>
+
     <h3>Industry Experience You Can Trust</h3>
+
     <p>
       Titan Imaging provides high-quality CT and PET parts, system solutions,
       and service support to imaging centers and hospitals nationwide.
     </p>
+
     <p>
       Our team combines technical expertise with fast response times
       to keep your equipment operating at peak performance.
     </p>
-    <button class="hero-btn primary-btn" onclick="window.location.href='about.html'">Learn More</button>
+
+    <button class="hero-btn primary-btn"
+      onclick="window.location.href='about.html'">
+      Learn More
+    </button>
+
   </div>
-  <img src="scan.png" alt="CT/PET Imaging" style="width:600px; max-width:100%; border-radius:12px;">
+
+  <img src="scan.png" alt="CT/PET Imaging">
+
 </section>
 
-<!-- Services -->
+<!-- ================= SERVICES ================= -->
+
 <section class="section services">
+
   <h3>Our Core Services</h3>
+
   <div class="service-grid">
+
     <div class="service-card">
       <h4>Parts Sourcing</h4>
       <p>OEM and refurbished CT/PET components available for fast delivery.</p>
     </div>
+
     <div class="service-card">
       <h4>System Sales</h4>
       <p>Pre-owned and refurbished systems for medical facilities.</p>
     </div>
+
     <div class="service-card">
       <h4>Installation</h4>
       <p>Professional de-installation and re-installation services.</p>
     </div>
+
     <div class="service-card">
       <h4>Partner With Us</h4>
-      <p>Collaborate with Titan Imaging Service to expand your services, share expertise, and grow your network.</p>
+      <p>Collaborate with Titan Imaging Service to expand your services.</p>
     </div>
+
   </div>
+
 </section>
 
-<!-- CTA -->
+<!-- ================= CTA ================= -->
+
 <section class="cta">
+
   <h3>Need Parts or Support?</h3>
+
   <p>Speak directly with our team and get expert assistance today.</p>
-  <button class="hero-btn primary-btn" onclick="window.location.href='contact.html'">Contact Us</button>
+
+  <button class="hero-btn primary-btn"
+    onclick="window.location.href='contact.html'">
+    Contact Us
+  </button>
+
 </section>
 
-<!-- Footer -->
+<!-- ================= FOOTER ================= -->
+
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
