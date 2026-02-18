@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TITAN IMAGING Service | CT & PET Parts & Services</title>
+<title>TITAN IMAGING SERVICE | CT & PET Parts & Services</title>
 
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
@@ -42,6 +42,8 @@ a {
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  flex-wrap: wrap;
+  position: relative;
 }
 
 .navbar h1 {
@@ -49,6 +51,7 @@ a {
   font-size: 24px;
   letter-spacing: 2px;
   cursor: pointer;
+  z-index: 110; /* make sure logo is above menu */
 }
 
 .nav-links {
@@ -65,6 +68,18 @@ a {
 .nav-links li a:hover {
   color: #A9B4C2;
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
+}
+
+/* Hamburger Menu */
+.mobile-menu-icon {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #A9B4C2;
+  position: absolute;
+  right: 25px;
+  top: 20px;
+  z-index: 120;
 }
 
 /* ================= HERO ================= */
@@ -240,18 +255,30 @@ footer {
 
 @media (max-width: 900px) {
 
-  .navbar {
-    padding: 20px 25px;
-    flex-wrap: wrap;
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: #111;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    border-radius: 8px;
+    padding: 15px;
   }
 
-  .nav-links {
-    gap: 15px;
-    font-size: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    margin-top: 10px;
+  .nav-links li {
+    margin-bottom: 15px;
+  }
+
+  .navbar h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .mobile-menu-icon {
+    display: block;
   }
 
   .hero h2 {
@@ -277,6 +304,8 @@ footer {
 <nav class="navbar">
 
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
+
+  <div class="mobile-menu-icon" onclick="toggleMenu()">&#9776;</div>
 
   <ul class="nav-links">
     <li><a href="inventory.html">Inventory</a></li>
@@ -405,6 +434,19 @@ footer {
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
+
+<!-- ================= SCRIPT ================= -->
+
+<script>
+function toggleMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  if (navLinks.style.display === 'flex') {
+    navLinks.style.display = 'none';
+  } else {
+    navLinks.style.display = 'flex';
+  }
+}
+</script>
 
 </body>
 </html>
