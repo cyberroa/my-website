@@ -4,21 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TITAN IMAGING | Services</title>
+<title>TITAN IMAGING SERVICES | Services</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* Reset */
+/* ================= RESET ================= */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Base */
 body {
   font-family: 'Inter', sans-serif;
   color: #FFFFFF;
@@ -34,54 +33,66 @@ a {
   color: inherit;
 }
 
-/* ================= NAV ================= */
-
-nav {
+/* ================= NAVBAR ================= */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 50px;
   background: #111;
-  position: sticky;
+  position: fixed;
+  width: 100%;
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
-nav h1 {
+.navbar h1 {
   font-family: 'Orbitron', sans-serif;
   font-size: 24px;
   letter-spacing: 2px;
   cursor: pointer;
 }
 
-nav ul {
+.nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
 }
 
-nav li {
+.nav-links li a {
   font-weight: 600;
-  cursor: pointer;
   transition: 0.3s;
 }
 
-nav li:hover {
+.nav-links li a:hover {
   color: #A9B4C2;
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* ================= CONTAINER ================= */
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
 
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: #FFF;
+  transition: 0.3s;
+}
+
+/* ================= CONTAINER ================= */
 .container {
   max-width: 1200px;
-  margin: 80px auto;
+  margin: 140px auto 80px auto; /* added top margin to clear fixed navbar */
   padding: 0 25px;
 }
 
 /* ================= HEADER ================= */
-
 .page-header {
   text-align: center;
   margin-bottom: 70px;
@@ -100,7 +111,6 @@ nav li:hover {
 }
 
 /* ================= SERVICES GRID ================= */
-
 .services-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -109,12 +119,10 @@ nav li:hover {
 }
 
 /* Service Card */
-
 .service-card {
   background: rgba(17,17,17,0.9);
   padding: 35px 30px;
   border-radius: 12px;
-
   box-shadow: 0 0 20px rgba(169,180,194,0.25);
   transition: 0.3s;
 }
@@ -137,7 +145,6 @@ nav li:hover {
 }
 
 /* ================= FOOTER ================= */
-
 footer {
   background: #111;
   padding: 30px;
@@ -148,16 +155,35 @@ footer {
 }
 
 /* ================= MOBILE ================= */
-
 @media (max-width: 900px) {
 
-  nav {
+  .navbar {
     padding: 20px 25px;
+    flex-wrap: wrap;
   }
 
-  nav ul {
-    gap: 15px;
-    font-size: 14px;
+  .navbar h1 {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li a {
+    white-space: nowrap;
+    display: block;
+    padding: 12px 0;
+  }
+
+  .hamburger {
+    display: flex;
   }
 
   .page-header h2 {
@@ -179,26 +205,31 @@ footer {
 
 <body>
 
-<!-- ================= NAV ================= -->
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
 
-<nav>
-  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
 
-  <ul>
-    <li onclick="window.location.href='inventory.html'">Inventory</li>
-    <li onclick="window.location.href='contact.html'">Contact Us</li>
-    <li onclick="window.location.href='sell.html'">Sell to Us</li>
-    <li onclick="window.location.href='services.html'">Services</li>
-    <li onclick="window.location.href='about.html'">About Us</li>
+  <ul class="nav-links">
+    <li><a href="inventory.html">Inventory</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="sell.html">Sell to Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About Us</a></li>
   </ul>
+
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
 </nav>
 
 <!-- ================= MAIN ================= -->
-
 <div class="container">
 
   <!-- Header -->
-
   <section class="page-header">
 
     <h2>Our Services</h2>
@@ -211,7 +242,6 @@ footer {
   </section>
 
   <!-- Services -->
-
   <section class="services-grid">
 
     <div class="service-card">
@@ -267,10 +297,17 @@ footer {
 </div>
 
 <!-- ================= FOOTER ================= -->
-
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
 
+<script>
+function toggleMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  navLinks.classList.toggle('active');
+}
+</script>
+
 </body>
 </html>
+
