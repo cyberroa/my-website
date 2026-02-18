@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TITAN IMAGING | About Us</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
+
 /* Reset */
 * {
   box-sizing: border-box;
@@ -19,14 +21,18 @@
 /* Base */
 body {
   font-family: 'Inter', sans-serif;
-  background: url("aboutus.png") center center fixed;
-  background-size: cover;
-  background-attachment: fixed;
-  color: #FFFFFF;
-  line-height: 1.7;
+  background: #000;
+  color: #FFF;
+  line-height: 1.6;
 }
 
-/* Navbar */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ================= NAV ================= */
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -63,157 +69,240 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hero / Intro */
+/* ================= HERO ================= */
+
 .hero {
-  min-height: 300px;
+  min-height: 350px;
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url("aboutus.png") center/cover no-repeat;
+
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 80px 20px;
-  background: rgba(0,0,0,0.55);
+  padding: 60px 20px;
 }
 
 .hero h2 {
   font-size: 42px;
   font-weight: 700;
-  color: #A9B4C2;
-  margin-bottom: 20px;
+  max-width: 900px;
 }
 
-.hero p {
-  font-size: 18px;
-  color: #DDD;
-  max-width: 850px;
-}
+/* ================= CONTAINER ================= */
 
-/* Main Content */
 .container {
-  max-width: 1000px;
-  margin: 60px auto;
-  padding: 0 20px;
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 25px;
 }
 
-.container h3 {
-  font-size: 28px;
-  color: #A9B4C2;
-  margin-top: 40px;
-  margin-bottom: 15px;
+/* ================= ABOUT SECTION ================= */
+
+.about-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+  margin-bottom: 100px;
 }
 
-/* Impact Metrics */
-.metrics {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  text-align: center;
-  margin-top: 30px;
-  margin-bottom: 25px;
-}
-
-.metrics div {
+.about-text h3 {
   font-size: 32px;
-  font-weight: 700;
-  color: #A9B4C2;
-  min-width: 140px;
-}
-
-/* Text paragraphs */
-.container p {
-  font-size: 17px;
-  color: #DDD;
   margin-bottom: 20px;
 }
 
-/* Bold sub-heads within text */
-.container strong {
-  font-weight: 700;
-  color: #A9B4C2;
+.about-text p {
+  color: #CCC;
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
-/* Footer */
-footer {
-  margin-top: 80px;
-  padding: 30px;
-  background: #111;
+/* Image Placeholder */
+
+.about-image {
+  width: 100%;
+  height: 350px;
+  background: #1A1A1A;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   color: #777;
+  font-size: 15px;
+  border: 1px solid #222;
+}
+
+/* ================= STATS ================= */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 100px;
+}
+
+.stat-box {
+  background: #111;
+  padding: 35px 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(169,180,194,0.25);
+  transition: 0.3s;
+}
+
+.stat-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(169,180,194,0.5);
+}
+
+.stat-box h4 {
+  font-size: 36px;
+  color: #A9B4C2;
+  margin-bottom: 10px;
+}
+
+.stat-box p {
+  font-size: 15px;
+  color: #DDD;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+  background: #111;
+  padding: 30px;
   text-align: center;
   font-size: 14px;
+  color: #777;
+  margin-top: 80px;
 }
 
-/* Mobile */
+/* ================= MOBILE ================= */
+
 @media (max-width: 900px) {
-  nav { padding: 20px 25px; }
-  nav ul { gap: 15px; font-size: 14px; }
-  .hero h2 { font-size: 32px; }
-  .hero p { font-size: 16px; }
-  .metrics div { font-size: 24px; }
-  .container p { font-size: 16px; }
+
+  nav {
+    padding: 20px 25px;
+  }
+
+  nav ul {
+    gap: 15px;
+    font-size: 14px;
+  }
+
+  .hero h2 {
+    font-size: 30px;
+  }
+
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image {
+    height: 250px;
+  }
+
+  .about-text h3 {
+    font-size: 26px;
+  }
+
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
+<!-- ================= NAV ================= -->
+
 <nav>
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
+
   <ul>
     <li onclick="window.location.href='inventory.html'">Inventory</li>
     <li onclick="window.location.href='contact.html'">Contact Us</li>
     <li onclick="window.location.href='sell.html'">Sell to Us</li>
     <li onclick="window.location.href='services.html'">Services</li>
     <li onclick="window.location.href='about.html'">About Us</li>
-    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
 
-<!-- Hero / Intro -->
+<!-- ================= HERO ================= -->
+
 <section class="hero">
-  <h2>Everyone deserves access to quality imaging solutions</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis felis hendrerit, gravida purus at, scelerisque sapien. Suspendisse potenti.</p>
+  <h2>Everyone Deserves Access to Quality Imaging Solutions</h2>
 </section>
 
-<!-- Main Content -->
+<!-- ================= MAIN ================= -->
+
 <div class="container">
 
-  <!-- Metrics similar to reference page -->
-  <div class="metrics">
-    <div>50+</div>
-    <div>States</div>
-    <div>700+</div>
-    <div>Facilities</div>
-    <div>1600+</div>
-    <div>Projects</div>
-    <div>67+</div>
-    <div>Countries</div>
-  </div>
+  <!-- About Section -->
 
-  <!-- Why Titan Imaging Section -->
-  <h3>Why Titan Imaging?</h3>
-  <p><strong>Since 1997,</strong> Titan Imaging has provided reliable CT & PET parts, systems, and support solutions nationwide. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <section class="about-section">
 
-  <p><strong>Expertise to Make Your Project Smoother:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae erat eget nibh iaculis malesuada.</p>
+    <div class="about-text">
+      <h3>Who We Are</h3>
 
-  <p><strong>Quality Parts & Support:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer placerat magna ac nisl laoreet, sed congue libero luctus.</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua.
+      </p>
 
-  <p><strong>Start-to-Finish Solutions:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae nisl nec erat ultrices aliquet.</p>
+      <p>
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat.
+      </p>
 
-  <p><strong>Successful Track Record:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vel libero nec sapien malesuada hendrerit.</p>
+      <p>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+        nulla pariatur.
+      </p>
 
-  <p><strong>Nationwide Presence & Commitment:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consectetur ante nec purus volutpat dictum.</p>
+    </div>
 
-  <!-- Additional narrative below -->
-  <h3>Our Mission & Values</h3>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at purus sed justo luctus aliquet. Nullam viverra, tellus a aliquam ultrices, purus ex fermentum metus, at fermentum ipsum libero non nunc.</p>
+    <div class="about-image">
+      Image Placeholder
+      <br>
+      (Replace with real photo)
+    </div>
 
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique ex at orci aliquet, quis luctus nulla suscipit. Praesent ultricies nunc non massa aliquam, vel vehicula justo interdum.</p>
+  </section>
+
+  <!-- Stats Section -->
+
+  <section class="stats">
+
+    <div class="stat-box">
+      <h4>25+</h4>
+      <p>States Served</p>
+    </div>
+
+    <div class="stat-box">
+      <h4>10+</h4>
+      <p>Countries Reached</p>
+    </div>
+
+    <div class="stat-box">
+      <h4>1,500+</h4>
+      <p>Projects Completed</p>
+    </div>
+
+    <div class="stat-box">
+      <h4>800+</h4>
+      <p>Facilities Supported</p>
+    </div>
+
+  </section>
 
 </div>
 
-<!-- Footer -->
+<!-- ================= FOOTER ================= -->
+
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
