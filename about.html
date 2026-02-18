@@ -32,7 +32,6 @@ a {
 }
 
 /* ================= NAV ================= */
-
 nav {
   display: flex;
   justify-content: space-between;
@@ -70,13 +69,8 @@ nav li:hover {
 }
 
 /* ================= HERO ================= */
-
 .hero {
   min-height: 350px;
-  background:
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-    url("aboutus.png") center/cover no-repeat;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +85,6 @@ nav li:hover {
 }
 
 /* ================= CONTAINER ================= */
-
 .container {
   max-width: 1200px;
   margin: 80px auto;
@@ -99,7 +92,6 @@ nav li:hover {
 }
 
 /* ================= ABOUT SECTION ================= */
-
 .about-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -120,24 +112,14 @@ nav li:hover {
 }
 
 /* Image Placeholder */
-
 .about-image {
   width: 100%;
   height: 350px;
-  background: #1A1A1A;
+  background: url("aboutus.png") center/cover no-repeat;
   border-radius: 12px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #777;
-  font-size: 15px;
-  border: 1px solid #222;
 }
 
 /* ================= STATS ================= */
-
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -171,7 +153,6 @@ nav li:hover {
 }
 
 /* ================= FOOTER ================= */
-
 footer {
   background: #111;
   padding: 30px;
@@ -182,9 +163,7 @@ footer {
 }
 
 /* ================= MOBILE ================= */
-
 @media (max-width: 900px) {
-
   nav {
     padding: 20px 25px;
   }
@@ -209,7 +188,6 @@ footer {
   .about-text h3 {
     font-size: 26px;
   }
-
 }
 
 </style>
@@ -218,7 +196,6 @@ footer {
 <body>
 
 <!-- ================= NAV ================= -->
-
 <nav>
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
 
@@ -232,51 +209,42 @@ footer {
 </nav>
 
 <!-- ================= HERO ================= -->
-
 <section class="hero">
   <h2>Everyone Deserves Access to Quality Imaging Solutions</h2>
 </section>
 
 <!-- ================= MAIN ================= -->
-
 <div class="container">
 
   <!-- About Section -->
-
   <section class="about-section">
-
     <div class="about-text">
       <h3>Who We Are</h3>
 
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua.
+        At <strong>Titan Imaging Service</strong>, we specialize in providing comprehensive PET/CT solutions tailored to the needs of hospitals, imaging centers, and private practices. Founded in 2021 in Jacksonville, Florida, our mission is to deliver reliable, high-quality imaging services that keep systems running smoothly and patients cared for.
       </p>
 
       <p>
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-        ex ea commodo consequat.
+        With decades of experience in the imaging industry, our owner has over 30 years of hands-on expertise with GE PET/CT systems, including installations, de-installations, modifications, and sales of refurbished systems and parts. Prior to founding Titan Imaging, they provided national support as a Regional PET/CT Zone Support Engineer at <strong>GE Healthcare</strong>, training field engineers, conducting system audits, and overseeing major PET/CT installations across the Southeast.
       </p>
 
       <p>
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-        nulla pariatur.
+        Our team prides itself on technical precision, from aligning complex systems without specialized tools to troubleshooting and optimizing system performance. We’ve conducted over 100 PET/CT system audits to ensure compliance with performance specifications, reduce downtime, and minimize costs for our clients.
       </p>
 
+      <p>
+        At Titan Imaging, uptime, accuracy, and customer satisfaction are our top priorities. We combine in-depth knowledge of imaging technologies with hands-on experience to provide services that hospitals and imaging centers can trust.
+      </p>
     </div>
 
     <div class="about-image">
-      Image Placeholder
-      <br>
-      (Replace with real photo)
+      <!-- Replace with real photo -->
     </div>
-
   </section>
 
   <!-- Stats Section -->
-
   <section class="stats">
-
     <div class="stat-box">
       <h4>25+</h4>
       <p>States Served</p>
@@ -296,13 +264,11 @@ footer {
       <h4>800+</h4>
       <p>Facilities Supported</p>
     </div>
-
   </section>
 
 </div>
 
 <!-- ================= FOOTER ================= -->
-
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
