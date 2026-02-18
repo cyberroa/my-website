@@ -57,25 +57,39 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Container */
-.container {
-  max-width: 800px;
-  margin: 60px auto;
-  padding: 0 20px;
+/* Hero Banner */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  background:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    url("sellimage.png") center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 20px;
 }
 
-/* Headings */
-h2 {
-  font-size: 36px;
-  text-align: center;
+.hero h2 {
+  font-size: 42px;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 
-p.subtitle {
-  font-size: 16px;
-  text-align: center;
-  color: #CCC;
+.hero p {
+  font-size: 18px;
+  color: #DDD;
   margin-bottom: 40px;
+}
+
+/* Container */
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
 /* Form */
@@ -172,8 +186,8 @@ footer {
   nav { padding: 20px 25px; }
   nav ul { gap: 15px; font-size: 14px; }
 
-  h2 { font-size: 28px; }
-  p.subtitle { font-size: 14px; }
+  .hero h2 { font-size: 32px; }
+  .hero p { font-size: 16px; }
 
   form { padding: 30px; }
 }
@@ -195,11 +209,14 @@ footer {
   </ul>
 </nav>
 
+<!-- Hero / Banner -->
+<section class="hero">
+  <h2>Sell Your Equipment with Confidence</h2>
+  <p>Submit your equipment details and we’ll get back to you promptly.</p>
+</section>
+
 <!-- Main Container -->
 <div class="container">
-
-  <h2>Sell Your Equipment with Confidence</h2>
-  <p class="subtitle">Submit your equipment details and we’ll get back to you promptly.</p>
 
   <!-- Contact Form -->
   <form id="sellForm">
