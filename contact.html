@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TITAN IMAGING | Contact Us</title>
+<title>TITAN IMAGING SERVICE | Contact Us</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
@@ -24,51 +24,65 @@ body {
 
 a { text-decoration: none; color: inherit; }
 
-/* ================= NAV ================= */
-nav {
+/* ================= NAVBAR ================= */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 50px;
   background: #111;
-  position: sticky;
+  position: fixed;
   top: 0;
+  width: 100%;
   z-index: 100;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
-nav h1 {
+.navbar h1 {
   font-family: 'Orbitron', sans-serif;
   font-size: 24px;
   letter-spacing: 2px;
   cursor: pointer;
 }
 
-nav ul {
+.nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
 }
 
-nav li {
+.nav-links li a {
   font-weight: 600;
-  cursor: pointer;
   transition: 0.3s;
 }
 
-nav li:hover {
+.nav-links li a:hover {
   color: #A9B4C2;
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: #FFF;
+  transition: 0.3s;
 }
 
 /* ================= MAIN ================= */
 .container {
   max-width: 1200px;
-  margin: 80px auto;
+  margin: 100px auto 0 auto;
   padding: 0 25px;
 }
 
-/* Split Layout */
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -76,20 +90,16 @@ nav li:hover {
   align-items: stretch;
 }
 
-/* Left Image */
 .contact-image {
   background:
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
     url("callcenter.png") center/cover no-repeat;
-
   border-radius: 14px;
   min-height: 450px;
-
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-
   padding: 40px;
 }
 
@@ -108,7 +118,6 @@ nav li:hover {
   text-decoration: underline;
 }
 
-/* ================= FORM ================= */
 form {
   background: #111;
   padding: 40px;
@@ -147,7 +156,6 @@ textarea:focus {
 
 textarea { resize: vertical; min-height: 120px; }
 
-/* Button */
 button {
   width: 100%;
   padding: 15px;
@@ -166,7 +174,6 @@ button:hover {
   transform: translateY(-2px);
 }
 
-/* ================= SUCCESS ================= */
 #success {
   display: none;
   margin-top: 30px;
@@ -175,7 +182,6 @@ button:hover {
   text-align: center;
 }
 
-/* ================= INFO ================= */
 .contact-info {
   margin-top: 50px;
   text-align: center;
@@ -188,7 +194,6 @@ button:hover {
   text-decoration: underline;
 }
 
-/* ================= FOOTER ================= */
 footer {
   margin-top: 80px;
   padding: 30px;
@@ -198,13 +203,49 @@ footer {
   background: #111;
 }
 
-/* ================= MOBILE ================= */
+/* ================= MOBILE (inventory.html style) ================= */
 @media (max-width: 900px) {
-  nav { padding: 20px 25px; }
-  nav ul { gap: 15px; font-size: 14px; }
-  .contact-grid { grid-template-columns: 1fr; }
-  .contact-image { min-height: 300px; }
-  form { padding: 25px; }
+
+  .navbar {
+    padding: 15px 25px;
+    flex-wrap: wrap;
+  }
+
+  .navbar h1 {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li a {
+    white-space: nowrap;
+    display: block;
+    padding: 12px 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-image {
+    min-height: 300px;
+  }
+
+  form {
+    padding: 25px;
+  }
 }
 
 </style>
@@ -212,29 +253,32 @@ footer {
 
 <body>
 
-<!-- ================= NAV ================= -->
-<nav>
-  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
-  <ul>
-    <li onclick="window.location.href='inventory.html'">Inventory</li>
-    <li onclick="window.location.href='contact.html'">Contact Us</li>
-    <li onclick="window.location.href='sell.html'">Sell to Us</li>
-    <li onclick="window.location.href='services.html'">Services</li>
-    <li onclick="window.location.href='about.html'">About Us</li>
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
+  <ul class="nav-links">
+    <li><a href="inventory.html">Inventory</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="sell.html">Sell to Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About Us</a></li>
   </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </nav>
 
 <!-- ================= MAIN ================= -->
 <div class="container">
   <div class="contact-grid">
 
-    <!-- Left Image -->
     <div class="contact-image">
       <div class="contact-image-content">
         <h3>How Can We Help?</h3>
         <p>
-          Let's start a conversation. Our team is ready to assist you with expert equipment, service,
-          and technical support.
+          Let's start a conversation. Our team is ready to assist you with expert service and technical support.
         </p>
         <p>
           📞 <a href="tel:9047426265">(904) 742-6265</a><br>
@@ -243,7 +287,6 @@ footer {
       </div>
     </div>
 
-    <!-- Form -->
     <form id="contactForm">
       <div class="form-group">
         <label>Name</label>
@@ -267,15 +310,13 @@ footer {
 
   </div>
 
-  <!-- Info -->
   <div class="contact-info">
     <p>
-      <strong>NOTE:</strong> Please be cautious of impersonators.
+      <strong>NOTE:</strong> Please be cautious of anyone impersonating a member of the Titan Imaging Service team.
       If unsure, call <a href="tel:9047426265">(904) 742-6265</a> or email
       <a href="mailto:info@test.com">info@test.com</a>.
     </p>
   </div>
-
 </div>
 
 <!-- ================= FOOTER ================= -->
@@ -285,6 +326,11 @@ footer {
 
 <!-- ================= SCRIPT ================= -->
 <script>
+function toggleMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  navLinks.classList.toggle('active');
+}
+
 const form = document.getElementById("contactForm");
 const success = document.getElementById("success");
 
