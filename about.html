@@ -1,154 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TITAN IMAGING | About Us</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<title>TITAN IMAGING | About Us</title>
 
-  <style>
-    * { box-sizing: border-box; }
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #1F1F1F;
-      color: #FFFFFF;
-    }
+<style>
+/* Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    a { text-decoration: none; color: inherit; }
+/* Base */
+body {
+  font-family: 'Inter', sans-serif;
+  color: #FFFFFF;
+  background: #000000;
+  line-height: 1.6;
+}
 
-    /* Navbar */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 50px;
-      background: #111;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    }
+/* Navbar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: #111;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
 
-    nav h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 26px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
+nav h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-      margin: 0;
-      padding: 0;
-    }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
 
-    nav ul li a:hover {
-      color: #A9B4C2;
-      text-shadow: 0 0 6px rgba(169,180,194,0.6);
-    }
+nav li {
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    /* Main container */
-    .container {
-      max-width: 900px;
-      margin: 80px auto;
-      padding: 0 20px;
-    }
+nav li:hover {
+  color: #A9B4C2;
+  text-shadow: 0 0 6px rgba(169,180,194,0.6);
+}
 
-    h2 {
-      font-size: 36px;
-      text-align: center;
-      margin-bottom: 20px;
-    }
+/* Hero banner */
+.hero {
+  min-height: 300px;
+  background:
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    url("aboutus.png") center/cover no-repeat fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 20px;
+}
 
-    .subtitle {
-      color: #BBBBBB;
-      text-align: center;
-      margin-bottom: 50px;
-      font-size: 17px;
-    }
+.hero h2 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #A9B4C2;
+}
 
-    p {
-      font-size: 16px;
-      color: #DDDDDD;
-      line-height: 1.6;
-      text-align: center;
-    }
+/* Main content */
+.container {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
 
-    /* Footer */
-    footer {
-      margin-top: 80px;
-      padding: 30px;
-      text-align: center;
-      font-size: 14px;
-      color: #777;
-      background: #111;
-    }
+.section {
+  margin-bottom: 60px;
+}
 
-    /* MOBILE RESPONSIVE STYLES */
-    @media (max-width: 768px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 20px;
-      }
+.section h3 {
+  font-size: 28px;
+  color: #A9B4C2;
+  margin-bottom: 15px;
+}
 
-      nav ul {
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-        margin-top: 10px;
-      }
+.section p {
+  font-size: 17px;
+  color: #DDD;
+  margin-bottom: 15px;
+}
 
-      nav h1 { margin-bottom: 10px; }
+/* Highlight boxes (like “Why Us”) */
+.box {
+  background: #1F1F1F;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(169,180,194,0.15);
+  margin-bottom: 30px;
+}
 
-      .container {
-        margin: 60px 15px;
-        padding: 0 15px;
-      }
+.box h4 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #A9B4C2;
+}
 
-      h2 { font-size: 32px; }
-      .subtitle { font-size: 16px; }
-      p { font-size: 15px; }
-    }
+/* Footer */
+footer {
+  margin-top: 60px;
+  padding: 30px;
+  text-align: center;
+  background: #111;
+  color: #777;
+  font-size: 14px;
+}
 
-    @media (max-width: 480px) {
-      nav h1 { font-size: 24px; }
-      h2 { font-size: 28px; }
-      .subtitle { font-size: 14px; }
-      p { font-size: 14px; }
-    }
-
-  </style>
+/* Mobile */
+@media (max-width: 900px) {
+  nav ul { gap: 15px; font-size: 14px; }
+  .hero h2 { font-size: 32px; }
+  .section h3 { font-size: 24px; }
+}
+</style>
 </head>
 
 <body>
 
 <!-- Navbar -->
 <nav>
-  <h1><a href="index.html">TITAN IMAGING</a></h1>
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
   <ul>
-    <li><a href="inventory.html">Inventory</a></li>
-    <li><a href="contact.html">Contact Us</a></li>
-    <li><a href="sell.html">Sell To Us</a></li>
-    <li><a href="about.html">About Us</a></li>
-    <li><a href="services.html">Services</a></li>
-    <li><a href="testimonials.html">Testimonials</a></li>
+    <li onclick="window.location.href='inventory.html'">Inventory</li>
+    <li onclick="window.location.href='contact.html'">Contact</li>
+    <li onclick="window.location.href='sell.html'">Sell</li>
+    <li onclick="window.location.href='services.html'">Services</li>
+    <li onclick="window.location.href='about.html'">About Us</li>
+    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
 
-<!-- Main container -->
+<!-- Hero -->
+<section class="hero">
+  <h2>About Titan Imaging</h2>
+</section>
+
+<!-- Main content -->
 <div class="container">
-  <h2>About Us</h2>
-  <p class="subtitle">Learn more about Titan Imaging</p>
-  <p>
-    Placeholder text: Titan Imaging is dedicated to providing exceptional CT and PET imaging solutions, combining cutting-edge technology with a highly knowledgeable team. More content will be added here soon.
-  </p>
+
+  <!-- Our Mission -->
+  <div class="section">
+    <h3>Who We Are</h3>
+    <p>Titan Imaging provides trusted sourcing, repair, and support for CT and PET imaging systems nationwide. We’re dedicated to helping healthcare facilities stay operational, efficient, and patient‑focused every day. Our team brings decades of experience in medical imaging and parts supply to every project.</p>
+  </div>
+
+  <!-- Why Choose Us -->
+  <div class="section">
+    <h3>Why Titan Imaging</h3>
+    
+    <div class="box">
+      <h4>Industry Experience</h4>
+      <p>With years of combined expertise sourcing and servicing medical imaging systems, we know what it takes to deliver results that meet your needs quickly and reliably.</p>
+    </div>
+
+    <div class="box">
+      <h4>Comprehensive Solutions</h4>
+      <p>From parts sourcing and system sales to installation and support, our solutions cover the full lifecycle of CT and PET imaging equipment.</p>
+    </div>
+
+    <div class="box">
+      <h4>End‑to‑End Support</h4>
+      <p>We work with your team every step of the way — from initial inquiry through delivery, onboarding, and service support — to ensure a seamless experience.</p>
+    </div>
+  </div>
+
+  <!-- Our Commitment -->
+  <div class="section">
+    <h3>Our Commitment</h3>
+    <p>We believe in building long‑term partnerships with clinics, hospitals, and imaging centers by delivering quality solutions grounded in transparency, responsiveness, and trust.</p>
+  </div>
+
 </div>
 
 <!-- Footer -->
