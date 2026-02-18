@@ -83,37 +83,50 @@ a {
   transition: 0.3s;
 }
 
-/* ================= MAIN CONTAINER ================= */
+/* ================= MAIN LAYOUT ================= */
 .container {
   display: flex;
   max-width: 1200px;
-  margin: 120px auto 60px auto; /* top margin to clear navbar */
+  margin: 140px auto 40px auto; /* 140px top margin to clear fixed navbar */
   padding: 0 20px;
-  gap: 50px;
+  gap: 40px;
 }
 
-/* Left Column: Form */
-.form-column {
+form {
   flex: 1;
+  background: #111;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(255,255,255,0.03);
 }
 
-/* Right Column: Info Text */
 .text-column {
   flex: 1;
   background: rgba(0,0,0,0.5);
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 0 30px rgba(0,0,0,0.3);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-/* Form Styles */
-form {
-  background: rgba(17,17,17,0.85);
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 30px rgba(255,255,255,0.03);
+.text-column h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
+.text-column p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Form */
 .form-group {
   margin-bottom: 25px;
   text-align: left;
@@ -162,29 +175,10 @@ button:hover {
   transform: translateY(-2px);
 }
 
-/* Info Text */
-.text-column h2 {
-  margin-bottom: 20px;
-  font-size: 32px;
-}
-
-.text-column p {
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.contact-info {
-  color: #CCC;
-  text-align: center;
-  font-size: 15px;
-  line-height: 1.6;
-  margin-top: 20px;
-}
-
 /* Success Message */
 #success {
   display: none;
-  margin-top: 20px;
+  margin-top: 40px;
   font-size: 18px;
   color: #A9B4C2;
   text-align: center;
@@ -202,6 +196,14 @@ footer {
 
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .text-column {
+    margin-top: 30px;
+  }
+
   .navbar {
     padding: 15px 25px;
     flex-wrap: wrap;
@@ -231,16 +233,6 @@ footer {
     display: flex;
   }
 
-  .container {
-    flex-direction: column;
-    margin: 100px 20px 40px 20px;
-    gap: 30px;
-  }
-
-  .text-column {
-    padding: 20px;
-  }
-
   form { padding: 30px; }
 }
 </style>
@@ -267,47 +259,39 @@ footer {
   </div>
 </nav>
 
-<!-- ================= MAIN CONTENT ================= -->
+<!-- ================= MAIN CONTAINER ================= -->
 <div class="container">
 
-  <!-- Left Column: Form -->
-  <div class="form-column">
-    <form id="sellForm">
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" required>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" required>
-      </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input type="tel">
-      </div>
-      <div class="form-group">
-        <label>Equipment Details</label>
-        <textarea></textarea>
-      </div>
-      <button type="submit">Submit</button>
-    </form>
-
-    <div id="success">
-      Thank you! Your submission has been received.<br>
-      Our team will contact you shortly.
+  <!-- Form -->
+  <form id="sellForm">
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" required>
     </div>
-
-    <div class="contact-info">
-      <p>Want to talk to someone? Call us at <a href="tel:9047426265">(904) 742-6265</a>.</p>
-      <p><strong>NOTE:</strong> Please be cautious of anyone impersonating any member of the Titan Imaging Service team. If you suspect anything, please call our main number <a href="tel:9047426265">(904) 742-6265</a> or e-mail <a href="mailto:info@test.com">info@test.com</a> for confirmation.</p>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" required>
     </div>
-  </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel">
+    </div>
+    <div class="form-group">
+      <label>Equipment Details</label>
+      <textarea></textarea>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
 
-  <!-- Right Column: Info Text -->
+  <!-- Text Column -->
   <div class="text-column">
     <h2>Sell With Confidence</h2>
     <p>
       Selling your equipment to Titan Imaging is simple and secure. Submit your equipment details using the form on the left, and our expert team will review your submission promptly. We provide a fair quote, guide you through the process, and ensure a smooth, transparent experience so you can sell with confidence.
+    </p>
+    <p>
+      Want to talk to someone? Call us at <a href="tel:9047426265">(904) 742-6265</a>.<br>
+      <strong>NOTE:</strong> Please be cautious of anyone impersonating any member of the Titan Imaging Service team. If you suspect anything, please call our main number <a href="tel:9047426265">(904) 742-6265</a> or e-mail <a href="mailto:info@test.com">info@test.com</a> for confirmation.
     </p>
   </div>
 
