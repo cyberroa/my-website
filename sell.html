@@ -13,12 +13,12 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #000000;
   color: #FFFFFF;
   line-height: 1.6;
+  background: url("selltous.png") center center fixed;
+  background-size: cover;
+  background-attachment: fixed;
 }
-
-a { text-decoration: none; color: inherit; }
 
 /* Navbar */
 nav {
@@ -62,9 +62,7 @@ nav li:hover {
   position: relative;
   width: 100%;
   min-height: 400px;
-  background:
-    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-    url("sellimage.png") center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), transparent;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,7 +83,7 @@ nav li:hover {
   margin-bottom: 40px;
 }
 
-/* Container */
+/* Main Container */
 .container {
   max-width: 800px;
   margin: 40px auto;
@@ -201,7 +199,7 @@ footer {
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
   <ul>
     <li onclick="window.location.href='inventory.html'">Inventory</li>
-    <li onclick="window.location.href='contact.html'">Contact Us</li>
+    <li onclick="window.location.href='contact.html'">Contact</li>
     <li onclick="window.location.href='sell.html'">Sell to Us</li>
     <li onclick="window.location.href='services.html'">Services</li>
     <li onclick="window.location.href='about.html'">About Us</li>
