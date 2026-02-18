@@ -324,14 +324,16 @@ footer {
   font-family: 'Inter', sans-serif;
 }
 
+/* Chat header matches service card color */
 #chat-header {
-  background: #A9B4C2;
-  color: #111;
+  background: #0b2442; /* deep blue matching service cards */
+  color: #FFF;
   padding: 12px;
   font-weight: 600;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: 'Orbitron', sans-serif;
 }
 
 #chat-close {
@@ -343,6 +345,12 @@ footer {
   height: 200px;
   overflow-y: auto;
   font-size: 14px;
+}
+
+/* Labels "You" and "Cortana" in deep blue with Orbitron font */
+#chat-messages p strong {
+  font-family: 'Orbitron', sans-serif;
+  color: #0b2442; /* deep blue */
 }
 
 #chat-input {
@@ -515,7 +523,7 @@ footer {
 
 <div id="chat-window">
   <div id="chat-header">
-    Chat Support
+    Chat with Cortana
     <span id="chat-close">&times;</span>
   </div>
   <div id="chat-messages">
