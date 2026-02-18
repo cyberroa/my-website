@@ -67,6 +67,23 @@ a {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
+/* Hamburger Button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  background: #FFF;
+  border-radius: 2px;
+}
+
 /* ================= HERO ================= */
 
 .hero {
@@ -244,21 +261,37 @@ footer {
     padding: 20px 25px;
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
   }
 
   /* Shrink logo on mobile so full name fits */
   .navbar h1 {
     font-size: 18px;
     white-space: nowrap;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
   }
 
   .nav-links {
+    display: none; /* hide by default */
+    flex-direction: column;
     gap: 15px;
     font-size: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
     width: 100%;
+    text-align: center;
     margin-top: 10px;
+  }
+
+  .nav-links.active {
+    display: flex; /* show when hamburger clicked */
+  }
+
+  .hamburger {
+    display: flex;
+    position: absolute;
+    top: 25px;
+    right: 25px;
   }
 
   .hero h2 {
@@ -292,6 +325,13 @@ footer {
     <li><a href="services.html">Services</a></li>
     <li><a href="about.html">About Us</a></li>
   </ul>
+
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 
 </nav>
 
@@ -412,6 +452,13 @@ footer {
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
+
+<script>
+  function toggleMenu() {
+    const nav = document.querySelector('.nav-links');
+    nav.classList.toggle('active');
+  }
+</script>
 
 </body>
 </html>
