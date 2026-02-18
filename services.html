@@ -57,39 +57,39 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Main container */
+/* Main Container */
 .container {
   max-width: 900px;
   margin: 60px auto;
   padding: 0 20px;
 }
 
+/* Headings */
 h2 {
   font-size: 36px;
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-.subtitle {
-  color: #BBBBBB;
+p.subtitle {
+  color: #CCC;
   text-align: center;
-  margin-bottom: 50px;
   font-size: 17px;
+  margin-bottom: 40px;
 }
 
-/* Service items */
+/* Service Boxes */
 .service {
-  background: #0b2442;
+  background: #1F1F1F; /* Matching homepage darker box style */
   padding: 25px 30px;
   margin-bottom: 25px;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 20px rgba(169,180,194,0.1);
   transition: 0.3s;
 }
 
 .service:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(169,180,194,0.6);
+  box-shadow: 0 0 20px rgba(169,180,194,0.4);
 }
 
 .service h3 {
@@ -114,22 +114,20 @@ footer {
   background: #111;
 }
 
-/* MOBILE RESPONSIVE STYLES */
+/* Mobile */
 @media (max-width: 900px) {
   nav { padding: 20px 25px; }
   nav ul { gap: 15px; font-size: 14px; }
-
-  h2 { font-size: 32px; }
-  .subtitle { font-size: 16px; }
-
+  h2 { font-size: 28px; }
+  p.subtitle { font-size: 15px; }
   .service h3 { font-size: 20px; }
   .service p { font-size: 14px; }
 }
 
 @media (max-width: 480px) {
   nav h1 { font-size: 22px; }
-  h2 { font-size: 28px; }
-  .subtitle { font-size: 14px; }
+  h2 { font-size: 26px; }
+  p.subtitle { font-size: 14px; }
   .service h3 { font-size: 18px; }
   .service p { font-size: 13px; }
 }
@@ -144,9 +142,9 @@ footer {
   <ul>
     <li onclick="window.location.href='inventory.html'">Inventory</li>
     <li onclick="window.location.href='contact.html'">Contact</li>
-    <li onclick="window.location.href='sell.html'">Sell To Us</li>
-    <li onclick="window.location.href='about.html'">About Us</li>
+    <li onclick="window.location.href='sell.html'">Sell</li>
     <li onclick="window.location.href='services.html'">Services</li>
+    <li onclick="window.location.href='about.html'">About</li>
     <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
@@ -185,7 +183,6 @@ footer {
     <h3>Flexible Shipping & Support</h3>
     <p>We ship parts anywhere via overnight, courier, or next-flight-out services. Our “Warranty of Excellence” ensures reliable operation and peace of mind.</p>
   </div>
-
 </div>
 
 <!-- Footer -->
