@@ -3,24 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TITAN IMAGING | Inventory</title>
 
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; margin:0; padding:0; }
+
+/* ================= RESET ================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #121212; /* updated to match homepage */
+  background: #000000;
   color: #FFFFFF;
+  line-height: 1.6;
 }
 
-a { text-decoration: none; color: inherit; }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
-/* Navbar */
-nav {
+/* ================= NAVBAR ================= */
+
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,43 +45,44 @@ nav {
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
-nav h1 {
+.navbar h1 {
   font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  font-size: 28px;
+  font-size: 24px;
   letter-spacing: 2px;
   cursor: pointer;
 }
 
-nav ul {
+.nav-links {
   list-style: none;
   display: flex;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
+  gap: 25px;
 }
 
-nav ul li {
-  cursor: pointer;
+.nav-links li a {
   font-weight: 600;
-  transition: all 0.3s;
+  transition: 0.3s;
 }
 
-nav ul li a:hover {
+.nav-links li a:hover {
   color: #A9B4C2;
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hero Section */
+/* ================= HERO ================= */
+
 .hero {
   position: relative;
   min-height: 400px;
-  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-              url("inventorybanner.png") center/cover no-repeat;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url("inventorybanner.png") center/cover no-repeat;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   text-align: center;
   padding: 80px 20px;
 }
@@ -76,21 +90,23 @@ nav ul li a:hover {
 .hero h2 {
   font-size: 42px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .hero p {
   font-size: 18px;
   color: #DDD;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
 }
 
-/* Search Bar on Hero */
+/* ================= SEARCH ================= */
+
 .search-bar {
   display: flex;
   max-width: 500px;
   width: 100%;
-  background: rgba(30,30,30,0.85);
+
+  background: rgba(25,25,25,0.9);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -112,7 +128,7 @@ nav ul li a:hover {
   border: none;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: 0.3s;
 }
 
 .search-bar button:hover {
@@ -120,75 +136,134 @@ nav ul li a:hover {
   transform: translateY(-2px);
 }
 
-/* Results below banner */
+/* ================= RESULTS ================= */
+
 #result {
-  margin: 40px auto;
+  margin: 50px auto;
   max-width: 600px;
-  padding: 20px;
-  background: #2A2A2A;
+  padding: 25px;
+
+  background: #111;
   border-radius: 10px;
+
   font-size: 18px;
   text-align: center;
+
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
-/* Footer */
+/* ================= FOOTER ================= */
+
 footer {
-  margin-top: 80px;
+  margin-top: 100px;
   padding: 40px 20px;
   text-align: center;
   font-size: 14px;
-  color: #777777;
+  color: #777;
   background: #111;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  nav { flex-direction: column; align-items: flex-start; padding: 15px 20px; }
-  nav ul { flex-direction: column; gap: 15px; width: 100%; margin-top: 10px; }
-  .hero { min-height: 300px; padding: 60px 15px; }
-  .hero h2 { font-size: 32px; }
-  .hero p { font-size: 16px; }
-  .search-bar { flex-direction: column; }
-  .search-bar input, .search-bar button { width: 100%; border-radius: 0; margin: 5px 0; }
-  #result { max-width: 90%; font-size: 16px; padding: 15px; }
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+
+  .navbar {
+    padding: 20px 25px;
+    flex-wrap: wrap;
+  }
+
+  .nav-links {
+    gap: 15px;
+    font-size: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .hero {
+    min-height: 300px;
+    padding: 60px 15px;
+  }
+
+  .hero h2 {
+    font-size: 32px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .search-bar input,
+  .search-bar button {
+    width: 100%;
+  }
+
+  #result {
+    max-width: 90%;
+    font-size: 16px;
+  }
+
 }
+
 </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav>
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
-  <ul>
+
+  <ul class="nav-links">
     <li><a href="inventory.html">Inventory</a></li>
     <li><a href="contact.html">Contact</a></li>
     <li><a href="sell.html">Sell</a></li>
-    <li><a href="about.html">About</a></li>
     <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
     <li><a href="testimonials.html">Testimonials</a></li>
   </ul>
+
 </nav>
 
-<!-- Hero / Banner -->
+<!-- ================= HERO ================= -->
+
 <section class="hero">
-  <h2>We have what You need</h2>
-  <p>Search our inventory to see real-time availability of all parts.</p>
+
+  <h2>How Can We Help?</h2>
+
+  <p>
+    Contact us to learn how we can help you with your medical equipment needs.<br><br>
+    Want to talk to someone? Call us at <strong>(904) 742-6265</strong>.
+  </p>
 
   <div class="search-bar">
     <input id="searchBox" type="text" placeholder="Enter part number or name">
     <button onclick="search()">Search</button>
   </div>
+
 </section>
 
-<!-- Search Results -->
+<!-- ================= RESULTS ================= -->
+
 <div id="result"></div>
 
-<!-- Footer -->
+<!-- ================= FOOTER ================= -->
+
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
 
+<!-- ================= SCRIPT ================= -->
+
 <script>
+
 const parts = [
   { id: "CT1001", name: "CT Board", stock: 5 },
   { id: "MRI2002", name: "MRI Coil", stock: 0 },
@@ -196,26 +271,43 @@ const parts = [
 ];
 
 function search() {
-  const input = document.getElementById("searchBox").value.toLowerCase();
+
+  const input = document
+    .getElementById("searchBox")
+    .value
+    .toLowerCase();
+
+  const resultDiv = document.getElementById("result");
+
   let found = false;
-  let resultDiv = document.getElementById("result");
 
   for (let part of parts) {
-    if (part.id.toLowerCase().includes(input) || part.name.toLowerCase().includes(input)) {
+
+    if (
+      part.id.toLowerCase().includes(input) ||
+      part.name.toLowerCase().includes(input)
+    ) {
+
       found = true;
+
       if (part.stock > 0) {
-        resultDiv.innerHTML = `${part.name} — In Stock (${part.stock})`;
+        resultDiv.innerHTML =
+          `${part.name} — In Stock (${part.stock})`;
       } else {
-        resultDiv.innerHTML = `${part.name} — Out of Stock`;
+        resultDiv.innerHTML =
+          `${part.name} — Out of Stock`;
       }
+
       break;
     }
   }
 
   if (!found) {
-    resultDiv.innerHTML = "Part not found. Please contact us.";
+    resultDiv.innerHTML =
+      "Part not found. Please contact us.";
   }
 }
+
 </script>
 
 </body>
