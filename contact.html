@@ -69,36 +69,34 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* ================= HERO ================= */
-
-.hero {
-  background: #0f0f0f;
-  padding: 80px 20px;
-  text-align: center;
-  border-bottom: 1px solid #222;
-}
-
-.hero h2 {
-  font-size: 40px;
-  margin-bottom: 15px;
-}
-
-.hero p {
-  font-size: 18px;
-  color: #DDD;
-}
-
-.hero a {
-  color: #A9B4C2;
-  text-decoration: underline;
-}
-
 /* ================= MAIN ================= */
 
 .container {
   max-width: 1200px;
   margin: 80px auto;
   padding: 0 25px;
+}
+
+/* Page Title */
+
+.page-title {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.page-title h2 {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.page-title p {
+  font-size: 18px;
+  color: #DDD;
+}
+
+.page-title a {
+  color: #A9B4C2;
+  text-decoration: underline;
 }
 
 /* Split Layout */
@@ -254,11 +252,11 @@ footer {
     font-size: 14px;
   }
 
-  .hero h2 {
+  .page-title h2 {
     font-size: 30px;
   }
 
-  .hero p {
+  .page-title p {
     font-size: 16px;
   }
 
@@ -295,17 +293,22 @@ footer {
   </ul>
 </nav>
 
-<!-- ================= HERO ================= -->
-
-<section class="hero">
-
-  <h2>How Can We Help?</h2>
-
-</section>
-
 <!-- ================= MAIN ================= -->
 
 <div class="container">
+
+  <!-- Title -->
+
+  <div class="page-title">
+
+    <h2>How Can We Help?</h2>
+
+    <p>
+      Call us at <a href="tel:9047426265">(904) 742-6265</a> or email
+      <a href="mailto:info@test.com">info@test.com</a>
+    </p>
+
+  </div>
 
   <div class="contact-grid">
 
