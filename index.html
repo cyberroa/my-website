@@ -258,19 +258,21 @@ footer {
 @media (max-width: 900px) {
 
   .navbar {
-    padding: 20px 25px;
-    flex-wrap: wrap;
-    justify-content: center;
-    position: relative;
+    padding: 15px 25px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
   }
 
-  /* Shrink logo on mobile so full name fits */
   .navbar h1 {
     font-size: 18px;
     white-space: nowrap;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 10px;
+    text-align: left;
+    width: auto;
+    margin: 0;
   }
 
   .nav-links {
@@ -289,9 +291,6 @@ footer {
 
   .hamburger {
     display: flex;
-    position: absolute;
-    top: 25px;
-    right: 25px;
   }
 
   .hero h2 {
