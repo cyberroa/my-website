@@ -18,6 +18,18 @@ body {
   line-height: 1.6;
 }
 
+/* Background Image Fixed */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('services-bg.png') center/cover no-repeat fixed;
+  opacity: 0.1; /* make it subtle behind content */
+  z-index: -1;
+}
+
 a { text-decoration: none; color: inherit; }
 
 /* Navbar */
@@ -80,16 +92,17 @@ p.subtitle {
 
 /* Service Boxes */
 .service {
-  background: #1F1F1F; /* Matching homepage darker box style */
+  background: #1F1F1F; /* homepage box color */
   padding: 25px 30px;
   margin-bottom: 25px;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(169,180,194,0.1);
-  transition: 0.3s;
+  box-shadow: 0 0 15px rgba(169,180,194,0.1);
+  transition: all 0.3s ease;
 }
 
 .service:hover {
-  box-shadow: 0 0 20px rgba(169,180,194,0.4);
+  box-shadow: 0 0 25px rgba(169,180,194,0.4);
+  transform: translateY(-3px);
 }
 
 .service h3 {
