@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TITAN IMAGING | Contact</title>
+<title>TITAN IMAGING | Contact Us</title>
 
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= RESET ================= */
-
+/* Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Base */
 body {
   font-family: 'Inter', sans-serif;
   background: #000000;
@@ -33,7 +33,7 @@ a {
 
 /* ================= NAVBAR ================= */
 
-.navbar {
+nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,25 +45,26 @@ a {
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
-.navbar h1 {
+nav h1 {
   font-family: 'Orbitron', sans-serif;
   font-size: 24px;
   letter-spacing: 2px;
   cursor: pointer;
 }
 
-.nav-links {
+nav ul {
   list-style: none;
   display: flex;
   gap: 25px;
 }
 
-.nav-links li a {
+nav li {
   font-weight: 600;
+  cursor: pointer;
   transition: 0.3s;
 }
 
-.nav-links li a:hover {
+nav li:hover {
   color: #A9B4C2;
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
@@ -71,121 +72,137 @@ a {
 /* ================= HERO ================= */
 
 .hero {
-  position: relative;
-  min-height: 350px;
-
+  min-height: 300px;
   background:
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-    url("contactbanner.png") center/cover no-repeat;
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    url("customerservice.png") center/cover no-repeat;
 
   display: flex;
-  justify-content: center;
   align-items: center;
-
+  justify-content: center;
   text-align: center;
-  padding: 80px 20px;
+  padding: 60px 20px;
+}
+
+.hero-content {
+  max-width: 800px;
 }
 
 .hero h2 {
   font-size: 42px;
   font-weight: 700;
+  margin-bottom: 15px;
 }
 
-/* ================= CONTACT SECTION ================= */
+.hero p {
+  font-size: 18px;
+  color: #DDD;
+}
 
-.contact-section {
-  max-width: 700px;
+/* ================= MAIN ================= */
+
+.container {
+  max-width: 800px;
   margin: 80px auto;
-  padding: 0 25px;
-  text-align: center;
-}
-
-.contact-section h3 {
-  font-size: 32px;
-  margin-bottom: 30px;
+  padding: 0 20px;
 }
 
 /* ================= FORM ================= */
 
-.contact-form {
+form {
   background: #111;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  box-shadow: 0 0 25px rgba(255,255,255,0.03);
+  margin-bottom: 30px;
 }
 
-.contact-form input,
-.contact-form textarea {
+.form-group {
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+input,
+textarea {
   width: 100%;
-  padding: 14px;
-  margin-bottom: 20px;
-
-  background: #1A1A1A;
-  border: 1px solid #333;
+  padding: 12px;
   border-radius: 6px;
-
+  border: 1px solid #333;
+  background: #1A1A1A;
   color: #FFF;
   font-size: 15px;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
   outline: none;
-  border-color: #A9B4C2;
 }
 
-.contact-form textarea {
+input:focus,
+textarea:focus {
+  border-color: #A9B4C2;
+  box-shadow: 0 0 6px rgba(169,180,194,0.4);
+}
+
+textarea {
   resize: vertical;
   min-height: 120px;
 }
 
-.contact-form button {
-  padding: 14px 30px;
+/* ================= BUTTON ================= */
 
+button {
+  width: 100%;
+  padding: 15px;
   background: #A9B4C2;
   color: #111;
-
   border: none;
   border-radius: 6px;
-
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.contact-form button:hover {
+button:hover {
   box-shadow: 0 0 15px rgba(169,180,194,0.6);
   transform: translateY(-2px);
 }
 
-/* ================= INFO TEXT ================= */
+/* ================= INFO ================= */
 
 .contact-info {
-  margin-top: 40px;
-  text-align: center;
   color: #CCC;
+  text-align: center;
   font-size: 15px;
   line-height: 1.7;
+}
+
+.contact-info p {
+  margin-bottom: 15px;
 }
 
 .contact-info strong {
   color: #FFF;
 }
 
-.contact-info a {
-  color: #A9B4C2;
-  font-weight: 600;
-}
+/* ================= SUCCESS ================= */
 
-.contact-info a:hover {
-  text-decoration: underline;
+#success {
+  display: none;
+  margin-top: 40px;
+  font-size: 18px;
+  color: #A9B4C2;
+  text-align: center;
 }
 
 /* ================= FOOTER ================= */
 
 footer {
-  margin-top: 100px;
-  padding: 40px 20px;
+  margin-top: 80px;
+  padding: 30px;
   text-align: center;
   font-size: 14px;
   color: #777;
@@ -196,31 +213,25 @@ footer {
 
 @media (max-width: 900px) {
 
-  .navbar {
+  nav {
     padding: 20px 25px;
-    flex-wrap: wrap;
   }
 
-  .nav-links {
+  nav ul {
     gap: 15px;
     font-size: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .hero {
-    min-height: 250px;
-    padding: 60px 15px;
   }
 
   .hero h2 {
-    font-size: 32px;
+    font-size: 30px;
   }
 
-  .contact-form {
-    padding: 30px 20px;
+  .hero p {
+    font-size: 16px;
+  }
+
+  form {
+    padding: 25px;
   }
 
 }
@@ -230,19 +241,21 @@ footer {
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+<!-- ================= NAV ================= -->
 
-<nav class="navbar">
+<nav>
 
-  <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
+  <h1 onclick="window.location.href='index.html'">
+    TITAN IMAGING
+  </h1>
 
-  <ul class="nav-links">
-    <li><a href="inventory.html">Inventory</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="sell.html">Sell</a></li>
-    <li><a href="services.html">Services</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="testimonials.html">Testimonials</a></li>
+  <ul>
+    <li onclick="window.location.href='inventory.html'">Inventory</li>
+    <li onclick="window.location.href='contact.html'">Contact</li>
+    <li onclick="window.location.href='sell.html'">Sell</li>
+    <li onclick="window.location.href='services.html'">Services</li>
+    <li onclick="window.location.href='about.html'">About</li>
+    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 
 </nav>
@@ -250,34 +263,60 @@ footer {
 <!-- ================= HERO ================= -->
 
 <section class="hero">
-  <h2>Contact Titan Imaging</h2>
-</section>
 
-<!-- ================= CONTACT ================= -->
+  <div class="hero-content">
 
-<section class="contact-section">
+    <h2>How Can We Help?</h2>
 
-  <h3>How Can We Help?</h3>
-
-  <div class="contact-form">
-
-    <form>
-
-      <input type="text" placeholder="Name" required>
-
-      <input type="email" placeholder="Email" required>
-
-      <input type="tel" placeholder="Phone">
-
-      <textarea placeholder="Message" required></textarea>
-
-      <button type="submit">Submit</button>
-
-    </form>
+    <p>
+      Contact us to learn how we can help you with your medical equipment needs.<br>
+      Want to talk to someone? Call us at (904) 742-6265.
+    </p>
 
   </div>
 
-  <!-- Info Text -->
+</section>
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+  <!-- Form -->
+
+  <form id="contactForm">
+
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" required>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" required>
+    </div>
+
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel">
+    </div>
+
+    <div class="form-group">
+      <label>Message</label>
+      <textarea></textarea>
+    </div>
+
+    <button type="submit">Submit</button>
+
+  </form>
+
+  <!-- Success -->
+
+  <div id="success">
+    Thank you! Your submission has been received.<br>
+    Our team will contact you shortly.
+  </div>
+
+  <!-- Info -->
 
   <div class="contact-info">
 
@@ -287,34 +326,47 @@ footer {
 
     <p>
       Want to talk to someone? Call us at
-      <a href="tel:19047426265">(904) 742-6265</a>
-    </p>
-
-    <br>
-
-    <p>
-      <strong>NOTE:</strong> Please be cautious of anyone impersonating any member
-      of the Titan Imaging Service team. There are a number of scams going on,
-      especially now with AI tools.
+      <a href="tel:9047426265">(904) 742-6265</a>.
     </p>
 
     <p>
+      <strong>NOTE:</strong>
+      Please be cautious of anyone impersonating any member of the Titan Imaging
+      Service team. There are a number of scams going on, especially now with AI tools.
       If you suspect anything, please call our main number
-      <a href="tel:19047426265">(904) 742-6265</a>
-      or email
+      <a href="tel:9047426265">(904) 742-6265</a>
+      or e-mail
       <a href="mailto:info@test.com">info@test.com</a>
       for confirmation.
     </p>
 
   </div>
 
-</section>
+</div>
 
 <!-- ================= FOOTER ================= -->
 
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
+
+<!-- ================= SCRIPT ================= -->
+
+<script>
+
+const form = document.getElementById("contactForm");
+const success = document.getElementById("success");
+
+form.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  form.style.display = "none";
+  success.style.display = "block";
+
+});
+
+</script>
 
 </body>
 </html>
