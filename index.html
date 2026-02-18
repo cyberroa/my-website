@@ -38,7 +38,8 @@ a {
   align-items: center;
   padding: 20px 50px;
   background: #111;
-  position: sticky;
+  position: fixed;
+  width: 100%;
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
@@ -67,21 +68,19 @@ a {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hamburger Button */
+/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
-  justify-content: space-between;
-  width: 25px;
-  height: 20px;
   cursor: pointer;
+  gap: 5px;
 }
 
-.hamburger span {
-  display: block;
+.hamburger div {
+  width: 25px;
   height: 3px;
   background: #FFF;
-  border-radius: 2px;
+  transition: 0.3s;
 }
 
 /* ================= HERO ================= */
@@ -259,34 +258,26 @@ footer {
 
   .navbar {
     padding: 15px 25px;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
   }
 
   .navbar h1 {
-    font-size: 18px;
-    white-space: nowrap;
-    text-align: left;
-    width: auto;
-    margin: 0;
+    font-size: 20px;
   }
 
   .nav-links {
-    display: none; /* hide by default */
+    display: none;
     flex-direction: column;
-    gap: 15px;
-    font-size: 14px;
     width: 100%;
-    text-align: center;
-    margin-top: 10px;
   }
 
   .nav-links.active {
-    display: flex; /* show when hamburger clicked */
+    display: flex;
+  }
+
+  .nav-links li a {
+    white-space: nowrap;
+    display: block;
+    padding: 12px 0;
   }
 
   .hamburger {
@@ -325,11 +316,10 @@ footer {
     <li><a href="about.html">About Us</a></li>
   </ul>
 
-  <!-- Hamburger Menu -->
   <div class="hamburger" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
 
 </nav>
@@ -373,19 +363,19 @@ footer {
     <h3>Industry Experience You Can Trust</h3>
 
     <p>
-      At Titan Imaging Service, we specialize in providing comprehensive PET/CT solutions tailored to the needs of hospitals, imaging centers, and private practices. Founded in 2021 in Jacksonville, Florida, our mission is to deliver reliable, high-quality imaging services that keep systems running smoothly and patients cared for.
+      Titan Imaging provides high-quality CT and PET parts, system solutions,
+      and service support to imaging centers and hospitals nationwide.
     </p>
 
     <p>
-      With decades of experience in the imaging industry, our owner has over 30 years of hands-on expertise with GE PET/CT systems, including installations, de-installations, modifications, and sales of refurbished systems and parts. Prior to founding Titan Imaging, they provided national support as a Regional PET/CT Zone Support Engineer at GE Healthcare, training field engineers, conducting system audits, and overseeing major PET/CT installations across the Southeast.
+      With over 30 years of hands-on experience in GE PET/CT systems, our team ensures reliable installations, 
+      precise maintenance, and fast technical support. We’ve conducted hundreds of system audits, optimized performance, 
+      and helped centers minimize downtime and costs.
     </p>
 
     <p>
-      Our team prides itself on technical precision, from aligning complex systems without specialized tools to troubleshooting and optimizing system performance. We’ve conducted over 100 PET/CT system audits to ensure compliance with performance specifications, reduce downtime, and minimize costs for our clients.
-    </p>
-
-    <p>
-      At Titan Imaging, uptime, accuracy, and customer satisfaction are our top priorities. We combine in-depth knowledge of imaging technologies with hands-on experience to provide services that hospitals and imaging centers can trust.
+      At Titan Imaging, uptime, accuracy, and customer satisfaction are our top priorities. We combine deep technical 
+      knowledge with responsive service to keep your imaging equipment running at peak performance.
     </p>
     
     <button class="hero-btn primary-btn"
@@ -453,10 +443,10 @@ footer {
 </footer>
 
 <script>
-  function toggleMenu() {
-    const nav = document.querySelector('.nav-links');
-    nav.classList.toggle('active');
-  }
+function toggleMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  navLinks.classList.toggle('active');
+}
 </script>
 
 </body>
