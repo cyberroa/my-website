@@ -515,11 +515,11 @@ footer {
 
 <div id="chat-window">
   <div id="chat-header">
-    AI Support
+    Chat Support
     <span id="chat-close">&times;</span>
   </div>
   <div id="chat-messages">
-    <p>Hi! Ask me anything about Titan Imaging services.</p>
+    <p>Hi! What can I help you with today?</p>
   </div>
   <input type="text" id="chat-input" placeholder="Type your question..." />
 </div>
@@ -555,7 +555,7 @@ chatInput.addEventListener('keypress', (e) => {
     if(userText.toLowerCase().includes('hours')) reply = "Our office hours are 9am-5pm EST.";
     if(userText.toLowerCase().includes('contact')) reply = "You can reach us at (904) 742-6265 or info@test.com.";
 
-    chatMessages.innerHTML += `<p><strong>AI:</strong> ${reply}</p>`;
+    chatMessages.innerHTML += `<p><strong>Cortana:</strong> ${reply}</p>`;
     chatMessages.scrollTop = chatMessages.scrollHeight;
     chatInput.value = '';
   }
