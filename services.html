@@ -3,24 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TITAN IMAGING | Services</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base */
 body {
   font-family: 'Inter', sans-serif;
   color: #FFFFFF;
   line-height: 1.6;
-  background: url("servicesimage.png") center center fixed;
-  background-size: cover;
-  background-attachment: fixed;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url("servicesimage.png") center/cover no-repeat fixed;
 }
 
-/* Navbar */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ================= NAV ================= */
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -57,131 +72,203 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Main container */
+/* ================= CONTAINER ================= */
+
 .container {
-  max-width: 900px;
-  margin: 60px auto;
-  padding: 0 20px;
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 25px;
 }
 
-/* Headings */
-h2 {
-  font-size: 36px;
+/* ================= HEADER ================= */
+
+.page-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
 }
 
-.subtitle {
-  font-size: 16px;
-  text-align: center;
+.page-header h2 {
+  font-size: 38px;
+  margin-bottom: 15px;
+}
+
+.page-header p {
+  font-size: 17px;
   color: #CCC;
-  margin-bottom: 40px;
+  max-width: 750px;
+  margin: auto;
 }
 
-/* Service boxes */
-.service {
-  background: rgba(30,30,30,0.85); /* dark transparent to let background show slightly */
-  padding: 25px 30px;
-  margin-bottom: 25px;
+/* ================= SERVICES GRID ================= */
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 35px;
+  margin-bottom: 100px;
+}
+
+/* Service Card */
+
+.service-card {
+  background: rgba(17,17,17,0.9);
+  padding: 35px 30px;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(169,180,194,0.3);
+
+  box-shadow: 0 0 20px rgba(169,180,194,0.25);
+  transition: 0.3s;
 }
 
-.service h3 {
-  font-size: 24px;
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(169,180,194,0.45);
+}
+
+.service-card h3 {
+  font-size: 22px;
   color: #A9B4C2;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.service p {
+.service-card p {
   font-size: 15px;
   color: #DDD;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-/* Footer */
+/* ================= FOOTER ================= */
+
 footer {
-  margin-top: 60px;
+  background: #111;
   padding: 30px;
   text-align: center;
   font-size: 14px;
   color: #777;
-  background: #111;
+  margin-top: 80px;
 }
 
-/* MOBILE */
+/* ================= MOBILE ================= */
+
 @media (max-width: 900px) {
-  nav { padding: 20px 25px; }
-  nav ul { gap: 15px; font-size: 14px; }
 
-  h2 { font-size: 28px; }
-  .subtitle { font-size: 14px; }
+  nav {
+    padding: 20px 25px;
+  }
 
-  .service h3 { font-size: 20px; }
-  .service p { font-size: 14px; }
+  nav ul {
+    gap: 15px;
+    font-size: 14px;
+  }
+
+  .page-header h2 {
+    font-size: 30px;
+  }
+
+  .page-header p {
+    font-size: 15px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
 }
 
-@media (max-width: 480px) {
-  nav h1 { font-size: 24px; }
-  h2 { font-size: 26px; }
-  .subtitle { font-size: 13px; }
-  .service h3 { font-size: 18px; }
-  .service p { font-size: 13px; }
-}
 </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
+<!-- ================= NAV ================= -->
+
 <nav>
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
+
   <ul>
     <li onclick="window.location.href='inventory.html'">Inventory</li>
     <li onclick="window.location.href='contact.html'">Contact Us</li>
     <li onclick="window.location.href='sell.html'">Sell to Us</li>
     <li onclick="window.location.href='services.html'">Services</li>
     <li onclick="window.location.href='about.html'">About Us</li>
+    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
 
-<!-- Main container -->
+<!-- ================= MAIN ================= -->
+
 <div class="container">
-  <h2>Our Services</h2>
-  <p class="subtitle">Titan Imaging provides CT & PET services and support tailored to your needs. Explore our offerings below.</p>
 
-  <div class="service">
-    <h3>De-Install / Re-Install</h3>
-    <p>We provide a plan, coordinate with your team, and ensure any changes needed with your modalities are delivered on time and within budget.</p>
-  </div>
+  <!-- Header -->
 
-  <div class="service">
-    <h3>Transportation</h3>
-    <p>Delivering your imaging equipment safely, securely, and on schedule is what we provide every time.</p>
-  </div>
+  <section class="page-header">
 
-  <div class="service">
-    <h3>Training</h3>
-    <p>We educate your imaging team on new protocols and applications. Whether in-house or remote, our training ensures hands-on experience and knowledge transfer.</p>
-  </div>
+    <h2>Our Services</h2>
 
-  <div class="service">
-    <h3>System Sales</h3>
-    <p>We provide pre-owned and refurbished diagnostic imaging systems (CT & PET/CT) to hospitals, imaging centers, and private practices.</p>
-  </div>
+    <p>
+      Titan Imaging delivers comprehensive CT and PET solutions designed to
+      support your operations, maximize uptime, and ensure dependable performance.
+    </p>
 
-  <div class="service">
-    <h3>Service Contracts</h3>
-    <p>Our expertise in CT and PET/CT ensures maximum uptime and ongoing support, protecting patient care and operational efficiency.</p>
-  </div>
+  </section>
 
-  <div class="service">
-    <h3>Flexible Shipping & Support</h3>
-    <p>We ship parts anywhere via overnight, courier, or next-flight-out services. Our “Warranty of Excellence” ensures reliable operation and peace of mind.</p>
-  </div>
+  <!-- Services -->
+
+  <section class="services-grid">
+
+    <div class="service-card">
+      <h3>De-Installation & Re-Installation</h3>
+      <p>
+        Professional coordination and execution of equipment removal and re-installation,
+        ensuring minimal downtime and seamless system transitions.
+      </p>
+    </div>
+
+    <div class="service-card">
+      <h3>Transportation & Logistics</h3>
+      <p>
+        Secure, reliable transportation services for imaging systems and components,
+        managed with precision and industry best practices.
+      </p>
+    </div>
+
+    <div class="service-card">
+      <h3>Technical Training</h3>
+      <p>
+        On-site and remote training programs designed to equip your staff with
+        the knowledge and confidence to operate systems efficiently.
+      </p>
+    </div>
+
+    <div class="service-card">
+      <h3>System Sales</h3>
+      <p>
+        Refurbished and pre-owned CT and PET systems tailored to meet the needs
+        of hospitals, imaging centers, and private practices.
+      </p>
+    </div>
+
+    <div class="service-card">
+      <h3>Service Contracts</h3>
+      <p>
+        Flexible service agreements that provide ongoing maintenance, technical
+        support, and performance optimization.
+      </p>
+    </div>
+
+    <div class="service-card">
+      <h3>Parts & Support</h3>
+      <p>
+        Rapid access to OEM and refurbished parts with expert support to keep
+        your equipment operating at peak performance.
+      </p>
+    </div>
+
+  </section>
+
 </div>
 
-<!-- Footer -->
+<!-- ================= FOOTER ================= -->
+
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
