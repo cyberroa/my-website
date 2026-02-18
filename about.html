@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TITAN IMAGING | About Us</title>
 
-<!-- Google Fonts -->
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -63,7 +63,7 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hero / Intro Section */
+/* Main Hero / Intro */
 .hero {
   min-height: 300px;
   display: flex;
@@ -90,22 +90,41 @@ nav li:hover {
 
 /* Main Content */
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 60px auto;
   padding: 0 20px;
 }
 
-.container h3 {
+.container .section-title {
   font-size: 28px;
   color: #A9B4C2;
   margin-top: 40px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
+/* Metrics (impact) */
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.metrics div {
+  flex: 1 1 120px;
+  font-size: 32px;
+  color: #A9B4C2;
+}
+
+/* Text paragraphs */
 .container p {
   font-size: 17px;
   color: #DDD;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   line-height: 1.7;
 }
 
@@ -121,28 +140,13 @@ footer {
 
 /* Mobile */
 @media (max-width: 900px) {
-
   nav { padding: 20px 25px; }
   nav ul { gap: 15px; font-size: 14px; }
-
   .hero h2 { font-size: 32px; }
   .hero p { font-size: 16px; }
-
-  .container h3 { font-size: 24px; }
+  .metrics div { font-size: 24px; }
   .container p { font-size: 16px; }
-
 }
-
-@media (max-width: 480px) {
-
-  nav h1 { font-size: 24px; }
-  .hero h2 { font-size: 28px; }
-  .hero p { font-size: 14px; }
-  .container h3 { font-size: 20px; }
-  .container p { font-size: 14px; }
-
-}
-
 </style>
 </head>
 
@@ -161,26 +165,46 @@ footer {
   </ul>
 </nav>
 
-<!-- Hero / Intro -->
+<!-- Hero / Intro like reference -->
 <section class="hero">
-  <h2>About Titan Imaging</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod nisl nec ipsum facilisis, eget consequat massa rhoncus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.</p>
+  <h2>Everyone Deserves Access to Quality Imaging</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consequat dolor non purus tincidunt, nec egestas metus efficitur.</p>
 </section>
 
 <!-- Main Content -->
 <div class="container">
 
-  <h3>Our Mission</h3>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempor tellus et mi aliquet, vitae sollicitudin libero placerat. Nulla facilisi. Curabitur vehicula lacus sit amet tellus consectetur, vel facilisis nisl placerat.</p>
+  <!-- ** Impact / Metrics section like reference ** -->
+  <div class="metrics">
+    <div>50+</div>
+    <div>States</div>
+    <div>700+</div>
+    <div>Facilities</div>
+    <div>1600+</div>
+    <div>Projects</div>
+    <div>67+</div>
+    <div>Countries</div>
+  </div>
 
-  <h3>What We Do</h3>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium gravida dolor ut placerat. Donec eget lectus sit amet felis fringilla aliquet at nec eros. Fusce euismod vitae tortor nec scelerisque.</p>
+  <!-- ** Why Titan Imaging? section ** -->
+  <div class="section-title">Why Titan Imaging?</div>
 
-  <h3>Experience & Expertise</h3>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at massa non sapien malesuada pellentesque quis at ligula. Suspendisse potenti. Praesent aliquet dolor vitae nunc porta, in dignissim lacus vehicula.</p>
+  <p>Since 1997, Titan Imaging has been providing affordable, high‑quality imaging solutions that help healthcare providers deliver exceptional care. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 
-  <h3>Our Commitment</h3>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam venenatis urna quis ipsum laoreet, nec efficitur mi tincidunt. Vivamus sit amet risus sit amet erat laoreet consectetur.</p>
+  <p><strong>Expertise to Make Your Project Smoother:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque gravida, nisi eu pretium dignissim, dolor risus pretium tortor, et feugiat tellus elit nec erat.</p>
+
+  <p><strong>Quality Equipment & Support:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam magna orci, sit amet lacinia leo facilisis quis.</p>
+
+  <p><strong>Start‑to‑Finish Solutions:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.</p>
+
+  <p><strong>Successful Track Record:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus velit at tortor varius, ac ultrices nisi luctus.</p>
+
+  <p><strong>Global Presence & Commitment:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae eros eget lorem tincidunt feugiat.</p>
+
+  <p><strong>Dependability & Partnership:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur auctor nisi ac mi egestas, id pellentesque metus feugiat.</p>
+
+  <!-- Additional descriptive paragraph -->
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In suscipit, orci sit amet finibus sagittis, felis nisi efficitur velit, at malesuada leo ligula et elit.</p>
 
 </div>
 
