@@ -57,47 +57,51 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Container */
+/* Main container */
 .container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 60px auto;
-  padding: 0 25px;
+  padding: 0 20px;
 }
 
-/* Headings */
 h2 {
   font-size: 36px;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
 }
 
-/* Services Grid */
-.service-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-  gap: 30px;
+.subtitle {
+  color: #BBBBBB;
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 17px;
 }
 
-.service-card {
+/* Service items */
+.service {
   background: #0b2442;
-  padding: 30px;
-  border-radius: 10px;
-  transition: 0.3s;
+  padding: 25px 30px;
+  margin-bottom: 25px;
+  border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  transition: 0.3s;
 }
 
-.service-card:hover {
+.service:hover {
   transform: translateY(-5px);
   box-shadow: 0 0 20px rgba(169,180,194,0.6);
 }
 
-.service-card h4 {
-  margin-bottom: 15px;
+.service h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #A9B4C2;
 }
 
-.service-card p {
-  color: #BBB;
+.service p {
   font-size: 15px;
+  color: #DDDDDD;
+  line-height: 1.5;
 }
 
 /* Footer */
@@ -110,16 +114,28 @@ footer {
   background: #111;
 }
 
-/* Mobile */
+/* MOBILE RESPONSIVE STYLES */
 @media (max-width: 900px) {
   nav { padding: 20px 25px; }
   nav ul { gap: 15px; font-size: 14px; }
+
+  h2 { font-size: 32px; }
+  .subtitle { font-size: 16px; }
+
+  .service h3 { font-size: 20px; }
+  .service p { font-size: 14px; }
+}
+
+@media (max-width: 480px) {
+  nav h1 { font-size: 22px; }
   h2 { font-size: 28px; }
-  .service-grid { gap: 20px; }
-  .service-card { padding: 20px; }
+  .subtitle { font-size: 14px; }
+  .service h3 { font-size: 18px; }
+  .service p { font-size: 13px; }
 }
 </style>
 </head>
+
 <body>
 
 <!-- Navbar -->
@@ -128,36 +144,48 @@ footer {
   <ul>
     <li onclick="window.location.href='inventory.html'">Inventory</li>
     <li onclick="window.location.href='contact.html'">Contact</li>
-    <li onclick="window.location.href='sell.html'">Sell</li>
+    <li onclick="window.location.href='sell.html'">Sell To Us</li>
+    <li onclick="window.location.href='about.html'">About Us</li>
     <li onclick="window.location.href='services.html'">Services</li>
-    <li onclick="window.location.href='about.html'">About</li>
     <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
 
-<!-- Page Heading -->
+<!-- Main container -->
 <div class="container">
-  <h2>Our Core Services</h2>
+  <h2>Services</h2>
+  <p class="subtitle">SERVICES provided by Titan Imaging for CT & PET Scanners. Our knowledgeable team ensures you get the parts and support you need quickly and efficiently.</p>
 
-  <!-- Services Grid -->
-  <div class="service-grid">
-    <div class="service-card">
-      <h4>Parts Sourcing</h4>
-      <p>OEM and refurbished CT/PET components available for fast delivery.</p>
-    </div>
-    <div class="service-card">
-      <h4>System Sales</h4>
-      <p>Pre-owned and refurbished systems for medical facilities.</p>
-    </div>
-    <div class="service-card">
-      <h4>Installation</h4>
-      <p>Professional de-installation and re-installation services.</p>
-    </div>
-    <div class="service-card">
-      <h4>Partner With Us</h4>
-      <p>Collaborate with Titan Imaging Service to expand your services, share expertise, and grow your network.</p>
-    </div>
+  <div class="service">
+    <h3>De-Install / Re-Install</h3>
+    <p>We provide a plan, coordinate with your team, and ensure any changes needed with your modalities are delivered on time and within budget.</p>
   </div>
+
+  <div class="service">
+    <h3>Transportation</h3>
+    <p>Delivering your imaging equipment safely, securely, and on schedule is what we provide every time.</p>
+  </div>
+
+  <div class="service">
+    <h3>Training</h3>
+    <p>We educate your imaging team on new protocols and applications. Whether in-house or remote, our training ensures hands-on experience and knowledge transfer.</p>
+  </div>
+
+  <div class="service">
+    <h3>System Sales</h3>
+    <p>We provide pre-owned and refurbished diagnostic imaging systems (CT & PET/CT) to hospitals, imaging centers, and private practices.</p>
+  </div>
+
+  <div class="service">
+    <h3>Service Contracts</h3>
+    <p>Our expertise in CT and PET/CT ensures maximum uptime and ongoing support, protecting patient care and operational efficiency.</p>
+  </div>
+
+  <div class="service">
+    <h3>Flexible Shipping & Support</h3>
+    <p>We ship parts anywhere via overnight, courier, or next-flight-out services. Our “Warranty of Excellence” ensures reliable operation and peace of mind.</p>
+  </div>
+
 </div>
 
 <!-- Footer -->
