@@ -23,7 +23,7 @@ body {
   background-size: cover;
   background-attachment: fixed;
   color: #FFFFFF;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* Navbar */
@@ -63,7 +63,7 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Main Hero / Intro */
+/* Hero / Intro */
 .hero {
   min-height: 300px;
   display: flex;
@@ -78,14 +78,14 @@ nav li:hover {
 .hero h2 {
   font-size: 42px;
   font-weight: 700;
-  margin-bottom: 20px;
   color: #A9B4C2;
+  margin-bottom: 20px;
 }
 
 .hero p {
   font-size: 18px;
   color: #DDD;
-  max-width: 800px;
+  max-width: 850px;
 }
 
 /* Main Content */
@@ -95,37 +95,42 @@ nav li:hover {
   padding: 0 20px;
 }
 
-.container .section-title {
+.container h3 {
   font-size: 28px;
   color: #A9B4C2;
   margin-top: 40px;
   margin-bottom: 15px;
 }
 
-/* Metrics (impact) */
+/* Impact Metrics */
 .metrics {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
   justify-content: center;
+  gap: 30px;
   text-align: center;
-  font-weight: 700;
   margin-top: 30px;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 .metrics div {
-  flex: 1 1 120px;
   font-size: 32px;
+  font-weight: 700;
   color: #A9B4C2;
+  min-width: 140px;
 }
 
 /* Text paragraphs */
 .container p {
   font-size: 17px;
   color: #DDD;
-  margin-bottom: 18px;
-  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+/* Bold sub-heads within text */
+.container strong {
+  font-weight: 700;
+  color: #A9B4C2;
 }
 
 /* Footer */
@@ -161,19 +166,20 @@ footer {
     <li onclick="window.location.href='sell.html'">Sell to Us</li>
     <li onclick="window.location.href='services.html'">Services</li>
     <li onclick="window.location.href='about.html'">About Us</li>
+    <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
 
-<!-- Hero / Intro like reference -->
+<!-- Hero / Intro -->
 <section class="hero">
-  <h2>Everyone Deserves Access to Quality Imaging</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consequat dolor non purus tincidunt, nec egestas metus efficitur.</p>
+  <h2>Everyone deserves access to quality imaging solutions</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis felis hendrerit, gravida purus at, scelerisque sapien. Suspendisse potenti.</p>
 </section>
 
 <!-- Main Content -->
 <div class="container">
 
-  <!-- ** Impact / Metrics section like reference ** -->
+  <!-- Metrics similar to reference page -->
   <div class="metrics">
     <div>50+</div>
     <div>States</div>
@@ -185,25 +191,25 @@ footer {
     <div>Countries</div>
   </div>
 
-  <!-- ** Why Titan Imaging? section ** -->
-  <div class="section-title">Why Titan Imaging?</div>
+  <!-- Why Titan Imaging Section -->
+  <h3>Why Titan Imaging?</h3>
+  <p><strong>Since 1997,</strong> Titan Imaging has provided reliable CT & PET parts, systems, and support solutions nationwide. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 
-  <p>Since 1997, Titan Imaging has been providing affordable, high‑quality imaging solutions that help healthcare providers deliver exceptional care. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <p><strong>Expertise to Make Your Project Smoother:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae erat eget nibh iaculis malesuada.</p>
 
-  <p><strong>Expertise to Make Your Project Smoother:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque gravida, nisi eu pretium dignissim, dolor risus pretium tortor, et feugiat tellus elit nec erat.</p>
+  <p><strong>Quality Parts & Support:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer placerat magna ac nisl laoreet, sed congue libero luctus.</p>
 
-  <p><strong>Quality Equipment & Support:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam magna orci, sit amet lacinia leo facilisis quis.</p>
+  <p><strong>Start-to-Finish Solutions:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vitae nisl nec erat ultrices aliquet.</p>
 
-  <p><strong>Start‑to‑Finish Solutions:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.</p>
+  <p><strong>Successful Track Record:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vel libero nec sapien malesuada hendrerit.</p>
 
-  <p><strong>Successful Track Record:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus velit at tortor varius, ac ultrices nisi luctus.</p>
+  <p><strong>Nationwide Presence & Commitment:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consectetur ante nec purus volutpat dictum.</p>
 
-  <p><strong>Global Presence & Commitment:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae eros eget lorem tincidunt feugiat.</p>
+  <!-- Additional narrative below -->
+  <h3>Our Mission & Values</h3>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at purus sed justo luctus aliquet. Nullam viverra, tellus a aliquam ultrices, purus ex fermentum metus, at fermentum ipsum libero non nunc.</p>
 
-  <p><strong>Dependability & Partnership:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur auctor nisi ac mi egestas, id pellentesque metus feugiat.</p>
-
-  <!-- Additional descriptive paragraph -->
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In suscipit, orci sit amet finibus sagittis, felis nisi efficitur velit, at malesuada leo ligula et elit.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique ex at orci aliquet, quis luctus nulla suscipit. Praesent ultricies nunc non massa aliquam, vel vehicula justo interdum.</p>
 
 </div>
 
