@@ -3,27 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>TITAN IMAGING | About Us</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Base */
 body {
   font-family: 'Inter', sans-serif;
-  background: #000000;
   color: #FFFFFF;
   line-height: 1.6;
+  background: url("aboutus.png") center center fixed;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 /* Navbar */
@@ -63,108 +57,55 @@ nav li:hover {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hero Banner */
+/* Hero Section */
 .hero {
   min-height: 300px;
-  background:
-    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-    url("aboutus.png") center/cover no-repeat fixed;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
+  background: rgba(0,0,0,0.55);
 }
 
 .hero h2 {
   font-size: 42px;
   font-weight: 700;
-  color: #A9B4C2;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .hero p {
   font-size: 18px;
   color: #DDD;
-  max-width: 900px;
+  max-width: 700px;
 }
 
-/* Main content */
+/* Main Container */
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 60px auto;
   padding: 0 20px;
 }
 
-/* Section */
-.section {
-  margin-bottom: 60px;
-}
-
-.section h3 {
+/* About Us Sections */
+.container h3 {
   font-size: 28px;
   color: #A9B4C2;
-  margin-bottom: 15px;
+  margin-top: 40px;
+  margin-bottom: 10px;
 }
 
-.section p {
+.container p {
   font-size: 17px;
   color: #DDD;
-  margin-bottom: 15px;
-}
-
-/* Impact Block */
-.impact-grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 40px 0;
-}
-
-.impact-box {
-  background: #111;
-  flex: 1 1 140px;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(169,180,194,0.2);
-}
-
-.impact-box h4 {
-  font-size: 30px;
-  color: #A9B4C2;
-  margin-bottom: 8px;
-}
-
-.impact-box p {
-  font-size: 14px;
-  color: #DDD;
-}
-
-/* Why Us Boxes */
-.box {
-  background: #1F1F1F;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(169,180,194,0.15);
-  margin-bottom: 30px;
-}
-
-.box h4 {
-  font-size: 22px;
-  margin-bottom: 10px;
-  color: #A9B4C2;
-}
-
-.box p {
-  font-size: 15px;
-  color: #DDD;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
 
 /* Footer */
 footer {
-  margin-top: 80px;
+  margin-top: 60px;
   padding: 30px;
   text-align: center;
   font-size: 14px;
@@ -178,10 +119,17 @@ footer {
   nav ul { gap: 15px; font-size: 14px; }
   .hero h2 { font-size: 32px; }
   .hero p { font-size: 16px; }
-  .impact-grid { flex-direction: column; }
-  .impact-box { margin-bottom: 15px; }
+  .container h3 { font-size: 24px; }
+  .container p { font-size: 16px; }
 }
 
+@media (max-width: 480px) {
+  nav h1 { font-size: 24px; }
+  .hero h2 { font-size: 28px; }
+  .hero p { font-size: 14px; }
+  .container h3 { font-size: 20px; }
+  .container p { font-size: 14px; }
+}
 </style>
 </head>
 
@@ -192,69 +140,34 @@ footer {
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING</h1>
   <ul>
     <li onclick="window.location.href='inventory.html'">Inventory</li>
-    <li onclick="window.location.href='contact.html'">Contact</li>
-    <li onclick="window.location.href='sell.html'">Sell</li>
+    <li onclick="window.location.href='contact.html'">Contact Us</li>
+    <li onclick="window.location.href='sell.html'">Sell to Us</li>
     <li onclick="window.location.href='services.html'">Services</li>
     <li onclick="window.location.href='about.html'">About Us</li>
     <li onclick="window.location.href='testimonials.html'">Testimonials</li>
   </ul>
 </nav>
 
-<!-- Hero / Intro -->
+<!-- Hero / Banner -->
 <section class="hero">
-  <div>
-    <h2>About Titan Imaging</h2>
-    <p>We source and support reliable CT & PET imaging solutions — helping healthcare providers stay operational, efficient, and patient-focused every day.</p>
-  </div>
+  <h2>About Titan Imaging</h2>
+  <p>Learn more about our company, our history, and our commitment to providing exceptional imaging solutions and services.</p>
 </section>
 
-<!-- Main content -->
+<!-- Main Content -->
 <div class="container">
 
-  <!-- Impact / Stats section -->
-  <div class="section">
-    <div class="impact-grid">
-      <div class="impact-box">
-        <h4>25+</h4>
-        <p>Years Combined Experience</p>
-      </div>
-      <div class="impact-box">
-        <h4>Nationwide</h4>
-        <p>Service Coverage Across the U.S.</p>
-      </div>
-      <div class="impact-box">
-        <h4>1000+</h4>
-        <p>Systems Supported</p>
-      </div>
-      <div class="impact-box">
-        <h4>5000+</h4>
-        <p>Parts Delivered</p>
-      </div>
-    </div>
-  </div>
+  <h3>Our Mission</h3>
+  <p>Titan Imaging is dedicated to delivering reliable, pre-owned CT and PET imaging equipment with superior service and support. Our goal is to ensure healthcare providers have the tools they need to provide excellent patient care.</p>
 
-  <!-- Why Titan Imaging -->
-  <div class="section">
-    <h3>Why Choose Titan Imaging</h3>
-    <div class="box">
-      <h4>Proven Expertise</h4>
-      <p>Our team combines deep imaging knowledge with hands‑on experience to deliver dependable results.</p>
-    </div>
-    <div class="box">
-      <h4>Comprehensive Solutions</h4>
-      <p>From parts sourcing to support services, we cover the full lifecycle of imaging equipment.</p>
-    </div>
-    <div class="box">
-      <h4>Trusted Partner</h4>
-      <p>We build long‑term relationships through responsive communication and project ownership.</p>
-    </div>
-  </div>
+  <h3>Our Team</h3>
+  <p>Our experienced team combines technical expertise with hands-on knowledge. From system installation to ongoing support, we provide comprehensive solutions tailored to each client’s needs.</p>
 
-  <!-- Our Values -->
-  <div class="section">
-    <h3>Our Commitment</h3>
-    <p>We’re committed to reliability, responsiveness, and integrity — driven by a simple mission: to help healthcare providers focus on patient care, not equipment headaches.</p>
-  </div>
+  <h3>Our Values</h3>
+  <p>Integrity, professionalism, and responsiveness guide everything we do. We build lasting partnerships through trust, transparency, and quality service.</p>
+
+  <h3>Why Choose Us?</h3>
+  <p>We understand the challenges of sourcing, maintaining, and supporting medical imaging equipment. Our clients rely on us for dependable solutions, timely service, and expert advice.</p>
 
 </div>
 
@@ -265,3 +178,4 @@ footer {
 
 </body>
 </html>
+
