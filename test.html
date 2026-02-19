@@ -23,9 +23,24 @@ body {
   background: #000000;
   color: #FFFFFF;
   line-height: 1.6;
+  position: relative;
 }
 
 a { text-decoration: none; color: inherit; }
+
+/* ================= BACKGROUND IMAGE ================= */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url('servicesimage.png') center/cover no-repeat;
+  z-index: -1;
+}
 
 /* ================= NAVBAR ================= */
 .navbar {
@@ -283,7 +298,7 @@ footer {
         <!-- NOTE MOVED INSIDE FORM -->
         <div class="note">
           <strong>NOTE:</strong> Please be cautious of anyone impersonating any member of the Titan Imaging Service Team. 
-          There are a number of scams going on, especially now with ai tools. If you suspect anything, 
+          There are a number of scams going on, especially now with AI tools. If you suspect anything, 
           please call our main number <a href="tel:9047426265" style="color:#A9B4C2; text-decoration:underline;">(904) 742-6265</a> or email
           <a href="mailto:info@test.com" style="color:#A9B4C2; text-decoration:underline;">info@test.com</a>.
         </div>
