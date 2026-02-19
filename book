@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TITAN IMAGING SERVICE | Book Appointment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Calendly Embed CSS -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+
+<style>
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #000;
+  color: #FFF;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: #111;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links li a {
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #A9B4C2;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 150px auto 80px auto;
+  padding: 0 25px;
+  text-align: center;
+}
+
+.container h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.container p {
+  color: #CCC;
+  margin-bottom: 40px;
+}
+
+.calendly-container {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(169,180,194,0.25);
+}
+
+footer {
+  background: #111;
+  padding: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  margin-top: 80px;
+}
+
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
+  <ul class="nav-links">
+    <li><a href="inventory.html">Inventory</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="sell.html">Sell to Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="book.html">Book</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <h2>Schedule a Consultation</h2>
+  <p>Select a time that works best for you.</p>
+
+  <div class="calendly-container">
+    <!-- Calendly Inline Widget -->
+    <div class="calendly-inline-widget"
+         data-url="https://calendly.com/YOUR-LINK-HERE"
+         style="min-width:320px;height:700px;">
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
+</footer>
+
+<!-- Calendly Embed Script -->
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+</body>
+</html>
