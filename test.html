@@ -9,14 +9,15 @@
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
-<!-- Calendly Embed CSS -->
+<!-- Calendly CSS -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 
 <style>
 
-/* Reset */
+/* ================= RESET ================= */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ================= BASE ================= */
 body {
   font-family: 'Inter', sans-serif;
   background: #000000;
@@ -26,34 +27,90 @@ body {
 
 a { text-decoration: none; color: inherit; }
 
-/* ================= MAIN CONTAINER ================= */
+/* ================= NAVBAR ================= */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: #111;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.navbar h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links li a {
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #A9B4C2;
+  text-shadow: 0 0 6px rgba(169,180,194,0.6);
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: #FFF;
+}
+
+/* ================= MAIN ================= */
 .container {
   max-width: 1200px;
-  margin: 100px auto 50px auto;
+  margin: 140px auto 0 auto;
   padding: 0 25px;
 }
 
-.contact-grid {
+/* ================= SPLIT LAYOUT ================= */
+.contact-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: flex-start;
+  gap: 50px;
+  margin-bottom: 100px;
 }
 
-/* ================= CONTACT FORM ================= */
-.contact-form-card {
+/* ================= CARDS ================= */
+.card {
   background: #111;
   padding: 40px;
   border-radius: 14px;
-  box-shadow: 0 0 25px rgba(255,255,255,0.04);
+  box-shadow: 0 0 20px rgba(169,180,194,0.15);
+  transition: 0.3s;
 }
 
-.contact-form-card h3 {
+.card:hover {
+  box-shadow: 0 0 30px rgba(169,180,194,0.35);
+}
+
+.card h3 {
   margin-bottom: 25px;
   color: #A9B4C2;
-  font-size: 28px;
 }
 
+/* ================= FORM ================= */
 .form-group {
   margin-bottom: 22px;
 }
@@ -79,17 +136,20 @@ textarea {
 
 input:focus,
 textarea:focus {
-  border-color: #0b2442;
-  box-shadow: 0 0 6px rgba(10, 36, 66, 0.5);
+  border-color: #A9B4C2;
+  box-shadow: 0 0 6px rgba(169,180,194,0.4);
 }
 
-textarea { resize: vertical; min-height: 120px; }
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
 
 button {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #0b2442, #081832);
-  color: #FFF;
+  background: #A9B4C2;
+  color: #111;
   border: none;
   border-radius: 6px;
   font-size: 16px;
@@ -99,48 +159,79 @@ button {
 }
 
 button:hover {
-  box-shadow: 0 0 15px rgba(10,36,66,0.7);
+  box-shadow: 0 0 15px rgba(169,180,194,0.6);
   transform: translateY(-2px);
 }
 
 #success {
   display: none;
   margin-top: 20px;
-  font-size: 16px;
   color: #A9B4C2;
   text-align: center;
 }
 
-/* NOTE inside the form */
-.note {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #CCC;
-}
-
 /* ================= CALENDLY ================= */
-.calendly-card {
-  background: #111;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 0 25px rgba(255,255,255,0.04);
-}
-
 .calendly-inline-widget {
   min-width: 320px;
   height: 700px;
-  border-radius: 14px;
+}
+
+/* ================= CONTACT INFO ================= */
+.contact-info {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 15px;
+  color: #CCC;
+}
+
+.contact-info a {
+  color: #A9B4C2;
+  text-decoration: underline;
+}
+
+/* ================= FOOTER ================= */
+footer {
+  margin-top: 80px;
+  padding: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  background: #111;
 }
 
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
-  .contact-grid {
-    grid-template-columns: 1fr;
+
+  .navbar {
+    padding: 15px 25px;
+    flex-wrap: wrap;
   }
 
-  .contact-form-card,
-  .calendly-card {
-    padding: 25px;
+  .navbar h1 {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li a {
+    display: block;
+    padding: 12px 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .contact-split {
+    grid-template-columns: 1fr;
   }
 
   .calendly-inline-widget {
@@ -153,7 +244,7 @@ button:hover {
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+<!-- NAVBAR -->
 <nav class="navbar">
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
   <ul class="nav-links">
@@ -171,13 +262,15 @@ button:hover {
   </div>
 </nav>
 
-<!-- ================= MAIN ================= -->
+<!-- MAIN -->
 <div class="container">
-  <div class="contact-grid">
+
+  <div class="contact-split">
 
     <!-- LEFT: CONTACT FORM -->
-    <div class="contact-form-card">
+    <div class="card">
       <h3>Send Us a Message</h3>
+
       <form id="contactForm">
         <div class="form-group">
           <label>Name</label>
@@ -198,33 +291,45 @@ button:hover {
         <button type="submit">Submit Inquiry</button>
         <div id="success">Thank you! Your message has been received.</div>
       </form>
-      <div class="note">
-        <strong>NOTE:</strong> Please be cautious of anyone impersonating a member of the Titan Imaging Service team. 
-        If unsure, call <a href="tel:9047426265" style="color:#A9B4C2; text-decoration:underline;">(904) 742-6265</a> 
-        or email <a href="mailto:info@test.com" style="color:#A9B4C2; text-decoration:underline;">info@test.com</a>.
-      </div>
     </div>
 
-    <!-- RIGHT: CALENDLY -->
-    <div class="calendly-card">
-      <div class="calendly-inline-widget"
-           data-url="https://calendly.com/titanimagingservice?primary_color=A9B4C2&text_color=FFFFFF&background_color=081832"
-           style="min-width:320px;height:700px;">
-      </div>
-    </div>
-
+      <div class="contact-info">
+    <p>
+      <strong>NOTE:</strong> Please be cautious of anyone impersonating a member of the Titan Imaging Service team.
+      If unsure, call <a href="tel:9047426265">(904) 742-6265</a> or email
+      <a href="mailto:info@test.com">info@test.com</a>.
+    </p>
   </div>
 </div>
 
-<!-- ================= FOOTER ================= -->
+    <!-- RIGHT: CALENDAR -->
+    <div class="card">
+      <h3>Schedule with Us</h3>
+
+      <div class="calendly-inline-widget"
+           data-url="https://calendly.com/titanimagingservice?primary_color=A9B4C2&text_color=FFFFFF&background_color=081832">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="contact-info">
+    <p>
+      <strong>NOTE:</strong> If unsure about communication authenticity,
+      call <a href="tel:9047426265">(904) 742-6265</a> or email
+      <a href="mailto:info@test.com">info@test.com</a>.
+    </p>
+  </div>
+
+</div>
+
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
 
-<!-- Calendly Embed Script -->
-<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
-<!-- Navbar Hamburger Script -->
 <script>
 function toggleMenu() {
   const navLinks = document.querySelector('.nav-links');
