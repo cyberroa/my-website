@@ -170,23 +170,17 @@ button:hover {
   text-align: center;
 }
 
+/* NOTE INSIDE FORM */
+.note {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #CCC;
+}
+
 /* ================= CALENDLY ================= */
 .calendly-inline-widget {
   min-width: 320px;
   height: 700px;
-}
-
-/* ================= CONTACT INFO ================= */
-.contact-info {
-  margin-top: 40px;
-  text-align: center;
-  font-size: 15px;
-  color: #CCC;
-}
-
-.contact-info a {
-  color: #A9B4C2;
-  text-decoration: underline;
 }
 
 /* ================= FOOTER ================= */
@@ -219,11 +213,6 @@ footer {
 
   .nav-links.active {
     display: flex;
-  }
-
-  .nav-links li a {
-    display: block;
-    padding: 12px 0;
   }
 
   .hamburger {
@@ -290,6 +279,14 @@ footer {
         </div>
         <button type="submit">Submit Inquiry</button>
         <div id="success">Thank you! Your message has been received.</div>
+
+        <!-- NOTE MOVED INSIDE FORM -->
+        <div class="note">
+          <strong>NOTE:</strong> If unsure about communication authenticity,
+          call <a href="tel:9047426265" style="color:#A9B4C2; text-decoration:underline;">(904) 742-6265</a> or email
+          <a href="mailto:info@test.com" style="color:#A9B4C2; text-decoration:underline;">info@test.com</a>.
+        </div>
+
       </form>
     </div>
 
@@ -303,14 +300,6 @@ footer {
 
     </div>
 
-  </div>
-
-  <div class="contact-info">
-    <p>
-      <strong>NOTE:</strong> If unsure about communication authenticity,
-      call <a href="tel:9047426265">(904) 742-6265</a> or email
-      <a href="mailto:info@test.com">info@test.com</a>.
-    </p>
   </div>
 
 </div>
