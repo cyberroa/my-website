@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TITAN IMAGING SERVICE | Industry Insight</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= RESET ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #000;
+  color: #FFF;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: #111;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.navbar h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links li a {
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #A9B4C2;
+  text-shadow: 0 0 6px rgba(169,180,194,0.6);
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: #FFF;
+  transition: 0.3s;
+}
+
+/* ================= HERO ================= */
+.hero {
+  min-height: 300px;
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url("aboutus.png") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.hero h2 {
+  font-size: 42px;
+  font-weight: 700;
+  max-width: 900px;
+}
+
+/* ================= CONTAINER ================= */
+.container {
+  max-width: 1200px;
+  margin: 140px auto 80px auto;
+  padding: 0 25px;
+}
+
+/* ================= INTRO ================= */
+.intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 80px auto;
+}
+
+.intro h3 {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.intro p {
+  color: #CCC;
+  font-size: 16px;
+}
+
+/* ================= BLOG GRID ================= */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 35px;
+}
+
+/* Blog Card */
+.blog-card {
+  background: #111;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #222;
+  transition: 0.3s;
+  box-shadow: 0 0 20px rgba(169,180,194,0.15);
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(169,180,194,0.4);
+}
+
+.blog-card h4 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #A9B4C2;
+}
+
+.blog-card p {
+  font-size: 15px;
+  color: #CCC;
+  margin-bottom: 20px;
+}
+
+.read-more {
+  font-weight: 600;
+  font-size: 14px;
+  color: #FFF;
+  border-bottom: 1px solid #A9B4C2;
+  padding-bottom: 2px;
+  transition: 0.3s;
+}
+
+.read-more:hover {
+  color: #A9B4C2;
+}
+
+/* ================= FOOTER ================= */
+footer {
+  background: #111;
+  padding: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  margin-top: 80px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 900px) {
+
+  .navbar {
+    padding: 20px 25px;
+    flex-wrap: wrap;
+  }
+
+  .navbar h1 {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li a {
+    white-space: nowrap;
+    display: block;
+    padding: 12px 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .hero h2 {
+    font-size: 36px;
+  }
+
+  .intro h3 {
+    font-size: 24px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+
+  <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
+
+  <ul class="nav-links">
+    <li><a href="inventory.html">Inventory</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><a href="sell.html">Sell to Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About Us</a></li>
+  </ul>
+
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <h2>Industry Insight</h2>
+</section>
+
+<!-- ================= MAIN ================= -->
+<div class="container">
+
+  <section class="intro">
+    <h3>Imaging Equipment Knowledge & Market Intelligence</h3>
+    <p>
+      Stay informed with expert insights on CT scanner installation, PET CT systems,
+      used medical imaging equipment, and industry best practices. Titan Imaging Service
+      provides in-depth resources to help hospitals, imaging centers, and equipment
+      brokers make confident, informed decisions.
+    </p>
+  </section>
+
+  <section class="blog-grid">
+
+    <div class="blog-card">
+      <h4>How Much Does CT Scanner Installation Cost in 2026?</h4>
+      <p>Understand the full scope of CT installation costs including site preparation,
+      rigging, compliance, and technical calibration requirements.</p>
+      <a href="ct-scanner-installation-cost.html" class="read-more">Read More →</a>
+    </div>
+
+    <div class="blog-card">
+      <h4>Complete Guide to Deinstalling a PET CT System Safely</h4>
+      <p>A step-by-step breakdown of safe PET CT system removal, transportation,
+      and regulatory considerations for facilities.</p>
+      <a href="#" class="read-more">Coming Soon →</a>
+    </div>
+
+    <div class="blog-card">
+      <h4>How to Sell a Used CT Scanner</h4>
+      <p>Learn how imaging centers can maximize value when selling used CT systems
+      while minimizing downtime and risk.</p>
+      <a href="#" class="read-more">Coming Soon →</a>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
+</footer>
+
+<script>
+function toggleMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  navLinks.classList.toggle('active');
+}
+</script>
+
+</body>
+</html>
