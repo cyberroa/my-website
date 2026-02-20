@@ -87,7 +87,12 @@ a { text-decoration: none; color: inherit; }
 
 .hero p { font-size: 20px; color: #DDD; margin-bottom: 40px; }
 
-.hero-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 
 .hero-btn {
   padding: 14px 28px;
@@ -123,6 +128,7 @@ a { text-decoration: none; color: inherit; }
   padding: 0 25px;
 }
 
+/* ================= ABOUT ================= */
 .about-preview {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -130,12 +136,16 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
 }
 
-.about-preview img { width: 100%; border-radius: 12px; }
+.about-preview img {
+  width: 100%;
+  border-radius: 12px;
+}
 
 .about-preview h3 { font-size: 32px; margin-bottom: 20px; }
 
 .about-preview p { color: #CCC; margin-bottom: 25px; }
 
+/* ================= SERVICES ================= */
 .services { text-align: center; }
 
 .services h3 { font-size: 32px; margin-bottom: 40px; }
@@ -151,6 +161,7 @@ a { text-decoration: none; color: inherit; }
   padding: 30px;
   border-radius: 10px;
   transition: 0.3s;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 
 .service-card:hover {
@@ -158,47 +169,56 @@ a { text-decoration: none; color: inherit; }
   box-shadow: 0 0 20px rgba(169,180,194,0.6);
 }
 
-/* ================= INDUSTRY INSIGHT ================= */
-.insight-preview {
+.service-card p { color: #BBB; font-size: 15px; }
+
+/* ================= INDUSTRY INSIGHT PREVIEW ================= */
+.container {
   max-width: 1200px;
   margin: 100px auto;
   padding: 0 25px;
+}
+
+.intro {
   text-align: center;
+  margin-bottom: 60px;
 }
 
-.insight-preview h3 { font-size: 32px; margin-bottom: 20px; }
+.intro h3 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
 
-.insight-preview p {
+.intro p {
   color: #CCC;
-  max-width: 750px;
-  margin: 0 auto 50px auto;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.insight-grid {
+.blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
   gap: 30px;
 }
 
-.insight-card {
+.blog-card {
   background: #111;
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #222;
   transition: 0.3s;
 }
 
-.insight-card:hover {
+.blog-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 0 20px rgba(169,180,194,0.4);
 }
 
-.insight-card h4 {
+.blog-card h4 {
   margin-bottom: 15px;
   color: #A9B4C2;
 }
 
-.insight-card p {
+.blog-card p {
   color: #BBB;
   font-size: 15px;
   margin-bottom: 20px;
@@ -221,6 +241,10 @@ a { text-decoration: none; color: inherit; }
   margin-top: 100px;
 }
 
+.cta h3 { font-size: 32px; margin-bottom: 20px; }
+
+.cta p { color: #CCC; margin-bottom: 30px; }
+
 /* ================= FOOTER ================= */
 footer {
   background: #111;
@@ -233,24 +257,13 @@ footer {
 
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
-
   .navbar { padding: 20px 25px; flex-wrap: wrap; }
-
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-  }
-
+  .nav-links { display: none; flex-direction: column; width: 100%; }
   .nav-links.active { display: flex; }
-
   .hamburger { display: flex; }
-
-  .about-preview { grid-template-columns: 1fr; }
-
   .hero h2 { font-size: 36px; }
-
   .hero p { font-size: 17px; }
+  .about-preview { grid-template-columns: 1fr; }
 }
 
 </style>
@@ -258,6 +271,7 @@ footer {
 
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar">
   <h1 onclick="window.location.href='index.html'">TITAN IMAGING SERVICE</h1>
   <ul class="nav-links">
@@ -273,6 +287,7 @@ footer {
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-content">
     <h2>Seamless Service. Every Time.</h2>
@@ -284,50 +299,71 @@ footer {
   </div>
 </section>
 
+<!-- ABOUT -->
+<section class="section about-preview">
+  <div>
+    <h3>Industry Experience You Can Trust</h3>
+    <p>High-quality CT and PET parts, system solutions, and service support nationwide.</p>
+    <p>Over 30 years of hands-on experience in GE PET/CT systems.</p>
+    <button class="hero-btn primary-btn" onclick="window.location.href='about.html'">Learn More</button>
+  </div>
+  <img src="scan.png" alt="CT/PET Imaging">
+</section>
+
+<!-- SERVICES -->
 <section class="section services">
   <h3>Our Core Services</h3>
   <div class="service-grid">
-    <div class="service-card"><h4>Parts Sourcing</h4><p>OEM and refurbished CT/PET components available for fast delivery.</p></div>
-    <div class="service-card"><h4>System Sales</h4><p>Pre-owned and refurbished systems for medical facilities.</p></div>
-    <div class="service-card"><h4>Installation</h4><p>Professional de-installation and re-installation services.</p></div>
-    <div class="service-card"><h4>Partner With Us</h4><p>Collaborate with Titan Imaging Service to expand your services.</p></div>
+    <div class="service-card"><h4>Parts Sourcing</h4><p>OEM and refurbished CT/PET components.</p></div>
+    <div class="service-card"><h4>System Sales</h4><p>Pre-owned and refurbished systems.</p></div>
+    <div class="service-card"><h4>Installation</h4><p>Professional system installation services.</p></div>
+    <div class="service-card"><h4>Partner With Us</h4><p>Collaborate to expand your services.</p></div>
   </div>
 </section>
 
-<section class="insight-preview">
-  <h3>Industry Insight</h3>
-  <p>
-    Expert analysis and guidance on CT scanner installation, PET/CT systems,
-    used imaging equipment sales, de-installation, compliance, and market strategy.
-  </p>
+<!-- INDUSTRY INSIGHT SECTION -->
+<div class="container">
 
-  <div class="insight-grid">
-    <div class="insight-card">
+  <section class="intro">
+    <h3>Imaging Equipment Knowledge & Market Intelligence</h3>
+    <p>
+      Stay informed with expert insights on CT scanner installation, PET CT systems,
+      used medical imaging equipment, and industry best practices.
+    </p>
+  </section>
+
+  <section class="blog-grid">
+
+    <div class="blog-card">
       <h4>How Much Does CT Scanner Installation Cost in 2026?</h4>
       <p>Understand the full scope of CT installation costs including site preparation and compliance.</p>
       <a href="ct-scanner-installation-cost.html" class="read-more">Read More →</a>
     </div>
 
-    <div class="insight-card">
+    <div class="blog-card">
       <h4>Complete Guide to Deinstalling a PET CT System Safely</h4>
-      <p>A step-by-step breakdown of safe PET CT system removal and regulatory considerations.</p>
-      <a href="industry-insight.html" class="read-more">Coming Soon →</a>
+      <p>A breakdown of safe PET CT system removal and regulatory considerations.</p>
+      <a href="#" class="read-more">Coming Soon →</a>
     </div>
 
-    <div class="insight-card">
+    <div class="blog-card">
       <h4>How to Sell a Used CT Scanner</h4>
-      <p>Learn how imaging centers can maximize value when selling used CT systems.</p>
-      <a href="industry-insight.html" class="read-more">Coming Soon →</a>
+      <p>Maximize value when selling used CT systems while minimizing downtime.</p>
+      <a href="#" class="read-more">Coming Soon →</a>
     </div>
-  </div>
-</section>
 
+  </section>
+
+</div>
+
+<!-- CTA -->
 <section class="cta">
   <h3>Need Parts or Support?</h3>
   <p>Speak directly with our team and get expert assistance today.</p>
   <button class="hero-btn primary-btn" onclick="window.location.href='contact.html'">Contact Us</button>
 </section>
 
+<!-- FOOTER -->
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
