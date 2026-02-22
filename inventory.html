@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TITAN IMAGING | Inventory</title>
+<title>TITAN IMAGING SERVICE | Inventory</title>
 
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
@@ -88,48 +88,56 @@ a {
 
 .hero {
   position: relative;
-  min-height: 400px;
-
+  min-height: 420px;
   background:
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.7) 100%),
     url("inventorybanner.png") center/cover no-repeat;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   text-align: center;
-  padding: 80px 20px;
+  padding: 140px 24px 80px;
 }
 
 .hero h2 {
-  font-size: 42px;
+  font-size: clamp(32px, 4vw, 44px);
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
 }
 
 .hero p {
-  font-size: 18px;
-  color: #DDD;
-  margin-bottom: 35px;
+  font-size: 17px;
+  color: #CCC;
+  margin-bottom: 36px;
+  max-width: 480px;
 }
 
 /* ================= SEARCH ================= */
 
+.search-wrap {
+  width: 100%;
+  max-width: 520px;
+}
+
 .search-bar {
   display: flex;
-  max-width: 500px;
-  width: 100%;
-
-  background: rgba(25,25,25,0.9);
+  background: rgba(17,17,17,0.95);
+  border: 1px solid #222;
   border-radius: 10px;
   overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-bar:focus-within {
+  border-color: #333;
+  box-shadow: 0 0 0 1px rgba(169,180,194,0.2);
 }
 
 .search-bar input {
   flex: 1;
-  padding: 15px;
+  padding: 16px 20px;
   border: none;
   background: transparent;
   color: #FFF;
@@ -137,46 +145,77 @@ a {
   outline: none;
 }
 
+.search-bar input::placeholder {
+  color: #666;
+}
+
 .search-bar button {
-  padding: 15px 25px;
+  padding: 16px 28px;
   background: #A9B4C2;
   color: #111;
   border: none;
   font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.25s ease;
 }
 
 .search-bar button:hover {
-  box-shadow: 0 0 15px #A9B4C2;
-  transform: translateY(-2px);
+  background: #b8c3d0;
+  transform: translateY(-1px);
 }
 
 /* ================= RESULTS ================= */
 
+.results-section {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
 #result {
-  margin: 50px auto;
-  max-width: 600px;
-  padding: 25px;
-
-  background: #111;
-  border-radius: 10px;
-
-  font-size: 18px;
+  margin-top: 48px;
+  padding: 28px 32px;
+  background: #0d0d0d;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  font-size: 17px;
   text-align: center;
+  color: #CCC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  transition: min-height 0.2s ease;
+}
 
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+#result:not(:empty) {
+  min-height: 80px;
+  color: #FFF;
+}
+
+#result.in-stock {
+  border-color: rgba(169,180,194,0.3);
+  color: #A9B4C2;
+}
+
+#result.out-of-stock {
+  color: #888;
+}
+
+#result.not-found {
+  color: #999;
 }
 
 /* ================= FOOTER ================= */
 
 footer {
-  margin-top: 100px;
-  padding: 40px 20px;
+  background: #111;
+  padding: 30px;
   text-align: center;
   font-size: 14px;
   color: #777;
-  background: #111;
+  margin-top: 80px;
 }
 
 /* ================= MOBILE ================= */
@@ -184,7 +223,7 @@ footer {
 @media (max-width: 900px) {
 
   .navbar {
-    padding: 15px 25px;
+    padding: 20px 25px;
     flex-wrap: wrap;
   }
 
@@ -213,8 +252,8 @@ footer {
   }
 
   .hero {
-    min-height: 300px;
-    padding: 60px 15px;
+    min-height: 360px;
+    padding: 120px 20px 60px;
   }
 
   .hero h2 {
@@ -234,8 +273,13 @@ footer {
     width: 100%;
   }
 
+  .results-section {
+    padding: 0 20px 60px;
+  }
+
   #result {
-    max-width: 90%;
+    margin-top: 36px;
+    padding: 24px 20px;
     font-size: 16px;
   }
 
@@ -250,7 +294,7 @@ footer {
 
 <nav class="navbar">
 
-  <h1 onclick="window.location.href='homepage'">TITAN IMAGING SERVICE</h1>
+  <h1 onclick="window.location.href='homepage.html'">TITAN IMAGING SERVICE</h1>
 
   <ul class="nav-links">
     <li><a href="inventory.html">Inventory</a></li>
@@ -273,22 +317,24 @@ footer {
 
 <section class="hero">
 
-  <h2>We have what You need</h2>
+  <h2>We Have What You Need</h2>
 
-  <p>
-   Search our live inventory or call <strong>(904) 742-6265</strong> to talk to someone directly.
-  </p>
+  <p>Search our live inventory or call <strong>(904) 742-6265</strong> to speak with someone directly.</p>
 
-  <div class="search-bar">
-    <input id="searchBox" type="text" placeholder="Enter part number or name">
-    <button onclick="search()">Search</button>
+  <div class="search-wrap">
+    <div class="search-bar">
+      <input id="searchBox" type="text" placeholder="Enter part number or name" onkeypress="if(event.key==='Enter')search()">
+      <button onclick="search()">Search</button>
+    </div>
   </div>
 
 </section>
 
 <!-- ================= RESULTS ================= -->
 
-<div id="result"></div>
+<div class="results-section">
+  <div id="result"></div>
+</div>
 
 <!-- ================= FOOTER ================= -->
 
@@ -311,40 +357,35 @@ const parts = [
 ];
 
 function search() {
-
-  const input = document
-    .getElementById("searchBox")
-    .value
-    .toLowerCase();
-
+  const input = document.getElementById("searchBox").value.trim().toLowerCase();
   const resultDiv = document.getElementById("result");
+
+  resultDiv.className = "";
+
+  if (!input) {
+    resultDiv.innerHTML = "";
+    return;
+  }
 
   let found = false;
 
   for (let part of parts) {
-
-    if (
-      part.id.toLowerCase().includes(input) ||
-      part.name.toLowerCase().includes(input)
-    ) {
-
+    if (part.id.toLowerCase().includes(input) || part.name.toLowerCase().includes(input)) {
       found = true;
-
       if (part.stock > 0) {
-        resultDiv.innerHTML =
-          `${part.name} — In Stock (${part.stock})`;
+        resultDiv.className = "in-stock";
+        resultDiv.innerHTML = `<strong>${part.name}</strong> — In Stock (${part.stock} available)`;
       } else {
-        resultDiv.innerHTML =
-          `${part.name} — Out of Stock`;
+        resultDiv.className = "out-of-stock";
+        resultDiv.innerHTML = `<strong>${part.name}</strong> — Out of Stock`;
       }
-
       break;
     }
   }
 
   if (!found) {
-    resultDiv.innerHTML =
-      "Part not found. Please contact us.";
+    resultDiv.className = "not-found";
+    resultDiv.innerHTML = "Part not found. Please <a href=\"contact.html\" style=\"color:#A9B4C2;text-decoration:underline;\">contact us</a> for assistance.";
   }
 }
 </script>
