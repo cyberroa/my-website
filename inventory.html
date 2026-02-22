@@ -88,37 +88,46 @@ a {
 
 .hero {
   position: relative;
-  min-height: 420px;
+  min-height: 380px;
   background:
-    linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.7) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%),
     url("inventorybanner.png") center/cover no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 140px 24px 80px;
+  padding: 140px 24px 60px;
+}
+
+.hero .eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 12px;
 }
 
 .hero h2 {
-  font-size: clamp(32px, 4vw, 44px);
+  font-size: clamp(32px, 4vw, 42px);
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   letter-spacing: -0.5px;
 }
 
 .hero p {
-  font-size: 17px;
+  font-size: 16px;
   color: #CCC;
-  margin-bottom: 36px;
-  max-width: 480px;
+  margin-bottom: 28px;
+  max-width: 460px;
 }
 
 /* ================= SEARCH ================= */
 
 .search-wrap {
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
 }
 
 .search-bar {
@@ -132,12 +141,12 @@ a {
 
 .search-bar:focus-within {
   border-color: #333;
-  box-shadow: 0 0 0 1px rgba(169,180,194,0.2);
+  box-shadow: 0 0 0 1px rgba(169,180,194,0.15);
 }
 
 .search-bar input {
   flex: 1;
-  padding: 16px 20px;
+  padding: 15px 20px;
   border: none;
   background: transparent;
   color: #FFF;
@@ -146,11 +155,11 @@ a {
 }
 
 .search-bar input::placeholder {
-  color: #666;
+  color: #555;
 }
 
 .search-bar button {
-  padding: 16px 28px;
+  padding: 15px 26px;
   background: #A9B4C2;
   color: #111;
   border: none;
@@ -162,49 +171,160 @@ a {
 
 .search-bar button:hover {
   background: #b8c3d0;
-  transform: translateY(-1px);
 }
 
-/* ================= RESULTS ================= */
+/* ================= FILTERS ================= */
 
-.results-section {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 0 24px 80px;
-}
-
-#result {
-  margin-top: 48px;
-  padding: 28px 32px;
-  background: #0d0d0d;
-  border: 1px solid #1a1a1a;
-  border-radius: 12px;
-  font-size: 17px;
-  text-align: center;
-  color: #CCC;
+.inventory-toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  min-height: 0;
-  transition: min-height 0.2s ease;
+  gap: 10px;
+  margin-top: 24px;
 }
 
-#result:not(:empty) {
-  min-height: 80px;
-  color: #FFF;
+.filter-pill {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid #333;
+  color: #999;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-#result.in-stock {
-  border-color: rgba(169,180,194,0.3);
-  color: #A9B4C2;
+.filter-pill:hover {
+  border-color: #444;
+  color: #CCC;
 }
 
-#result.out-of-stock {
+.filter-pill.active {
+  background: #A9B4C2;
+  border-color: #A9B4C2;
+  color: #111;
+}
+
+/* ================= INVENTORY GRID ================= */
+
+.inventory-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.inventory-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.inventory-header h3 {
+  font-size: 15px;
+  font-weight: 600;
   color: #888;
 }
 
-#result.not-found {
-  color: #999;
+.inventory-header .count {
+  font-size: 14px;
+  color: #666;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.part-card {
+  background: #0d0d0d;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.25s ease;
+}
+
+.part-card:hover {
+  border-color: #2a2a2a;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+
+.part-card .part-id {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #A9B4C2;
+  margin-bottom: 8px;
+}
+
+.part-card .part-name {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.part-card .part-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.part-card .category {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #555;
+}
+
+.part-card .stock-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.part-card .stock-badge.in-stock {
+  background: rgba(169,180,194,0.15);
+  color: #A9B4C2;
+}
+
+.part-card .stock-badge.out-of-stock {
+  background: rgba(255,255,255,0.05);
+  color: #666;
+}
+
+/* ================= EMPTY STATE ================= */
+
+.empty-state {
+  text-align: center;
+  padding: 60px 24px;
+  background: #0a0a0a;
+  border: 1px dashed #222;
+  border-radius: 12px;
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.empty-state a {
+  color: #A9B4C2;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.empty-state a:hover {
+  color: #b8c3d0;
 }
 
 /* ================= FOOTER ================= */
@@ -273,17 +393,25 @@ footer {
     width: 100%;
   }
 
-  .results-section {
-    padding: 0 20px 60px;
+  .inventory-section {
+    padding: 36px 20px 60px;
   }
 
-  #result {
-    margin-top: 36px;
-    padding: 24px 20px;
-    font-size: 16px;
+  .inventory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .part-card {
+    padding: 20px;
+  }
+
+  .filter-pill {
+    padding: 6px 14px;
+    font-size: 12px;
   }
 
 }
+
 
 </style>
 </head>
@@ -316,24 +444,38 @@ footer {
 <!-- ================= HERO ================= -->
 
 <section class="hero">
-
+  <p class="eyebrow">Live Inventory</p>
   <h2>We Have What You Need</h2>
-
-  <p>Search our live inventory or call <strong>(904) 742-6265</strong> to speak with someone directly.</p>
+  <p>Search by part number or name. Call <strong>(904) 742-6265</strong> to speak with someone directly.</p>
 
   <div class="search-wrap">
     <div class="search-bar">
-      <input id="searchBox" type="text" placeholder="Enter part number or name" onkeypress="if(event.key==='Enter')search()">
-      <button onclick="search()">Search</button>
+      <input id="searchBox" type="text" placeholder="Search part number or name..." autocomplete="off">
+      <button type="button" onclick="filterInventory()">Search</button>
+    </div>
+    <div class="inventory-toolbar">
+      <button class="filter-pill active" data-filter="all">All</button>
+      <button class="filter-pill" data-filter="in-stock">In Stock</button>
+      <button class="filter-pill" data-filter="CT">CT</button>
+      <button class="filter-pill" data-filter="PET">PET</button>
+      <button class="filter-pill" data-filter="MRI">MRI</button>
+      <button class="filter-pill" data-filter="General">General</button>
     </div>
   </div>
 
 </section>
 
-<!-- ================= RESULTS ================= -->
+<!-- ================= INVENTORY ================= -->
 
-<div class="results-section">
-  <div id="result"></div>
+<div class="inventory-section">
+  <div class="inventory-header">
+    <h3>Available Parts</h3>
+    <span class="count" id="partCount"></span>
+  </div>
+  <div class="inventory-grid" id="inventoryGrid"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <p>No parts match your search. <a href="contact.html">Contact us</a>—we may be able to source what you need.</p>
+  </div>
 </div>
 
 <!-- ================= FOOTER ================= -->
@@ -351,43 +493,80 @@ function toggleMenu() {
 }
 
 const parts = [
-  { id: "CT1001", name: "CT Board", stock: 5 },
-  { id: "MRI2002", name: "MRI Coil", stock: 0 },
-  { id: "PET3321", name: "PET Sensor", stock: 3 }
+  { id: "CT-1001", name: "CT X-Ray Tube Assembly", category: "CT", stock: 3 },
+  { id: "CT-1002", name: "CT Detector Module", category: "CT", stock: 8 },
+  { id: "CT-1003", name: "CT Gantry Board", category: "CT", stock: 0 },
+  { id: "CT-1004", name: "CT Slip Ring", category: "CT", stock: 2 },
+  { id: "PET-2001", name: "PET Detector Crystal", category: "PET", stock: 5 },
+  { id: "PET-2002", name: "PET PMT Assembly", category: "PET", stock: 0 },
+  { id: "PET-2003", name: "PET Coincidence Board", category: "PET", stock: 4 },
+  { id: "PET-2004", name: "PET Bed Motor", category: "PET", stock: 1 },
+  { id: "MRI-3001", name: "MRI Gradient Coil", category: "MRI", stock: 0 },
+  { id: "MRI-3002", name: "MRI RF Coil", category: "MRI", stock: 2 },
+  { id: "MRI-3003", name: "MRI Console Board", category: "MRI", stock: 6 },
+  { id: "GEN-4001", name: "Power Supply Unit", category: "General", stock: 12 },
+  { id: "GEN-4002", name: "Cooling Fan Assembly", category: "General", stock: 0 },
+  { id: "GEN-4003", name: "Cable Harness Set", category: "General", stock: 15 }
 ];
 
-function search() {
-  const input = document.getElementById("searchBox").value.trim().toLowerCase();
-  const resultDiv = document.getElementById("result");
+let currentFilter = "all";
 
-  resultDiv.className = "";
+function renderPartCard(part) {
+  const inStock = part.stock > 0;
+  return `
+    <div class="part-card">
+      <div class="part-id">${part.id}</div>
+      <div class="part-name">${part.name}</div>
+      <div class="part-meta">
+        <span class="category">${part.category}</span>
+        <span class="stock-badge ${inStock ? 'in-stock' : 'out-of-stock'}">
+          ${inStock ? part.stock + ' in stock' : 'Out of stock'}
+        </span>
+      </div>
+    </div>
+  `;
+}
 
-  if (!input) {
-    resultDiv.innerHTML = "";
-    return;
-  }
+function filterInventory() {
+  const searchVal = document.getElementById("searchBox").value.trim().toLowerCase();
+  const grid = document.getElementById("inventoryGrid");
+  const emptyState = document.getElementById("emptyState");
+  const countEl = document.getElementById("partCount");
 
-  let found = false;
+  let filtered = parts.filter(p => {
+    const matchSearch = !searchVal || 
+      p.id.toLowerCase().includes(searchVal) || 
+      p.name.toLowerCase().includes(searchVal);
+    const matchFilter = currentFilter === "all" || 
+      (currentFilter === "in-stock" ? p.stock > 0 : p.category === currentFilter);
+    return matchSearch && matchFilter;
+  });
 
-  for (let part of parts) {
-    if (part.id.toLowerCase().includes(input) || part.name.toLowerCase().includes(input)) {
-      found = true;
-      if (part.stock > 0) {
-        resultDiv.className = "in-stock";
-        resultDiv.innerHTML = `<strong>${part.name}</strong> — In Stock (${part.stock} available)`;
-      } else {
-        resultDiv.className = "out-of-stock";
-        resultDiv.innerHTML = `<strong>${part.name}</strong> — Out of Stock`;
-      }
-      break;
-    }
-  }
+  grid.innerHTML = filtered.map(renderPartCard).join("");
+  countEl.textContent = `${filtered.length} part${filtered.length !== 1 ? 's' : ''} found`;
 
-  if (!found) {
-    resultDiv.className = "not-found";
-    resultDiv.innerHTML = "Part not found. Please <a href=\"contact.html\" style=\"color:#A9B4C2;text-decoration:underline;\">contact us</a> for assistance.";
+  if (filtered.length === 0) {
+    emptyState.style.display = "block";
+    grid.style.display = "none";
+  } else {
+    emptyState.style.display = "none";
+    grid.style.display = "grid";
   }
 }
+
+document.querySelectorAll(".filter-pill").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-pill").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    filterInventory();
+  });
+});
+
+document.getElementById("searchBox").addEventListener("input", filterInventory);
+document.getElementById("searchBox").addEventListener("keypress", e => { if (e.key === "Enter") filterInventory(); });
+
+filterInventory();
 </script>
 
 </body>
