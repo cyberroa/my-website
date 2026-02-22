@@ -67,184 +67,368 @@ a { text-decoration: none; color: inherit; }
   width: 25px;
   height: 3px;
   background: #FFF;
+  transition: 0.3s;
 }
 
 /* ================= HERO ================= */
 .hero {
-  min-height: 85vh;
+  min-height: 90vh;
   background:
-    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.7) 50%, #000 100%),
     url("titanimagebanner.png") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px 20px;
+  padding: 160px 20px 100px;
+  position: relative;
 }
 
-.hero-content { max-width: 800px; }
+.hero-content { max-width: 900px; }
 
-.hero h2 { font-size: 48px; margin-bottom: 20px; }
+.hero .eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
 
-.hero p { font-size: 20px; color: #DDD; margin-bottom: 40px; }
+.hero h2 {
+  font-size: clamp(40px, 5.5vw, 64px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.35s;
+}
+
+.hero .hero-sub {
+  font-size: clamp(18px, 2vw, 22px);
+  color: #CCC;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 .hero-buttons {
   display: flex;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.65s;
 }
 
 .hero-btn {
-  padding: 14px 28px;
-  border-radius: 6px;
+  padding: 18px 36px;
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 15px;
   border: none;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.35s ease;
 }
 
-.primary-btn { background: #A9B4C2; color: #111; }
+.primary-btn {
+  background: #FFF;
+  color: #000;
+}
 
 .primary-btn:hover {
-  box-shadow: 0 0 15px rgba(169,180,194,0.6);
-  transform: translateY(-2px);
+  background: #A9B4C2;
+  color: #000;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(169,180,194,0.4);
 }
 
 .secondary-btn {
   background: transparent;
-  border: 2px solid #A9B4C2;
-  color: #A9B4C2;
+  border: 2px solid #FFF;
+  color: #FFF;
 }
 
 .secondary-btn:hover {
-  background: #A9B4C2;
-  color: #111;
+  background: rgba(255,255,255,0.1);
+  border-color: #A9B4C2;
+  color: #A9B4C2;
+  transform: translateY(-3px);
 }
+
+/* ================= MISSION BANNER ================= */
+.mission-banner {
+  text-align: center;
+  padding: 80px 40px;
+  max-width: 800px;
+  margin: -60px auto 0;
+  position: relative;
+  z-index: 2;
+}
+
+.mission-banner p {
+  font-size: clamp(20px, 2.5vw, 26px);
+  line-height: 1.6;
+  color: #FFF;
+  font-weight: 500;
+}
+
+.mission-banner .highlight { color: #A9B4C2; font-weight: 600; }
 
 /* ================= SECTIONS ================= */
 .section {
   max-width: 1200px;
-  margin: 100px auto;
+  margin: 0 auto;
   padding: 0 25px;
 }
 
-/* ================= ABOUT ================= */
+/* ================= ABOUT PREVIEW ================= */
 .about-preview {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 50px;
+  gap: 60px;
   align-items: center;
+  margin: 120px auto;
+}
+
+.about-preview .about-text h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 16px;
+}
+
+.about-preview .about-text h2 {
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.about-preview .about-text p {
+  color: #CCC;
+  font-size: 17px;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.about-preview .img-wrap {
+  position: relative;
+}
+
+.about-preview .img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #A9B4C2 0%, transparent 50%);
+  opacity: 0.12;
+  z-index: -1;
 }
 
 .about-preview img {
   width: 100%;
+  height: 380px;
+  object-fit: cover;
   border-radius: 12px;
+  border: 1px solid #222;
 }
 
-.about-preview h3 { font-size: 32px; margin-bottom: 20px; }
-
-.about-preview p { color: #CCC; margin-bottom: 25px; }
+.about-preview .hero-btn {
+  margin-top: 10px;
+}
 
 /* ================= SERVICES ================= */
-.services { text-align: center; }
-
-.services h3 { font-size: 32px; margin-bottom: 40px; }
-
-.service-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-  gap: 30px;
+.services-section {
+  padding: 120px 25px;
+  background: linear-gradient(180deg, #000 0%, #0a0a0a 50%, #000 100%);
 }
 
-.service-card {
-  background: #0b2442;
-  padding: 30px;
-  border-radius: 10px;
-  transition: 0.3s;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(169,180,194,0.6);
-}
-
-.service-card p { color: #BBB; font-size: 15px; }
-
-/* ================= INDUSTRY INSIGHT PREVIEW ================= */
-.container {
-  max-width: 1200px;
-  margin: 100px auto;
-  padding: 0 25px;
-}
-
-.intro {
+.services-section .section-header {
   text-align: center;
   margin-bottom: 60px;
 }
 
-.intro h3 {
-  font-size: 32px;
-  margin-bottom: 20px;
+.services-section .section-header h3 {
+  font-size: clamp(28px, 3vw, 36px);
+  margin-bottom: 12px;
 }
 
-.intro p {
-  color: #CCC;
-  max-width: 800px;
+.services-section .section-header p {
+  color: #888;
+  font-size: 16px;
+  max-width: 500px;
   margin: 0 auto;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background: linear-gradient(145deg, #0d0d0d 0%, #111 100%);
+  padding: 40px 28px;
+  border-radius: 12px;
+  border: 1px solid #1a1a1a;
+  text-align: center;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #A9B4C2, transparent);
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  border-color: #2a2a2a;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.service-card:hover::before { opacity: 0.6; }
+
+.service-card h4 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.service-card p {
+  color: #999;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ================= INDUSTRY INSIGHT ================= */
+.insight-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 25px;
+}
+
+.insight-section .section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.insight-section .section-header h3 {
+  font-size: clamp(28px, 3vw, 36px);
+  margin-bottom: 12px;
+}
+
+.insight-section .section-header p {
+  color: #888;
+  font-size: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
 
 .blog-card {
-  background: #111;
-  padding: 30px;
+  background: #0a0a0a;
+  padding: 36px 32px;
   border-radius: 12px;
-  border: 1px solid #222;
-  transition: 0.3s;
+  border: 1px solid #1a1a1a;
+  transition: all 0.35s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .blog-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(169,180,194,0.4);
+  transform: translateY(-6px);
+  border-color: #2a2a2a;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
 .blog-card h4 {
-  margin-bottom: 15px;
-  color: #A9B4C2;
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #FFF;
+  line-height: 1.4;
 }
 
 .blog-card p {
-  color: #BBB;
+  color: #999;
   font-size: 15px;
-  margin-bottom: 20px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  flex: 1;
 }
 
 .read-more {
   font-weight: 600;
   font-size: 14px;
-  border-bottom: 1px solid #A9B4C2;
-  padding-bottom: 2px;
+  color: #A9B4C2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.3s;
 }
 
-.read-more:hover { color: #A9B4C2; }
+.read-more:hover { gap: 12px; }
 
 /* ================= CTA ================= */
 .cta {
-  background: #111;
   text-align: center;
-  padding: 80px 25px;
-  margin-top: 100px;
+  padding: 100px 40px;
+  background: linear-gradient(180deg, transparent 0%, #0a0a0a 50%, transparent 100%);
+  border-radius: 16px;
+  margin: 80px 25px 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.cta h3 { font-size: 32px; margin-bottom: 20px; }
+.cta h3 {
+  font-size: clamp(28px, 3vw, 36px);
+  margin-bottom: 16px;
+}
 
-.cta p { color: #CCC; margin-bottom: 30px; }
+.cta p {
+  color: #999;
+  font-size: 17px;
+  margin-bottom: 32px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta .hero-btn {
+  padding: 18px 40px;
+}
 
 /* ================= FOOTER ================= */
 footer {
@@ -321,12 +505,22 @@ footer {
   .navbar { padding: 20px 25px; flex-wrap: wrap; }
   .nav-links { display: none; flex-direction: column; width: 100%; }
   .nav-links.active { display: flex; }
+  .nav-links li a { white-space: nowrap; display: block; padding: 12px 0; }
   .hamburger { display: flex; }
-  .hero h2 { font-size: 36px; }
-  .hero p { font-size: 17px; }
-  .about-preview { grid-template-columns: 1fr; }
   .navbar h1 { font-size: 18px; letter-spacing: 1px; }
+  .hero { min-height: 75vh; padding: 120px 20px 60px; }
+  .hero h2 { font-size: 32px; }
+  .hero .hero-sub { font-size: 16px; }
+  .mission-banner { margin-top: -30px; padding: 50px 25px 60px; }
+  .about-preview { grid-template-columns: 1fr; gap: 40px; margin: 80px auto; }
+  .about-preview img { height: 280px; }
+  .service-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .blog-grid { grid-template-columns: 1fr; }
   #chat-window { width: 90%; right: 5%; }
+}
+
+@media (max-width: 600px) {
+  .service-grid { grid-template-columns: 1fr; }
 }
 
 </style>
@@ -353,8 +547,9 @@ footer {
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
+    <p class="eyebrow">PET/CT Solutions Nationwide</p>
     <h2>Seamless Service. Every Time.</h2>
-    <p>Trusted sourcing, repair, and support for medical imaging systems nationwide.</p>
+    <p class="hero-sub">Trusted sourcing, repair, and support for medical imaging systems. Over 30 years of hands-on expertise.</p>
     <div class="hero-buttons">
       <button class="hero-btn primary-btn" onclick="window.location.href='inventory.html'">Browse Inventory</button>
       <button class="hero-btn secondary-btn" onclick="window.location.href='contact.html'">Request Support</button>
@@ -362,10 +557,16 @@ footer {
   </div>
 </section>
 
-<!-- ABOUT -->
+<!-- MISSION -->
+<section class="mission-banner">
+  <p>We keep imaging systems running at peak performance—so healthcare providers can focus on <span class="highlight">what matters most</span>.</p>
+</section>
+
+<!-- ABOUT PREVIEW -->
 <section class="section about-preview">
-  <div>
-    <h3>Industry Experience You Can Trust</h3>
+  <div class="about-text">
+    <h3>Industry Experience</h3>
+    <h2>Trusted by Hospitals & Imaging Centers</h2>
     <p>Titan Imaging provides high-quality CT and PET parts, system solutions, and service support to imaging centers 
       and hospitals nationwide.</p>
     <p>With over 30 years of hands-on experience in GE PET/CT systems, our team ensures reliable installations, precise maintenance, 
@@ -375,30 +576,32 @@ footer {
       responsive service to keep your imaging equipment running at peak performance.</p>
     <button class="hero-btn primary-btn" onclick="window.location.href='about.html'">Learn More</button>
   </div>
-  <img src="scan.png" alt="CT/PET Imaging">
-</section>
-
-<!-- SERVICES -->
-<section class="section services">
-  <h3>Our Core Services</h3>
-  <div class="service-grid">
-    <div class="service-card"><h4>Parts Sourcing</h4><p>OEM and refurbished CT/PET components.</p></div>
-    <div class="service-card"><h4>System Sales</h4><p>Pre-owned and refurbished systems.</p></div>
-    <div class="service-card"><h4>Installation</h4><p>Professional system installation services.</p></div>
-    <div class="service-card"><h4>Partner With Us</h4><p>Collaborate to expand your services.</p></div>
+  <div class="img-wrap">
+    <img src="scan.png" alt="CT/PET Imaging">
   </div>
 </section>
 
-<!-- INDUSTRY INSIGHT SECTION -->
-<div class="container">
-  <section class="intro">
-    <h3>Industry Insight</h3>
-    <p>Stay informed with expert insights on CT scanner installation, PET CT systems, used medical imaging equipment, 
-      and industry best practices. Titan Imaging Service provides in-depth resources to help hospitals, imaging centers, 
-      and equipment brokers make confident, informed decisions.</p>
-  </section>
+<!-- SERVICES -->
+<section class="services-section">
+  <div class="section-header">
+    <h3>Our Core Services</h3>
+    <p>End-to-end solutions for medical imaging—from parts to full system support</p>
+  </div>
+  <div class="service-grid">
+    <div class="service-card"><h4>Parts Sourcing</h4><p>OEM and refurbished CT/PET components for reliable performance.</p></div>
+    <div class="service-card"><h4>System Sales</h4><p>Pre-owned and refurbished systems, professionally vetted.</p></div>
+    <div class="service-card"><h4>Installation</h4><p>Professional system installation and calibration services.</p></div>
+    <div class="service-card"><h4>Partner With Us</h4><p>Collaborate to expand your imaging service capabilities.</p></div>
+  </div>
+</section>
 
-  <section class="blog-grid">
+<!-- INDUSTRY INSIGHT -->
+<section class="insight-section">
+  <div class="section-header">
+    <h3>Industry Insight</h3>
+    <p>Expert insights on CT scanner installation, PET/CT systems, used medical imaging equipment, and industry best practices. Make confident, informed decisions.</p>
+  </div>
+  <div class="blog-grid">
     <div class="blog-card">
       <h4>How Much Does CT Scanner Installation Cost in 2026?</h4>
       <p>Understand the full scope of CT installation costs including site preparation, rigging, compliance, 
@@ -414,11 +617,11 @@ footer {
 
     <div class="blog-card">
       <h4>How to Sell a Used CT Scanner</h4>
-      <p>MLearn how imaging centers can maximize value when selling used CT systems while minimizing downtime and risk.</p>
+      <p>Learn how imaging centers can maximize value when selling used CT systems while minimizing downtime and risk.</p>
       <a href="#" class="read-more">Coming Soon →</a>
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
 <!-- CTA -->
 <section class="cta">

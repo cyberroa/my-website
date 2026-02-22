@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TITAN IMAGING SERVICES| About Us</title>
+<title>TITAN IMAGING SERVICE | About Us</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
@@ -84,94 +84,407 @@ a {
 
 /* ================= HERO ================= */
 .hero {
-  min-height: 350px;
+  min-height: 55vh;
   background:
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.75) 50%, #000 100%),
     url("aboutus.png") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px 20px;
+  padding: 140px 20px 80px;
+  position: relative;
 }
 
 .hero-content {
-  max-width: 800px;
+  max-width: 900px;
+}
+
+.hero .eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
 }
 
 .hero h2 {
-  font-size: 42px;
+  font-size: clamp(36px, 5vw, 56px);
   font-weight: 700;
-  max-width: 900px;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.35s;
+}
+
+.hero .hero-sub {
+  font-size: 18px;
+  color: #CCC;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ================= CONTAINER ================= */
 .container {
   max-width: 1200px;
-  margin: 140px auto 80px auto;
+  margin: 0 auto;
   padding: 0 25px;
+}
+
+/* ================= MISSION BANNER ================= */
+.mission-banner {
+  text-align: center;
+  padding: 80px 40px;
+  max-width: 800px;
+  margin: -40px auto 100px auto;
+  position: relative;
+  z-index: 2;
+}
+
+.mission-banner p {
+  font-size: clamp(20px, 2.5vw, 26px);
+  line-height: 1.6;
+  color: #FFF;
+  font-weight: 500;
+}
+
+.mission-banner .highlight {
+  color: #A9B4C2;
+  font-weight: 600;
 }
 
 /* ================= ABOUT SECTION ================= */
 .about-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 50px;
+  gap: 60px;
   align-items: center;
-  margin-bottom: 100px;
+  margin-bottom: 120px;
 }
 
 .about-text h3 {
-  font-size: 32px;
-  margin-bottom: 20px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 16px;
+}
+
+.about-text h2 {
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.2;
 }
 
 .about-text p {
   color: #CCC;
-  font-size: 16px;
+  font-size: 17px;
   margin-bottom: 20px;
+  line-height: 1.7;
 }
 
-/* Image Styling */
+.about-image-wrap {
+  position: relative;
+}
+
+.about-image-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #A9B4C2 0%, transparent 50%);
+  opacity: 0.15;
+  z-index: -1;
+}
+
 .about-image {
   width: 100%;
-  height: 350px;
+  height: 400px;
   object-fit: cover;
   border-radius: 12px;
   border: 1px solid #222;
 }
 
+/* ================= VALUES SECTION ================= */
+.values-section {
+  margin-bottom: 120px;
+}
+
+.values-section h2 {
+  text-align: center;
+  font-size: clamp(28px, 3vw, 36px);
+  margin-bottom: 16px;
+}
+
+.values-section .section-sub {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+  margin-bottom: 50px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.value-card {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  padding: 36px 28px;
+  text-align: center;
+  transition: all 0.35s ease;
+}
+
+.value-card:hover {
+  border-color: #333;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.value-card .value-icon {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #A9B4C2;
+}
+
+.value-card h4 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.value-card p {
+  color: #999;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
 /* ================= STATS ================= */
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 25px;
-  margin-bottom: 100px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 120px;
 }
 
 .stat-box {
-  background: #111;
-  padding: 35px 25px;
+  background: linear-gradient(145deg, #0d0d0d 0%, #111 100%);
+  padding: 48px 32px;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 0 20px rgba(169,180,194,0.25);
-  transition: 0.3s;
+  border: 1px solid #1a1a1a;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #A9B4C2, transparent);
+  opacity: 0;
+  transition: opacity 0.35s;
 }
 
 .stat-box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 25px rgba(169,180,194,0.5);
+  transform: translateY(-6px);
+  border-color: #2a2a2a;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.stat-box:hover::before {
+  opacity: 0.6;
 }
 
 .stat-box h4 {
-  font-size: 36px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(32px, 4vw, 44px);
+  color: #FFF;
+  margin-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.stat-box .stat-plus {
   color: #A9B4C2;
-  margin-bottom: 10px;
+  font-weight: 500;
 }
 
 .stat-box p {
   font-size: 15px;
-  color: #DDD;
+  color: #999;
+  font-weight: 500;
+}
+
+/* ================= STORY SECTION ================= */
+.story-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-bottom: 120px;
+}
+
+.story-section:nth-child(even) .story-content {
+  order: 2;
+}
+
+.story-section:nth-child(even) .story-visual {
+  order: 1;
+}
+
+.story-content h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 16px;
+}
+
+.story-content h2 {
+  font-size: clamp(26px, 2.5vw, 34px);
+  margin-bottom: 24px;
+  line-height: 1.3;
+}
+
+.story-content p {
+  color: #CCC;
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.story-visual {
+  background: #0a0a0a;
+  border-radius: 12px;
+  padding: 40px;
+  border: 1px solid #1a1a1a;
+}
+
+.story-stat {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px;
+  color: #A9B4C2;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.story-stat-label {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 24px;
+}
+
+.story-list {
+  list-style: none;
+}
+
+.story-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #CCC;
+  font-size: 15px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.story-list li::before {
+  content: '✓';
+  color: #A9B4C2;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ================= CTA SECTION ================= */
+.cta-section {
+  text-align: center;
+  padding: 80px 40px;
+  background: linear-gradient(180deg, transparent 0%, #0a0a0a 50%, transparent 100%);
+  border-radius: 16px;
+  margin-bottom: 80px;
+}
+
+.cta-section h2 {
+  font-size: clamp(28px, 3vw, 36px);
+  margin-bottom: 16px;
+}
+
+.cta-section p {
+  color: #999;
+  font-size: 17px;
+  margin-bottom: 32px;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-buttons a {
+  display: inline-block;
+  padding: 16px 36px;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.cta-primary {
+  background: #FFF;
+  color: #000;
+}
+
+.cta-primary:hover {
+  background: #A9B4C2;
+  color: #000;
+  transform: translateY(-2px);
+}
+
+.cta-secondary {
+  border: 2px solid #333;
+  color: #FFF;
+}
+
+.cta-secondary:hover {
+  border-color: #A9B4C2;
+  color: #A9B4C2;
+  transform: translateY(-2px);
 }
 
 /* ================= FOOTER ================= */
@@ -216,20 +529,69 @@ footer {
     display: flex;
   }
 
+  .hero {
+    min-height: 45vh;
+    padding: 60px 20px;
+  }
+
   .hero h2 {
-    font-size: 36px;
+    font-size: 32px;
+  }
+
+  .mission-banner {
+    margin-top: -20px;
+    padding: 50px 25px 60px;
   }
 
   .about-section {
     grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 80px;
   }
 
   .about-image {
-    height: 250px;
+    height: 280px;
   }
 
-  .about-text h3 {
-    font-size: 26px;
+  .values-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 80px;
+  }
+
+  .story-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 80px;
+  }
+
+  .story-section:nth-child(even) .story-content,
+  .story-section:nth-child(even) .story-visual {
+    order: unset;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .cta-buttons a {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -261,57 +623,108 @@ footer {
 <!-- ================= HERO ================= -->
 <section class="hero">
   <div class="hero-content">
+    <p class="eyebrow">About Titan Imaging</p>
     <h2>Quality & Expertise You Deserve</h2>
+    <p class="hero-sub">Three decades of hands-on PET/CT excellence. Trusted by hospitals and imaging centers nationwide.</p>
   </div>
 </section>
 
 <!-- ================= MAIN ================= -->
 <div class="container">
 
+  <section class="mission-banner">
+    <p>We exist to keep imaging systems running at peak performance—so healthcare providers can focus on what matters most: <span class="highlight">their patients</span>.</p>
+  </section>
+
   <section class="about-section">
     <div class="about-text">
-    <h2>Who We Are</h2> 
-    <p> At <strong>Titan Imaging Service</strong>, we specialize in providing 
-      comprehensive PET/CT solutions tailored to the needs of hospitals, imaging centers, 
-      and private practices. Founded in 2021 in Jacksonville, Florida, our mission is to 
-      deliver reliable, high-quality imaging services that keep systems running smoothly 
-      and patients cared for. </p> 
+      <h3>Who We Are</h3>
+      <h2>Specialists in PET/CT Solutions</h2> 
+    <p>At <strong>Titan Imaging Service</strong>, we provide comprehensive PET/CT solutions tailored to hospitals, imaging centers, and private practices. Founded in 2021 in Jacksonville, Florida, our mission is to deliver reliable, high-quality imaging services that keep systems running smoothly and patients cared for.</p> 
    
-      <p> With decades of experience in the imaging industry, our owner has over 30 years 
-        of hands-on expertise with GE PET/CT systems, including installations, de-installations, 
-        modifications, and sales of refurbished systems and parts. Prior to founding Titan Imaging, 
-        they provided national support as a Regional PET/CT Zone Support Engineer at <strong>GE Healthcare</strong>, 
-        training field engineers, conducting system audits, and overseeing major PET/CT installations across the Southeast. </p> 
+    <p>With decades of experience in the imaging industry, our owner brings over 30 years of hands-on expertise with GE PET/CT systems—including installations, de-installations, modifications, and sales of refurbished systems and parts. Prior to founding Titan Imaging, they served as a Regional PET/CT Zone Support Engineer at <strong>GE Healthcare</strong>, training field engineers, conducting system audits, and overseeing major PET/CT installations across the Southeast.</p> 
     
-      <p> Our team prides itself on technical precision, from aligning complex systems without 
-        specialized tools to troubleshooting and optimizing system performance. We’ve conducted 
-        over 100 PET/CT system audits to ensure compliance with performance specifications, 
-        reduce downtime, and minimize costs for our clients. </p> <p> At Titan Imaging, uptime, 
-        accuracy, and customer satisfaction are our top priorities. We combine in-depth knowledge 
-        of imaging technologies with hands-on experience to provide services that hospitals and 
-        imaging centers can trust. </p>
+    <p>Our team prides itself on technical precision: aligning complex systems without 
+        specialized tools, troubleshooting performance issues, and optimizing operations. We’ve conducted 
+        over 100 PET/CT system audits to ensure compliance, reduce downtime, and minimize costs for our clients.</p>
     </div>
 
-    <img src="abouttitant.png" alt="Titan Imaging Service" class="about-image">
+    <div class="about-image-wrap">
+      <img src="abouttitant.png" alt="Titan Imaging technician working on PET/CT system" class="about-image">
+    </div>
+  </section>
 
+  <section class="values-section">
+    <h2>What Drives Us</h2>
+    <p class="section-sub">The principles that guide every project we undertake</p>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">&#9889;</div>
+        <h4>Uptime First</h4>
+        <p>Minimizing downtime so your facility stays operational and patients receive care without delay.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">&#9675;</div>
+        <h4>Technical Precision</h4>
+        <p>Rigorous alignment, calibration, and optimization to ensure imaging accuracy you can trust.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">&#10003;</div>
+        <h4>Compliance & Audits</h4>
+        <p>Over 100 system audits completed to verify performance specs and reduce operational costs.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">&#9671;</div>
+        <h4>Customer Partnership</h4>
+        <p>We don't just fix systems—we build lasting relationships with facilities we support.</p>
+      </div>
+    </div>
   </section>
 
   <section class="stats">
     <div class="stat-box">
-      <h4>25+</h4>
+      <h4>25<span class="stat-plus">+</span></h4>
       <p>States Served</p>
     </div>
     <div class="stat-box">
-      <h4>10+</h4>
+      <h4>10<span class="stat-plus">+</span></h4>
       <p>Countries Reached</p>
     </div>
     <div class="stat-box">
-      <h4>1,500+</h4>
+      <h4>1,500<span class="stat-plus">+</span></h4>
       <p>Projects Completed</p>
     </div>
     <div class="stat-box">
-      <h4>800+</h4>
+      <h4>800<span class="stat-plus">+</span></h4>
       <p>Facilities Supported</p>
+    </div>
+  </section>
+
+  <section class="story-section">
+    <div class="story-content">
+      <h3>Our Expertise</h3>
+      <h2>Built on Decades of GE PET/CT Mastery</h2>
+      <p>At Titan Imaging, we combine in-depth knowledge of imaging technologies with hands-on experience to provide services that hospitals and imaging centers can trust.</p>
+      <p>Uptime, accuracy, and customer satisfaction are our top priorities. From installations to audits, we bring the same rigor and precision that defined GE Healthcare's standards—now applied directly to your facility.</p>
+    </div>
+    <div class="story-visual">
+      <div class="story-stat">100+</div>
+      <div class="story-stat-label">PET/CT System Audits</div>
+      <ul class="story-list">
+        <li>Performance specification compliance</li>
+        <li>Downtime reduction strategies</li>
+        <li>Cost optimization</li>
+        <li>Field engineer training</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to Partner With Us?</h2>
+    <p>Whether you need a system audit, installation support, or refurbished equipment—we're here to help.</p>
+    <div class="cta-buttons">
+      <a href="contact.html" class="cta-primary">Get in Touch</a>
+      <a href="services.html" class="cta-secondary">View Our Services</a>
     </div>
   </section>
 
