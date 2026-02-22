@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TITAN IMAGING SERVICES | Services</title>
+<title>TITAN IMAGING SERVICE | Services</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-
 /* ================= RESET ================= */
 * {
   box-sizing: border-box;
@@ -20,12 +19,9 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  color: #FFFFFF;
+  color: #FFF;
   line-height: 1.6;
-
-  background:
-    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
-    url("servicesimage.png") center/cover no-repeat fixed;
+  background: #000;
 }
 
 a {
@@ -70,7 +66,6 @@ a {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -85,63 +80,314 @@ a {
   transition: 0.3s;
 }
 
+/* ================= HERO ================= */
+.hero {
+  min-height: 50vh;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 70%, #000 100%),
+    url("servicesimage.png") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 24px 80px;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero .eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 14px;
+}
+
+.hero h2 {
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #CCC;
+  line-height: 1.6;
+}
+
+/* ================= MISSION STRIP ================= */
+.mission-strip {
+  text-align: center;
+  padding: 48px 24px;
+  max-width: 700px;
+  margin: -30px auto 60px auto;
+  position: relative;
+  z-index: 2;
+}
+
+.mission-strip p {
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.6;
+  color: #FFF;
+  font-weight: 500;
+}
+
+.mission-strip .highlight {
+  color: #A9B4C2;
+  font-weight: 600;
+}
+
 /* ================= CONTAINER ================= */
 .container {
-  max-width: 1200px;
-  margin: 140px auto 80px auto; /* added top margin to clear fixed navbar */
-  padding: 0 25px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
 }
 
-/* ================= HEADER ================= */
-.page-header {
+/* ================= SECTION HEADER ================= */
+.section-header {
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 48px;
 }
 
-.page-header h2 {
-  font-size: 38px;
-  margin-bottom: 15px;
+.section-header h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 10px;
 }
 
-.page-header p {
-  font-size: 17px;
-  color: #CCC;
-  max-width: 750px;
-  margin: auto;
+.section-header h2 {
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 700;
 }
 
 /* ================= SERVICES GRID ================= */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 35px;
-  margin-bottom: 100px;
+  gap: 24px;
 }
 
-/* Service Card */
+/* ================= SERVICE CARD ================= */
 .service-card {
-  background: rgba(17,17,17,0.9);
-  padding: 35px 30px;
+  background: rgba(13,13,13,0.95);
+  border: 1px solid #1a1a1a;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(169,180,194,0.25);
-  transition: 0.3s;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .service-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 25px rgba(169,180,194,0.45);
+  border-color: #2a2a2a;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
 }
 
-.service-card h3 {
-  font-size: 22px;
+.service-card.expanded {
+  border-color: rgba(169,180,194,0.3);
+  box-shadow: 0 12px 48px rgba(169,180,194,0.08);
+}
+
+.service-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 28px 20px;
+}
+
+.service-card-header-left {
+  flex: 1;
+}
+
+.service-card .icon {
+  font-size: 28px;
   color: #A9B4C2;
   margin-bottom: 12px;
 }
 
-.service-card p {
-  font-size: 15px;
-  color: #DDD;
+.service-card h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.service-card .preview {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.5;
+}
+
+.service-card .expand-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(169,180,194,0.1);
+  border: 1px solid #222;
+  color: #A9B4C2;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.service-card:hover .expand-btn {
+  background: rgba(169,180,194,0.15);
+  border-color: #333;
+}
+
+.service-card.expanded .expand-btn {
+  transform: rotate(180deg);
+  background: rgba(169,180,194,0.2);
+}
+
+.service-card-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.service-card.expanded .service-card-details {
+  max-height: 500px;
+}
+
+.service-card-details-inner {
+  padding: 0 28px 28px;
+  border-top: 1px solid #1a1a1a;
+  padding-top: 20px;
+  margin-top: 0;
+}
+
+.service-card-details-inner p {
+  font-size: 14px;
+  color: #CCC;
   line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.service-card-details-inner ul {
+  list-style: none;
+}
+
+.service-card-details-inner li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.service-card-details-inner li::before {
+  content: '✓';
+  color: #A9B4C2;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ================= STATS STRIP ================= */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin: 80px 0 80px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 28px 20px;
+  background: rgba(13,13,13,0.8);
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.stat-item:hover {
+  border-color: #2a2a2a;
+}
+
+.stat-item .num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  color: #A9B4C2;
+  margin-bottom: 6px;
+}
+
+.stat-item .label {
+  font-size: 13px;
+  color: #888;
+}
+
+/* ================= CTA SECTION ================= */
+.cta-section {
+  text-align: center;
+  padding: 60px 40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(169,180,194,0.03) 50%, transparent 100%);
+  border-radius: 16px;
+  border: 1px solid #1a1a1a;
+}
+
+.cta-section h3 {
+  font-size: clamp(24px, 3vw, 30px);
+  margin-bottom: 12px;
+}
+
+.cta-section p {
+  color: #999;
+  font-size: 16px;
+  margin-bottom: 28px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-buttons a {
+  display: inline-block;
+  padding: 16px 32px;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.cta-primary {
+  background: #A9B4C2;
+  color: #111;
+}
+
+.cta-primary:hover {
+  background: #b8c3d0;
+  transform: translateY(-2px);
+}
+
+.cta-secondary {
+  border: 2px solid #333;
+  color: #FFF;
+}
+
+.cta-secondary:hover {
+  border-color: #A9B4C2;
+  color: #A9B4C2;
+  transform: translateY(-2px);
 }
 
 /* ================= FOOTER ================= */
@@ -156,7 +402,6 @@ footer {
 
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
-
   .navbar {
     padding: 20px 25px;
     flex-wrap: wrap;
@@ -186,20 +431,41 @@ footer {
     display: flex;
   }
 
-  .page-header h2 {
-    font-size: 30px;
+  .hero {
+    min-height: 42vh;
+    padding: 120px 20px 60px;
   }
 
-  .page-header p {
-    font-size: 15px;
+  .mission-strip {
+    margin-top: -20px;
+    padding: 36px 20px 48px;
   }
 
   .services-grid {
     grid-template-columns: 1fr;
   }
 
+  .stats-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 60px 0 60px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .cta-buttons a {
+    width: 100%;
+    text-align: center;
+  }
 }
 
+@media (max-width: 600px) {
+  .stats-strip {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 
@@ -215,83 +481,200 @@ footer {
     <li><a href="services.html">Services</a></li>
     <li><a href="about.html">About Us</a></li>
     <li><a href="industry-insight.html">Industry Insight</a></li>
-
   </ul>
-
   <div class="hamburger" onclick="toggleMenu()">
     <div></div>
     <div></div>
     <div></div>
   </div>
-
 </nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="eyebrow">What We Offer</p>
+    <h2>CT & PET Solutions That Keep You Running</h2>
+    <p>Comprehensive services designed to maximize uptime, optimize performance, and support your imaging operations from installation to ongoing maintenance.</p>
+  </div>
+</section>
+
+<!-- ================= MISSION STRIP ================= -->
+<div class="mission-strip">
+  <p>We combine <span class="highlight">30+ years of GE expertise</span> with hands-on precision—so your facility stays operational and your patients receive the care they need.</p>
+</div>
 
 <!-- ================= MAIN ================= -->
 <div class="container">
 
-  <!-- Header -->
-  <section class="page-header">
+  <div class="section-header">
+    <h3>Our Services</h3>
+    <h2>Click any service to learn more</h2>
+  </div>
 
-    <h2>Our Services</h2>
+  <section class="services-grid">
 
-    <p>
-      Titan Imaging delivers comprehensive CT and PET solutions designed to
-      support your operations, maximize uptime, and ensure dependable performance.
-    </p>
+    <div class="service-card" data-service="1">
+      <div class="service-card-header">
+        <div class="service-card-header-left">
+          <div class="icon">&#9671;</div>
+          <h4>Installation & De-Installation</h4>
+          <p class="preview">Professional coordination and execution of equipment removal and re-installation.</p>
+        </div>
+        <span class="expand-btn">&#9660;</span>
+      </div>
+      <div class="service-card-details">
+        <div class="service-card-details-inner">
+          <p>We handle every aspect of equipment transitions—from careful de-installation to precise re-installation—ensuring minimal downtime and seamless system integration.</p>
+          <ul>
+            <li>Site assessment and planning</li>
+            <li>Coordination with facility teams</li>
+            <li>Minimal disruption to operations</li>
+            <li>Post-installation verification</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-service="2">
+      <div class="service-card-header">
+        <div class="service-card-header-left">
+          <div class="icon">&#9671;</div>
+          <h4>Transportation & Logistics</h4>
+          <p class="preview">Secure, reliable transportation for imaging systems and components.</p>
+        </div>
+        <span class="expand-btn">&#9660;</span>
+      </div>
+      <div class="service-card-details">
+        <div class="service-card-details-inner">
+          <p>Our logistics network ensures your equipment arrives safely and on time. We follow industry best practices for handling sensitive medical imaging systems.</p>
+          <ul>
+            <li>Specialized packaging and crating</li>
+            <li>Climate-controlled transport options</li>
+            <li>Full tracking and documentation</li>
+            <li>White-glove delivery when needed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-service="3">
+      <div class="service-card-header">
+        <div class="service-card-header-left">
+          <div class="icon">&#9671;</div>
+          <h4>Technical Training</h4>
+          <p class="preview">On-site and remote training to equip your staff with confidence.</p>
+        </div>
+        <span class="expand-btn">&#9660;</span>
+      </div>
+      <div class="service-card-details">
+        <div class="service-card-details-inner">
+          <p>Customized training programs designed to help your team operate systems efficiently, troubleshoot common issues, and maintain peak performance.</p>
+          <ul>
+            <li>On-site and remote options</li>
+            <li>Hands-on system operation</li>
+            <li>Basic troubleshooting skills</li>
+            <li>Documentation and best practices</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-service="4">
+      <div class="service-card-header">
+        <div class="service-card-header-left">
+          <div class="icon">&#9671;</div>
+          <h4>System Sales</h4>
+          <p class="preview">Refurbished and pre-owned CT and PET systems tailored to your needs.</p>
+        </div>
+        <span class="expand-btn">&#9660;</span>
+      </div>
+      <div class="service-card-details">
+        <div class="service-card-details-inner">
+          <p>Quality refurbished systems for hospitals, imaging centers, and private practices. Each system is thoroughly tested and backed by our expertise.</p>
+          <ul>
+            <li>GE PET/CT systems</li>
+            <li>Pre-purchase consultation</li>
+            <li>Installation and commissioning</li>
+            <li>Warranty and support options</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-service="5">
+      <div class="service-card-header">
+        <div class="service-card-header-left">
+          <div class="icon">&#9671;</div>
+          <h4>Service Contracts</h4>
+          <p class="preview">Flexible agreements for ongoing maintenance and support.</p>
+        </div>
+        <span class="expand-btn">&#9660;</span>
+      </div>
+      <div class="service-card-details">
+        <div class="service-card-details-inner">
+          <p>Ongoing maintenance, technical support, and performance optimization tailored to your facility's needs and budget.</p>
+          <ul>
+            <li>Preventive maintenance schedules</li>
+            <li>Priority response times</li>
+            <li>Performance optimization</li>
+            <li>Flexible terms</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card" data-service="6">
+      <div class="service-card-header">
+        <div class="service-card-header-left">
+          <div class="icon">&#9671;</div>
+          <h4>Parts & Support</h4>
+          <p class="preview">Rapid access to OEM and refurbished parts with expert support.</p>
+        </div>
+        <span class="expand-btn">&#9660;</span>
+      </div>
+      <div class="service-card-details">
+        <div class="service-card-details-inner">
+          <p>Keep your equipment operating at peak performance with fast access to quality parts and expert technical support when you need it.</p>
+          <ul>
+            <li>OEM and refurbished parts</li>
+            <li>Live inventory search</li>
+            <li>Expert technical guidance</li>
+            <li>Rapid shipping options</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
   </section>
 
-  <!-- Services -->
-  <section class="services-grid">
-
-    <div class="service-card">
-      <h3>Installation & De-Installation</h3>
-      <p>
-        Professional coordination and execution of equipment removal and re-installation,
-        ensuring minimal downtime and seamless system transitions.
-      </p>
+  <!-- ================= STATS ================= -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="num">25+</div>
+      <div class="label">States Served</div>
     </div>
-
-    <div class="service-card">
-      <h3>Transportation & Logistics</h3>
-      <p>
-        Secure, reliable transportation services for imaging systems and components,
-        managed with precision and industry best practices.
-      </p>
+    <div class="stat-item">
+      <div class="num">100+</div>
+      <div class="label">System Audits</div>
     </div>
-
-    <div class="service-card">
-      <h3>Technical Training</h3>
-      <p>
-        On-site and remote training programs designed to equip your staff with
-        the knowledge and confidence to operate systems efficiently.
-      </p>
+    <div class="stat-item">
+      <div class="num">1,500+</div>
+      <div class="label">Projects Completed</div>
     </div>
-
-    <div class="service-card">
-      <h3>System Sales</h3>
-      <p>
-        Refurbished and pre-owned CT and PET systems tailored to meet the needs
-        of hospitals, imaging centers, and private practices.
-      </p>
+    <div class="stat-item">
+      <div class="num">30+</div>
+      <div class="label">Years Experience</div>
     </div>
+  </div>
 
-    <div class="service-card">
-      <h3>Service Contracts</h3>
-      <p>
-        Flexible service agreements that provide ongoing maintenance, technical
-        support, and performance optimization.
-      </p>
+  <!-- ================= CTA ================= -->
+  <section class="cta-section">
+    <h3>Ready to Get Started?</h3>
+    <p>Whether you need a system audit, installation support, or a quote—we're here to help.</p>
+    <div class="cta-buttons">
+      <a href="contact.html" class="cta-primary">Contact Us</a>
+      <a href="inventory.html" class="cta-secondary">Browse Inventory</a>
     </div>
-
-    <div class="service-card">
-      <h3>Parts & Support</h3>
-      <p>
-        Rapid access to OEM and refurbished parts with expert support to keep
-        your equipment operating at peak performance.
-      </p>
-    </div>
-
   </section>
 
 </div>
@@ -306,8 +689,18 @@ function toggleMenu() {
   const navLinks = document.querySelector('.nav-links');
   navLinks.classList.toggle('active');
 }
+
+// Expandable service cards
+document.querySelectorAll('.service-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const wasExpanded = card.classList.contains('expanded');
+    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('expanded'));
+    if (!wasExpanded) {
+      card.classList.add('expanded');
+    }
+  });
+});
 </script>
 
 </body>
 </html>
-
