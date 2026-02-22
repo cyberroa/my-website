@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-
 /* ================= RESET ================= */
 * {
   box-sizing: border-box;
@@ -67,7 +66,6 @@ a {
   text-shadow: 0 0 6px rgba(169,180,194,0.6);
 }
 
-/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -84,92 +82,196 @@ a {
 
 /* ================= HERO ================= */
 .hero {
-  min-height: 300px;
+  min-height: 42vh;
   background:
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 70%, #000 100%),
     url("aboutus.png") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px 20px;
+  padding: 140px 24px 80px;
+}
+
+.hero-content {
+  max-width: 720px;
+}
+
+.hero .eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 14px;
 }
 
 .hero h2 {
-  font-size: 42px;
+  font-size: clamp(34px, 4.5vw, 48px);
   font-weight: 700;
-  max-width: 900px;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+
+.hero p {
+  font-size: 17px;
+  color: #CCC;
+  line-height: 1.6;
 }
 
 /* ================= CONTAINER ================= */
 .container {
-  max-width: 1200px;
-  margin: 140px auto 80px auto;
-  padding: 0 25px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
 }
 
 /* ================= INTRO ================= */
 .intro {
   text-align: center;
-  max-width: 800px;
-  margin: 0 auto 80px auto;
-}
-
-.intro h3 {
-  font-size: 30px;
-  margin-bottom: 20px;
+  max-width: 680px;
+  margin: -20px auto 56px auto;
 }
 
 .intro p {
-  color: #CCC;
-  font-size: 16px;
+  font-size: clamp(17px, 2vw, 19px);
+  color: #999;
+  line-height: 1.7;
 }
 
 /* ================= BLOG GRID ================= */
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 35px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
 }
 
-/* Blog Card */
+/* ================= BLOG CARD ================= */
 .blog-card {
-  background: #111;
-  padding: 30px;
+  background: rgba(13,13,13,0.95);
+  border: 1px solid #1a1a1a;
   border-radius: 12px;
-  border: 1px solid #222;
-  transition: 0.3s;
-  box-shadow: 0 0 20px rgba(169,180,194,0.15);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .blog-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 25px rgba(169,180,194,0.4);
+  border-color: #2a2a2a;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.blog-card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: #0a0a0a;
+}
+
+.blog-card-body {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.blog-card .category {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+}
+
+.blog-card .date {
+  font-size: 12px;
+  color: #555;
+}
+
+.blog-card .coming-soon {
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  background: rgba(255,255,255,0.05);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-left: auto;
 }
 
 .blog-card h4 {
-  font-size: 20px;
-  margin-bottom: 15px;
-  color: #A9B4C2;
-}
-
-.blog-card p {
-  font-size: 15px;
-  color: #CCC;
-  margin-bottom: 20px;
-}
-
-.read-more {
+  font-size: 17px;
   font-weight: 600;
-  font-size: 14px;
+  line-height: 1.35;
+  margin-bottom: 12px;
   color: #FFF;
-  border-bottom: 1px solid #A9B4C2;
-  padding-bottom: 2px;
-  transition: 0.3s;
 }
 
-.read-more:hover {
+.blog-card .excerpt {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.blog-card .read-more {
+  font-size: 14px;
+  font-weight: 600;
   color: #A9B4C2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.blog-card .read-more:hover {
+  color: #b8c3d0;
+}
+
+.blog-card .read-more.disabled {
+  color: #555;
+  cursor: default;
+}
+
+.blog-card .read-more.disabled:hover {
+  color: #555;
+}
+
+/* ================= FEATURED CARD (First post) ================= */
+.blog-card.featured {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.blog-card.featured .blog-card-image {
+  height: 100%;
+  min-height: 280px;
+}
+
+.blog-card.featured .blog-card-body {
+  padding: 36px 40px;
+  justify-content: center;
+}
+
+.blog-card.featured h4 {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.blog-card.featured .excerpt {
+  font-size: 16px;
+  color: #999;
 }
 
 /* ================= FOOTER ================= */
@@ -184,7 +286,6 @@ footer {
 
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
-
   .navbar {
     padding: 20px 25px;
     flex-wrap: wrap;
@@ -214,15 +315,33 @@ footer {
     display: flex;
   }
 
-  .hero h2 {
-    font-size: 36px;
+  .hero {
+    min-height: 36vh;
+    padding: 120px 20px 60px;
   }
 
-  .intro h3 {
-    font-size: 24px;
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .blog-card.featured {
+    grid-column: 1;
+    grid-template-columns: 1fr;
+  }
+
+  .blog-card.featured .blog-card-image {
+    min-height: 200px;
+  }
+
+  .blog-card.featured .blog-card-body {
+    padding: 24px;
+  }
+
+  .blog-card.featured h4 {
+    font-size: 18px;
   }
 }
-
 </style>
 </head>
 
@@ -238,62 +357,81 @@ footer {
     <li><a href="services.html">Services</a></li>
     <li><a href="about.html">About Us</a></li>
     <li><a href="industry-insight.html">Industry Insight</a></li>
-
   </ul>
-
   <div class="hamburger" onclick="toggleMenu()">
     <div></div>
     <div></div>
     <div></div>
   </div>
-
 </nav>
 
 <!-- ================= HERO ================= -->
 <section class="hero">
-  <h2>Industry Insight</h2>
+  <div class="hero-content">
+    <p class="eyebrow">The Blog</p>
+    <h2>Industry Insight</h2>
+    <p>Expert knowledge on CT & PET systems, installation, and market intelligence for healthcare facilities.</p>
+  </div>
 </section>
 
 <!-- ================= MAIN ================= -->
 <div class="container">
 
   <section class="intro">
-    <h3>Imaging Equipment Knowledge & Market Intelligence</h3>
-    <p>
-      Stay informed with expert insights on CT scanner installation, PET CT systems,
-      used medical imaging equipment, and industry best practices. Titan Imaging Service
-      provides in-depth resources to help hospitals, imaging centers, and equipment
-      brokers make confident, informed decisions.
-    </p>
+    <p>Stay informed with in-depth resources on imaging equipment, best practices, and industry trends. Built from decades of hands-on experience to help you make confident decisions.</p>
   </section>
 
   <section class="blog-grid">
 
-    <div class="blog-card">
-      <h4>How Much Does CT Scanner Installation Cost in 2026?</h4>
-      <p>Understand the full scope of CT installation costs including site preparation,
-      rigging, compliance, and technical calibration requirements.</p>
-      <a href="ct-scanner-installation-cost.html" class="read-more">Read More →</a>
-    </div>
+    <!-- Featured Post -->
+    <article class="blog-card featured">
+      <img src="servicesimage.png" alt="CT scanner and medical imaging technology" class="blog-card-image">
+      <div class="blog-card-body">
+        <div class="blog-card-meta">
+          <span class="category">Installation</span>
+          <span class="date">2026</span>
+        </div>
+        <h4>How Much Does CT Scanner Installation Cost in 2026?</h4>
+        <p class="excerpt">Understand the full scope of CT installation costs—including site preparation, rigging, compliance, and technical calibration requirements. A practical guide for facilities planning an upgrade or new installation.</p>
+        <a href="ct-scanner-installation-cost.html" class="read-more">Read Article &#8594;</a>
+      </div>
+    </article>
 
-    <div class="blog-card">
-      <h4>Complete Guide to Deinstalling a PET CT System Safely</h4>
-      <p>A step-by-step breakdown of safe PET CT system removal, transportation,
-      and regulatory considerations for facilities.</p>
-      <a href="#" class="read-more">Coming Soon →</a>
-    </div>
+    <!-- Post 2 -->
+    <article class="blog-card">
+      <img src="abouttitant.png" alt="Technician working on PET/CT system" class="blog-card-image">
+      <div class="blog-card-body">
+        <div class="blog-card-meta">
+          <span class="category">De-Installation</span>
+          <span class="date">—</span>
+          <span class="coming-soon">Coming Soon</span>
+        </div>
+        <h4>Complete Guide to Deinstalling a PET CT System Safely</h4>
+        <p class="excerpt">A step-by-step breakdown of safe PET CT system removal, transportation logistics, and regulatory considerations for facilities.</p>
+        <span class="read-more disabled">Coming Soon</span>
+      </div>
+    </article>
 
-    <div class="blog-card">
-      <h4>How to Sell a Used CT Scanner</h4>
-      <p>Learn how imaging centers can maximize value when selling used CT systems
-      while minimizing downtime and risk.</p>
-      <a href="#" class="read-more">Coming Soon →</a>
-    </div>
+    <!-- Post 3 -->
+    <article class="blog-card">
+      <img src="scan.png" alt="CT/PET imaging scan" class="blog-card-image">
+      <div class="blog-card-body">
+        <div class="blog-card-meta">
+          <span class="category">Selling</span>
+          <span class="date">—</span>
+          <span class="coming-soon">Coming Soon</span>
+        </div>
+        <h4>How to Sell a Used CT Scanner</h4>
+        <p class="excerpt">Learn how imaging centers can maximize value when selling used CT systems while minimizing downtime and risk.</p>
+        <span class="read-more disabled">Coming Soon</span>
+      </div>
+    </article>
 
   </section>
 
 </div>
 
+<!-- ================= FOOTER ================= -->
 <footer>
   &copy; 2026 TITAN IMAGING SERVICE. All Rights Reserved.
 </footer>
