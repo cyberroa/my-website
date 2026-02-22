@@ -20,15 +20,15 @@
 /* ================= BASE ================= */
 body {
   font-family: 'Inter', sans-serif;
-  background: #000000;
-  color: #FFFFFF;
+  background: #000;
+  color: #FFF;
   line-height: 1.6;
   position: relative;
 }
 
 a { text-decoration: none; color: inherit; }
 
-/* ================= BACKGROUND IMAGE ================= */
+/* ================= BACKGROUND ================= */
 body::before {
   content: "";
   position: fixed;
@@ -36,8 +36,8 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.85) 40%, #000 100%),
     url('servicesimage.png') center/cover no-repeat;
   z-index: -1;
 }
@@ -90,69 +90,150 @@ body::before {
   width: 25px;
   height: 3px;
   background: #FFF;
+  transition: 0.3s;
+}
+
+/* ================= HERO ================= */
+.contact-hero {
+  text-align: center;
+  padding: 140px 24px 60px;
+}
+
+.contact-hero .eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #A9B4C2;
+  margin-bottom: 12px;
+}
+
+.contact-hero h2 {
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.contact-hero p {
+  font-size: 17px;
+  color: #CCC;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ================= CONTACT INFO BAR ================= */
+.contact-info-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 32px;
+  padding: 20px 24px;
+}
+
+.contact-info-bar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #CCC;
+  transition: color 0.2s;
+}
+
+.contact-info-bar a:hover {
+  color: #A9B4C2;
+}
+
+.contact-info-bar .icon {
+  font-size: 18px;
+  color: #A9B4C2;
 }
 
 /* ================= MAIN ================= */
 .container {
-  max-width: 1200px;
-  margin: 140px auto 0 auto;
-  padding: 0 25px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
 }
 
 /* ================= SPLIT LAYOUT ================= */
 .contact-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 50px;
-  margin-bottom: 100px;
+  gap: 40px;
+  align-items: start;
 }
 
 /* ================= CARDS ================= */
 .card {
-  background: #111;
-  padding: 40px;
-  border-radius: 14px;
-  box-shadow: 0 0 20px rgba(169,180,194,0.15);
-  transition: 0.3s;
+  background: rgba(17,17,17,0.95);
+  border: 1px solid #1a1a1a;
+  padding: 36px 32px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
-  box-shadow: 0 0 30px rgba(169,180,194,0.35);
+  border-color: #252525;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
 
-.card h3 {
-  margin-bottom: 25px;
+.card-header {
+  margin-bottom: 28px;
+}
+
+.card-header h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   color: #A9B4C2;
+  margin-bottom: 6px;
+}
+
+.card-header p {
+  font-size: 15px;
+  color: #888;
 }
 
 /* ================= FORM ================= */
 .form-group {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
-label {
+.form-group label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
+  color: #CCC;
 }
 
 input,
 textarea {
   width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #333;
-  background: #1F1F1F;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid #222;
+  background: #0d0d0d;
   color: #FFF;
   font-size: 15px;
+  font-family: inherit;
   outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #555;
 }
 
 input:focus,
 textarea:focus {
-  border-color: #A9B4C2;
-  box-shadow: 0 0 6px rgba(169,180,194,0.4);
+  border-color: #333;
+  box-shadow: 0 0 0 1px rgba(169,180,194,0.2);
 }
 
 textarea {
@@ -160,59 +241,83 @@ textarea {
   min-height: 120px;
 }
 
-button {
+.submit-btn {
   width: 100%;
-  padding: 15px;
+  padding: 16px;
   background: #A9B4C2;
   color: #111;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.25s ease;
+  margin-top: 8px;
 }
 
-button:hover {
-  box-shadow: 0 0 15px rgba(169,180,194,0.6);
-  transform: translateY(-2px);
+.submit-btn:hover {
+  background: #b8c3d0;
+  transform: translateY(-1px);
 }
 
 #success {
   display: none;
   margin-top: 20px;
+  padding: 16px;
+  background: rgba(169,180,194,0.1);
+  border: 1px solid rgba(169,180,194,0.2);
+  border-radius: 8px;
   color: #A9B4C2;
   text-align: center;
+  font-weight: 500;
 }
 
-/* NOTE INSIDE FORM */
+/* ================= NOTE ================= */
 .note {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #CCC;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #1a1a1a;
+  font-size: 13px;
+  color: #888;
+  line-height: 1.6;
+}
+
+.note strong {
+  color: #999;
+}
+
+.note a {
+  color: #A9B4C2;
+  text-decoration: underline;
+}
+
+.note a:hover {
+  color: #b8c3d0;
 }
 
 /* ================= CALENDLY ================= */
-.calendly-inline-widget {
+.calendly-card .calendly-inline-widget {
   min-width: 320px;
   height: 700px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 /* ================= FOOTER ================= */
 footer {
-  margin-top: 80px;
+  background: #111;
   padding: 30px;
   text-align: center;
   font-size: 14px;
   color: #777;
-  background: #111;
+  margin-top: 80px;
 }
 
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
 
   .navbar {
-    padding: 15px 25px;
+    padding: 20px 25px;
     flex-wrap: wrap;
   }
 
@@ -230,12 +335,32 @@ footer {
     display: flex;
   }
 
+  .nav-links li a {
+    white-space: nowrap;
+    display: block;
+    padding: 12px 0;
+  }
+
   .hamburger {
     display: flex;
   }
 
+  .contact-hero {
+    padding: 120px 20px 48px;
+  }
+
+  .contact-info-bar {
+    flex-direction: column;
+    gap: 16px;
+  }
+
   .contact-split {
     grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .card {
+    padding: 28px 24px;
   }
 
   .calendly-inline-widget {
@@ -267,6 +392,17 @@ footer {
   </div>
 </nav>
 
+<!-- HERO -->
+<section class="contact-hero">
+  <p class="eyebrow">Get in Touch</p>
+  <h2>We're Here to Help</h2>
+  <p>Have a question about our PET/CT services, inventory, or need a quote? Reach out—we typically respond within 24 hours.</p>
+  <div class="contact-info-bar">
+    <a href="tel:9047426265"><span class="icon">&#9742;</span> (904) 742-6265</a>
+    <a href="mailto:info@test.com"><span class="icon">&#9993;</span> info@test.com</a>
+  </div>
+</section>
+
 <!-- MAIN -->
 <div class="container">
 
@@ -274,47 +410,47 @@ footer {
 
     <!-- LEFT: CONTACT FORM -->
     <div class="card">
-      <h3>Send Us a Message</h3>
+      <div class="card-header">
+        <h3>Send Us a Message</h3>
+        <p>Fill out the form below and we'll get back to you shortly.</p>
+      </div>
 
       <form id="contactForm">
         <div class="form-group">
-          <label>Name</label>
-          <input type="text" required>
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your name" required>
         </div>
         <div class="form-group">
-          <label>Email</label>
-          <input type="email" required>
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="you@example.com" required>
         </div>
         <div class="form-group">
-          <label>Phone</label>
-          <input type="tel">
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" placeholder="(555) 555-5555">
         </div>
         <div class="form-group">
-          <label>Message</label>
-          <textarea></textarea>
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="How can we help?"></textarea>
         </div>
-        <button type="submit">Submit Inquiry</button>
-        <div id="success">Thank you! Your message has been received.</div>
+        <button type="submit" class="submit-btn">Submit Inquiry</button>
+        <div id="success">Thank you! Your message has been received. We'll be in touch soon.</div>
 
-        <!-- NOTE MOVED INSIDE FORM -->
         <div class="note">
-          <strong>NOTE:</strong> Please be cautious of anyone impersonating any member of the Titan Imaging Service Team. 
-          There are a number of scams going on, especially now with AI tools. If you suspect anything, 
-          please call our main number <a href="tel:9047426265" style="color:#A9B4C2; text-decoration:underline;">(904) 742-6265</a> or email
-          <a href="mailto:info@test.com" style="color:#A9B4C2; text-decoration:underline;">info@test.com</a>.
+          <strong>Security Note:</strong> Please be cautious of anyone impersonating the Titan Imaging Service team. If you suspect fraud, verify by calling <a href="tel:9047426265">(904) 742-6265</a> or emailing <a href="mailto:info@test.com">info@test.com</a> directly.
         </div>
-
       </form>
     </div>
 
-    <!-- RIGHT: CALENDAR -->
-    <div class="card">
-      <h3>Ready to Schedule?</h3>
+    <!-- RIGHT: CALENDLY -->
+    <div class="card calendly-card">
+      <div class="card-header">
+        <h3>Ready to Schedule?</h3>
+        <p>Book a call at a time that works for you.</p>
+      </div>
 
       <div class="calendly-inline-widget"
            data-url="https://calendly.com/titanimagingservice?primary_color=A9B4C2&text_color=FFFFFF&background_color=081832">
       </div>
-
     </div>
 
   </div>
