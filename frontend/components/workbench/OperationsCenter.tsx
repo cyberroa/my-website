@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { MOCK_TEAM_ACTIONS, TEAM_ACTION_STATE_STYLE } from "@/lib/workbench-team-actions";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
+import { MOCK_TEAM_ACTIONS, TEAM_ACTION_STATE_STYLE, teamActionPath } from "@/lib/workbench-team-actions";
 
 const workspaces = [
   {
@@ -102,9 +104,28 @@ const opportunities: {
   },
 ];
 
-function ramp(start: number, end: number, n = 30) {
-  return Array.from({ length: n }, (_, i) => {
-    const t = i / (n - 1);
+const KPI_RANGES = [
+  { id: "6m", label: "Last 6 months", points: 26 },
+  { id: "90d", label: "Last 90 days", points: 45 },
+  { id: "30d", label: "Last 30 days", points: 30 },
+  { id: "7d", label: "Last 7 days", points: 7 },
+  { id: "24h", label: "Last 24 hours", points: 24 },
+] as const;
+
+type KpiRangeId = (typeof KPI_RANGES)[number]["id"];
+
+const RANGE_SCALE: Record<KpiRangeId, { volume: number; delta: number }> = {
+  "24h": { volume: 0.04, delta: 0.2 },
+  "7d": { volume: 0.28, delta: 0.48 },
+  "30d": { volume: 1, delta: 1 },
+  "90d": { volume: 2.55, delta: 1.32 },
+  "6m": { volume: 4.7, delta: 1.65 },
+};
+
+function ramp(start: number, end: number, n: number) {
+  const steps = Math.max(n, 2);
+  return Array.from({ length: steps }, (_, i) => {
+    const t = i / (steps - 1);
     const base = start + (end - start) * t;
     const w = Math.sin(i * 1.17) * (end - start) * 0.045;
     return { i, v: Math.round((base + w) * 10) / 10 };
@@ -125,47 +146,61 @@ function deltaColor(kind: "workflow" | "outcome", pct: number) {
   return pct >= 0 ? EMERALD : TERRACOTTA;
 }
 
-const kpis: {
-  label: string;
-  value: string;
-  deltaPct: number;
-  kind: "workflow" | "outcome";
-  href: string;
-  data: { i: number; v: number }[];
-}[] = [
+const KPI_BASE = [
   {
     label: "Workflow impact",
-    value: "512",
+    end: 512,
+    start: 398,
     deltaPct: 22,
-    kind: "workflow",
+    kind: "workflow" as const,
     href: "/workbench/analytics",
-    data: ramp(398, 512),
+    format: (n: number) => String(Math.round(n)),
   },
   {
     label: "Pipeline influenced",
-    value: "$48.7M",
+    end: 48.7,
+    start: 39.8,
     deltaPct: 18,
-    kind: "outcome",
+    kind: "outcome" as const,
     href: "/workbench/sales",
-    data: ramp(39.8, 48.7),
+    format: (n: number) => `$${n.toFixed(1)}M`,
   },
   {
     label: "Engaged accounts",
-    value: "142",
+    end: 142,
+    start: 108,
     deltaPct: 24,
-    kind: "outcome",
+    kind: "outcome" as const,
     href: "/workbench/customers",
-    data: ramp(108, 142),
+    format: (n: number) => String(Math.round(n)),
   },
   {
     label: "Meetings booked",
-    value: "37",
+    end: 37,
+    start: 29,
     deltaPct: 16,
-    kind: "outcome",
+    kind: "outcome" as const,
     href: "/workbench/outreach",
-    data: ramp(29, 37),
+    format: (n: number) => String(Math.round(n)),
   },
 ];
+
+function kpisForRange(rangeId: KpiRangeId) {
+  const range = KPI_RANGES.find((r) => r.id === rangeId) ?? KPI_RANGES[2];
+  const scale = RANGE_SCALE[range.id];
+  return KPI_BASE.map((kpi) => {
+    const end = kpi.end * scale.volume;
+    const start = kpi.start * scale.volume;
+    return {
+      label: kpi.label,
+      value: kpi.format(end),
+      deltaPct: Math.round(kpi.deltaPct * scale.delta),
+      kind: kpi.kind,
+      href: kpi.href,
+      data: ramp(start, end, range.points),
+    };
+  });
+}
 
 function Sparkline({ data, color }: { data: { i: number; v: number }[]; color: string }) {
   const vals = data.map((d) => d.v);
@@ -230,6 +265,9 @@ function PriorityBadge({ priority }: { priority: Priority }) {
 
 export function OperationsCenter() {
   const router = useRouter();
+  const [rangeId, setRangeId] = useState<KpiRangeId>("30d");
+  const range = KPI_RANGES.find((r) => r.id === rangeId) ?? KPI_RANGES[2];
+  const kpis = useMemo(() => kpisForRange(rangeId), [rangeId]);
   return (
     <section className="mx-auto max-w-7xl px-6 pt-10 text-white">
       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent-admin">
@@ -259,7 +297,19 @@ export function OperationsCenter() {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 flex justify-end">
+        <label className="flex w-max items-center gap-2.5 text-xs">
+          <span className="shrink-0 text-white/45">Time range:</span>
+          <WorkbenchSelect
+            className="min-w-0"
+            fitToOptions
+            value={rangeId}
+            onChange={(v) => setRangeId(v as KpiRangeId)}
+            options={KPI_RANGES.map((r) => ({ value: r.id, label: r.label }))}
+          />
+        </label>
+      </div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {kpis.map((kpi) => {
           const tone = deltaColor(kpi.kind, kpi.deltaPct);
           return (
@@ -280,7 +330,7 @@ export function OperationsCenter() {
               <div className="mt-3 h-12">
                 <Sparkline data={kpi.data} color={tone} />
               </div>
-              <p className="mt-1 text-[10px] text-white/35">Last 30 days</p>
+              <p className="mt-1 text-[10px] text-white/35">{range.label}</p>
             </Link>
           );
         })}
@@ -326,12 +376,12 @@ export function OperationsCenter() {
               return (
                 <li key={item.n} className="border-b border-white/10 pb-5 last:border-0 last:pb-0">
                   <Link
-                    href={item.href}
+                    href={teamActionPath(item.id)}
                     aria-label={`${item.action} — ${item.account}`}
                     className="flex gap-3 rounded-lg transition hover:bg-white/[0.03]"
                   >
                     <span
-                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${tone.mark}`}
+                      className={`inline-flex h-6 shrink-0 items-center justify-center rounded-full px-2.5 text-[11px] font-bold tabular-nums ${tone.mark}`}
                     >
                       {item.n}
                     </span>
