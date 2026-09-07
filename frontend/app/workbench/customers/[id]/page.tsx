@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth } from '@/lib/api-workbench';
 import { createClient } from "@/lib/supabase/client";
+import { CustomerLogoControl } from "@/components/workbench/CustomerLogoControl";
 
 type Customer = {
   id: string;
@@ -17,6 +18,8 @@ type Customer = {
   tags: string[];
   source: string | null;
   notes: string | null;
+  website?: string | null;
+  logo_url?: string | null;
   consent_marketing: boolean;
   consent_source: string | null;
   consent_at: string | null;
@@ -245,16 +248,28 @@ export default function AdminCustomerDetailPage() {
         <>
           <section className="mt-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
+              <div className="flex min-w-0 items-start gap-3">
+                <CustomerLogoControl
+                  token={token}
+                  customer={data.customer}
+                  onUpdated={(logo_url) =>
+                    setData((cur) =>
+                      cur ? { ...cur, customer: { ...cur.customer, logo_url } } : cur,
+                    )
+                  }
+                />
+                <div>
                 <h1 className="text-2xl font-bold md:text-3xl">
                   {data.customer.name || data.customer.email}
                 </h1>
                 <p className="mt-1 text-sm text-text-muted">
                   {data.customer.email}
                   {data.customer.company ? ` · ${data.customer.company}` : null}
+                  {data.customer.website ? ` · ${data.customer.website}` : null}
                   {data.customer.role ? ` · ${data.customer.role}` : null}
                   {data.customer.lead_stage ? ` · stage ${data.customer.lead_stage}` : null}
                 </p>
+                </div>
               </div>
               <div className="flex flex-wrap gap-2">
                 <Link

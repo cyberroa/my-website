@@ -5,7 +5,7 @@ type EyebrowProps = {
   children: ReactNode;
   className?: string;
   as?: "p" | "span";
-  /** Public ice (default) or admin papaya orange */
+  /** Public ice (default) or Workbench ice on charcoal */
   tone?: "ice" | "admin";
 };
 

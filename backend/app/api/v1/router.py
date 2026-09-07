@@ -10,6 +10,7 @@ from app.api.v1.routes import (
     workbench_customers,
     workbench_engagement,
     workbench_goals,
+    workbench_help,
     workbench_payroll,
     workbench_sessions,
     workbench_social,
@@ -34,6 +35,7 @@ api_router.include_router(workbench_customers.router, tags=["workbench-customers
 api_router.include_router(workbench_ai.router, tags=["workbench-ai"])
 api_router.include_router(workbench_engagement.router, tags=["workbench-engagement"])
 api_router.include_router(workbench_goals.router, tags=["workbench-goals"])
+api_router.include_router(workbench_help.router, tags=["workbench-help"])
 api_router.include_router(workbench_competitors.router, tags=["workbench-competitors"])
 api_router.include_router(workbench_payroll.router, tags=["workbench-payroll"])
 api_router.include_router(workbench_sessions.router, tags=["workbench-sessions"])

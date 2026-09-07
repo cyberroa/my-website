@@ -23,7 +23,7 @@ const TYPE_COLORS: Record<string, string> = {
   segment: "border-violet-500/50 bg-violet-500/10",
   part: "border-emerald-500/50 bg-emerald-500/10",
   tag: "border-amber-500/50 bg-amber-500/10",
-  competitor: "border-[var(--color-papaya,#ff8c42)]/50 bg-[var(--color-papaya,#ff8c42)]/10",
+  competitor: "border-accent-titanium/50 bg-accent-titanium/10",
 };
 
 export default function AdminInsightsPage() {

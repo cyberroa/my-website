@@ -10,6 +10,9 @@ import {
   type StudioCustomerRef,
   type StudioSegmentRef,
 } from "@/components/workbench/StudioContextPickers";
+import { StudioFloatingMenu } from "@/components/workbench/StudioFloatingMenu";
+import { StudioAgentResult } from "@/components/workbench/StudioAgentResult";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 import {
   MARKETING_DESIGN_PRESETS,
   getDesignPreset,
@@ -341,19 +344,6 @@ function AdminAiStudioPageInner() {
 
   useEffect(() => {
     if (!modelOpen && !designOpen && !presetsOpen) return;
-    const onDoc = (e: MouseEvent) => {
-      const t = e.target as Node;
-      if (modelOpen && modelRef.current && !modelRef.current.contains(t)) {
-        setModelOpen(false);
-      }
-      if (designOpen && designRef.current && !designRef.current.contains(t)) {
-        setDesignOpen(false);
-      }
-      if (presetsOpen && presetsRef.current && !presetsRef.current.contains(t)) {
-        setPresetsOpen(false);
-        setSavePresetOpen(false);
-      }
-    };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setModelOpen(false);
@@ -362,12 +352,8 @@ function AdminAiStudioPageInner() {
         setSavePresetOpen(false);
       }
     };
-    document.addEventListener("mousedown", onDoc);
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDoc);
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [modelOpen, designOpen, presetsOpen]);
 
   async function seedPresets() {
@@ -654,13 +640,13 @@ function AdminAiStudioPageInner() {
           Workbench AI Studio
         </h1>
 
-        {/* Composer — Stitch-like shell with papaya gradient edge */}
+        {/* Composer — ice edge on charcoal */}
         <div className="relative w-full">
           <div
             className="rounded-[1.75rem] p-[1px]"
             style={{
               background:
-                "linear-gradient(105deg, rgba(255,135,0,0.55) 0%, rgba(255,255,255,0.12) 42%, rgba(255,180,80,0.35) 100%)",
+                "linear-gradient(105deg, rgba(43,180,255,0.55) 0%, rgba(255,255,255,0.12) 42%, rgba(52,211,153,0.16) 100%)",
             }}
           >
             <div className="rounded-[1.7rem] bg-[#2a2a30] shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
@@ -829,14 +815,16 @@ function AdminAiStudioPageInner() {
                     >
                       <IconBookmark className="h-4 w-4" />
                     </button>
-                    {presetsOpen && (
-                      <div
-                        id={presetsMenuId}
-                        role="dialog"
-                        aria-label="Saved prompts"
-                        className="absolute bottom-full right-0 z-30 mb-2 w-80 overflow-hidden rounded-2xl border border-white/10 bg-[#1e1e24] shadow-[0_20px_50px_rgba(0,0,0,0.55)]"
-                      >
-                        <div className="border-b border-white/8 px-4 py-3.5">
+                    <StudioFloatingMenu
+                      open={presetsOpen}
+                      onClose={() => {
+                        setPresetsOpen(false);
+                        setSavePresetOpen(false);
+                      }}
+                      id={presetsMenuId}
+                      label="Saved prompts"
+                    >
+                        <div className="border-b border-white/8 bg-[#0a0a0a] px-4 py-3.5">
                           <div className="flex items-center gap-2">
                             <IconBookmark className="h-4 w-4 text-accent-admin" />
                             <span className="text-sm font-semibold tracking-wide text-white">
@@ -861,18 +849,18 @@ function AdminAiStudioPageInner() {
                                 value={savePresetName}
                                 onChange={(e) => setSavePresetName(e.target.value)}
                                 placeholder="Preset name"
-                                className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none"
+                                className="w-full rounded-lg border border-white/10 bg-[#161616] px-3 py-2 text-sm text-white outline-none"
                               />
-                              <select
+                              <WorkbenchSelect
                                 value={savePresetCategory}
-                                onChange={(e) => setSavePresetCategory(e.target.value)}
-                                className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none"
-                              >
-                                <option value="general">General</option>
-                                <option value="email">Email</option>
-                                <option value="social">Social</option>
-                                <option value="outreach">Outreach</option>
-                              </select>
+                                onChange={setSavePresetCategory}
+                                options={[
+                                  { value: "general", label: "General" },
+                                  { value: "email", label: "Email" },
+                                  { value: "social", label: "Social" },
+                                  { value: "outreach", label: "Outreach" },
+                                ]}
+                              />
                               <div className="flex flex-wrap gap-2">
                                 {activePresetId ? (
                                   <>
@@ -911,7 +899,7 @@ function AdminAiStudioPageInner() {
                             </div>
                           )}
                         </div>
-                        <div className="max-h-64 overflow-y-auto px-2 py-2">
+                        <div className="max-h-64 overflow-y-auto bg-[#0a0a0a] px-2 py-2">
                           {presets.length === 0 ? (
                             <p className="px-2.5 py-3 text-xs text-white/45">
                               No saved prompts yet. Use <strong>Seed presets</strong> for starters,
@@ -924,8 +912,8 @@ function AdminAiStudioPageInner() {
                                 <div
                                   key={p.id}
                                   className={cn(
-                                    "flex items-start gap-1 rounded-xl px-1 py-1 transition hover:bg-white/5",
-                                    selected && "bg-white/[0.06]",
+                                    "flex items-start gap-1 rounded-xl px-1 py-1 transition hover:bg-[#1a1a1a]",
+                                    selected && "bg-[#1a1a1a]",
                                   )}
                                 >
                                   <button
@@ -954,8 +942,7 @@ function AdminAiStudioPageInner() {
                             })
                           )}
                         </div>
-                      </div>
-                    )}
+                    </StudioFloatingMenu>
                   </div>
 
                   <div className="relative" ref={designRef}>
@@ -967,6 +954,7 @@ function AdminAiStudioPageInner() {
                       onClick={() => {
                         setDesignOpen((v) => !v);
                         setModelOpen(false);
+                        setPresetsOpen(false);
                       }}
                       className={cn(
                         "inline-flex h-9 w-9 items-center justify-center rounded-full border transition",
@@ -977,14 +965,13 @@ function AdminAiStudioPageInner() {
                     >
                       <IconPalette className="h-4 w-4" />
                     </button>
-                    {designOpen && (
-                      <div
-                        id={designMenuId}
-                        role="dialog"
-                        aria-label="Design.md marketing presets"
-                        className="absolute bottom-full right-0 z-30 mb-2 w-80 overflow-hidden rounded-2xl border border-white/10 bg-[#1e1e24] shadow-[0_20px_50px_rgba(0,0,0,0.55)]"
-                      >
-                        <div className="border-b border-white/8 px-4 py-3.5">
+                    <StudioFloatingMenu
+                      open={designOpen}
+                      onClose={() => setDesignOpen(false)}
+                      id={designMenuId}
+                      label="Design.md marketing presets"
+                    >
+                        <div className="border-b border-white/8 bg-[#0a0a0a] px-4 py-3.5">
                           <div className="flex items-center gap-2">
                             <IconDoc className="h-4 w-4 text-accent-admin" />
                             <span className="text-sm font-semibold tracking-wide text-white">
@@ -1005,7 +992,7 @@ function AdminAiStudioPageInner() {
                           </button>
                         </div>
 
-                        <div className="px-2 py-2">
+                        <div className="bg-[#0a0a0a] px-2 py-2">
                           <p className="px-2.5 pb-1.5 pt-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
                             Marketing presets
                           </p>
@@ -1017,8 +1004,8 @@ function AdminAiStudioPageInner() {
                                 type="button"
                                 onClick={() => applyDesignPreset(p)}
                                 className={cn(
-                                  "flex w-full items-start gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-white/5",
-                                  selected && "bg-white/[0.06]",
+                                  "flex w-full items-start gap-2.5 rounded-xl bg-[#0a0a0a] px-2.5 py-2 text-left text-sm text-white transition hover:bg-[#1a1a1a]",
+                                  selected && "bg-[#1a1a1a]",
                                 )}
                               >
                                 <span
@@ -1052,8 +1039,7 @@ function AdminAiStudioPageInner() {
                             </button>
                           )}
                         </div>
-                      </div>
-                    )}
+                    </StudioFloatingMenu>
                   </div>
 
                   <div className="relative" ref={modelRef}>
@@ -1064,6 +1050,7 @@ function AdminAiStudioPageInner() {
                       onClick={() => {
                         setModelOpen((v) => !v);
                         setDesignOpen(false);
+                        setPresetsOpen(false);
                       }}
                       className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-sm font-medium text-white/90 transition hover:bg-black/35"
                     >
@@ -1071,12 +1058,14 @@ function AdminAiStudioPageInner() {
                       {shortModelLabel(model || "Model")}
                       <IconChevron open={modelOpen} />
                     </button>
-                    {modelOpen && (
-                      <div
-                        id={modelMenuId}
-                        role="listbox"
-                        className="absolute bottom-full right-0 z-30 mb-2 w-72 overflow-hidden rounded-2xl border border-white/10 bg-[#1e1e24] py-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.55)]"
-                      >
+                    <StudioFloatingMenu
+                      open={modelOpen}
+                      onClose={() => setModelOpen(false)}
+                      id={modelMenuId}
+                      role="listbox"
+                      label="Models"
+                      className="relative z-[201] w-full max-w-sm overflow-auto rounded-xl border border-white/15 bg-[#0a0a0a] py-1 text-white shadow-[0_24px_80px_rgba(0,0,0,1)]"
+                    >
                         {(status?.allowed_models ?? []).map((m) => {
                           const selected = m === model;
                           return (
@@ -1090,8 +1079,8 @@ function AdminAiStudioPageInner() {
                                 setModelOpen(false);
                               }}
                               className={cn(
-                                "flex w-full items-start gap-2 px-3.5 py-2.5 text-left transition hover:bg-white/5",
-                                selected && "bg-white/[0.06]",
+                                "flex w-full items-start gap-2 bg-[#0a0a0a] px-3.5 py-2.5 text-left text-sm text-white transition hover:bg-[#1a1a1a]",
+                                selected && "bg-[#1a1a1a]",
                               )}
                             >
                               <IconSparkle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent-admin" />
@@ -1114,8 +1103,7 @@ function AdminAiStudioPageInner() {
                         {!status?.allowed_models?.length && (
                           <p className="px-3.5 py-2 text-sm text-white/50">No models configured</p>
                         )}
-                      </div>
-                    )}
+                    </StudioFloatingMenu>
                   </div>
 
                   <button
@@ -1165,6 +1153,9 @@ function AdminAiStudioPageInner() {
             customer={contextCustomer}
             onSegmentChange={setContextSegment}
             onCustomerChange={setContextCustomer}
+            customerSearchQuery={
+              searchParams.get("customer") ? undefined : searchParams.get("customer_q")?.trim() || undefined
+            }
           />
         ) : null}
 
@@ -1172,40 +1163,10 @@ function AdminAiStudioPageInner() {
         {(output || imageUrl) && (
           <section className="mt-12 w-full space-y-4">
             {mode === "agent" && agentResult ? (
-              <div className="rounded-[1.5rem] border border-white/10 bg-[#25252b]/80 p-5 shadow-xl backdrop-blur">
-                <h2 className="text-sm font-semibold text-white/70">Engagement logged</h2>
-                <p className="mt-2 whitespace-pre-wrap text-sm text-white/85">{output}</p>
-                {agentResult.next_actions?.length ? (
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {agentResult.next_actions.map((a) =>
-                      a.href ? (
-                        <Link
-                          key={a.id}
-                          href={a.href}
-                          className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/80 hover:border-accent-admin/40 hover:text-accent-admin"
-                        >
-                          {a.label}
-                        </Link>
-                      ) : (
-                        <span
-                          key={a.id}
-                          className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/50"
-                        >
-                          {a.label}
-                        </span>
-                      ),
-                    )}
-                    {agentResult.draft_sale ? (
-                      <Link
-                        href={`/workbench/sales?customer=${agentResult.draft_sale.customer_id}&engagement=${agentResult.draft_sale.source_id}${agentResult.draft_sale.amount_cents ? `&amount=${(agentResult.draft_sale.amount_cents / 100).toFixed(2)}` : ""}`}
-                        className="rounded-full bg-accent-admin px-3 py-1.5 text-xs font-semibold text-black"
-                      >
-                        Confirm sale on Sales
-                      </Link>
-                    ) : null}
-                  </div>
-                ) : null}
-              </div>
+              <StudioAgentResult
+                result={agentResult}
+                customerHref={contextCustomer ? `/workbench/customers/${contextCustomer.id}` : null}
+              />
             ) : (
             <div className="rounded-[1.5rem] border border-white/10 bg-[#25252b]/80 p-5 shadow-xl backdrop-blur">
               <div className="mb-3 flex items-center justify-between gap-3">

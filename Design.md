@@ -34,7 +34,13 @@ Defined in `tailwind.config.ts`. Use **semantic Tailwind classes**, not raw hex,
 | Cards | `bg-background-card` | `#0a0a0a` | Form panels, error states |
 | Muted blocks | `bg-background-muted` | `#1e1e1e` | Secondary sections, loading skeletons |
 | Primary accent (public) | `text-accent-ice` / `bg-accent-ice` | `#6EC9F0` | Eyebrows, CTAs, stats, forms, widgets on public marketing pages |
-| Admin accent | `text-accent-admin` / `bg-accent-admin` | `#FF8700` | Admin nav, headers, active states — McLaren papaya; distinct from public ice |
+| Admin accent | `text-accent-admin` / `bg-accent-admin` | `#2BB4FF` | Workbench CTAs, nav, in-progress — electric mid-tone |
+| Highlight | `text-accent-highlight` | `#7DEAFF` | Icy Lambo highlight — scheduled / upcoming |
+| Deep | `text-accent-deep` | `#0076E6` | Cerulean shadows — pending / waiting |
+| Navy | `text-accent-navy` / `bg-accent-navy` | `#0B3D73` | Midnight contours — grounded chrome |
+| Engagement up | `text-accent-signal` | `#34D399` | Healthy activity, hot leads |
+| Watch / stale | `text-accent-caution` | `#FFFF84` | Quiet accounts, medium priority — pale yellow |
+| High priority | `text-accent-alert` | `#E07A5F` | Urgent labels only — terracotta, not brand red |
 | Titanium accent | `text-accent-titanium` / `bg-accent-titanium` | `#a9b4c2` | Unused legacy token — keep in config until removed; do not use in new code |
 | Primary accent (legacy) | `text-accent` / `bg-accent` | `#00ffd5` | Sparingly — special highlights |
 | Primary text | `text-text-primary` / `text-white` | `#ffffff` | Headings, body on dark |
@@ -216,17 +222,17 @@ Alt text: decorative hero backgrounds use `alt=""`; content images need descript
 
 ## Admin UI
 
-- Shell: `AdminShell` wraps all routes with `data-area="admin"` + `AdminNav`; **McLaren papaya accent** (`accent-admin`, `#FF8700`) distinguishes backend from public ice theme. Charcoal shell (`#101014`) with soft papaya atmosphere + light grid; not pure black.
-- **Nav:** grouped dropdowns from [`frontend/lib/admin-nav.ts`](frontend/lib/admin-nav.ts) — AI · CRM · Marketing · Sales & Pay · Inventory (hover/click panels on desktop; accordion on mobile). Do not add flat link lists to the header.
-- **AI Studio** (`/workbench`): Stitch-inspired centered composer — large prompt shell, pill model menu, Text/Image mode, suggestion chips; keep **papaya** accent (not purple gradients).
+- Shell: Workbench wraps staff routes with `data-area="admin"` + `WorkbenchNav`; **electric blue** (`accent-admin`, `#2BB4FF`) distinguishes staff UI from public ice. Charcoal shell (`#101014`) with a soft electric-blue atmosphere and light grid.
+- **Nav:** grouped dropdowns from [`frontend/lib/workbench-nav.ts`](frontend/lib/workbench-nav.ts) — AI · CRM · Marketing · Sales & Pay · Inventory (hover/click panels on desktop; accordion on mobile). Do not add flat link lists to the header.
+- **AI Studio** (`/workbench/studio`): centered composer — large prompt shell, pill model menu, Text/Image mode, suggestion chips; electric-blue accent (not public ice, not papaya).
 - **Design.md presets:** Composer palette menu loads marketing design presets from [`frontend/lib/design-presets.ts`](frontend/lib/design-presets.ts) (condensed Design.md system prompts: Titan Imaging, Public Ice, Email Campaign, LinkedIn Social, Hero / Landing).
-- **Shared classes:** [`frontend/lib/admin-ui.ts`](frontend/lib/admin-ui.ts) — `adminBtnPrimary`, `adminCard`, `adminLink`, `adminMono`, etc.
+- **Shared classes:** [`frontend/lib/workbench-ui.ts`](frontend/lib/workbench-ui.ts) — `workbenchBtnPrimary`, `workbenchCard`, `workbenchLink`, `workbenchMono`, etc.
 - **Buttons:** prefer `Button` / `LinkButton` with `variant="admin"` or `variant="adminOutline"` from `@/components/ui`.
-- **Page headers:** `AdminPageHeader` with `tone="admin"` eyebrow.
-- **Login:** full-screen centered; papaya eyebrow + `bg-accent-admin` primary CTA (same atmosphere as shell).
-- **Tables:** `adminTableWrap` / `adminTableHead` / `adminTableRow` patterns; mono slugs and action links use `text-accent-admin`. Destructive actions use `text-red-300` only.
-- **Forms:** inputs inside `[data-area="admin"]` get lifted fills + papaya focus ring via `globals.css`; cards use lighter borders/shadows.
-- **Nav:** sticky glass bar; papaya brand; active links as papaya pills; outlined “View site”; papaya “Sign out”.
+- **Page headers:** `WorkbenchPageHeader` with `tone="admin"` eyebrow.
+- **Login:** full-screen centered; electric-blue eyebrow + `bg-accent-admin` primary CTA (same atmosphere as shell).
+- **Tables:** `workbenchTableWrap` / `workbenchTableHead` / `workbenchTableRow` patterns; mono slugs and action links use `text-accent-admin`. Destructive actions use `text-red-300` only.
+- **Forms:** inputs inside `[data-area="admin"]` get lifted fills + electric-blue focus ring via `globals.css`; cards use lighter borders/shadows.
+- **Nav:** sticky glass bar; electric-blue brand; active links as electric-blue pills; outlined “View site”; electric-blue “Sign out”.
 
 ---
 
@@ -240,7 +246,7 @@ Alt text: decorative hero backgrounds use `alt=""`; content images need descript
 
 ## Accessibility
 
-- **Focus:** public inputs use `ring-accent-ice/20`; admin inputs (`[data-area="admin"]`) use papaya focus ring in `globals.css`. Ensure keyboard nav works in mobile menu (`aria-expanded`, `aria-label` on menu button).
+- **Focus:** public inputs use `ring-accent-ice/20`; admin inputs (`[data-area="admin"]`) use an electric-blue focus ring in `globals.css`. Ensure keyboard nav works in mobile menu (`aria-expanded`, `aria-label` on menu button).
 - **Contrast:** White / `#bbbbbb` on `#000000` meets goals for body text; verify new accent combinations.
 - **Forms:** Every input has `htmlFor` / `id`; required fields marked in copy where helpful.
 - **Landmarks:** One `<main>` per page where possible; header/footer semantic elements already in layout components.
@@ -259,7 +265,7 @@ Alt text: decorative hero backgrounds use `alt=""`; content images need descript
 - [ ] `tailwind.config.ts` updated  
 - [ ] `Design.md` token table updated  
 - [ ] `components/ui/*` updated (when present)  
-- [ ] Spot-check: Home, Inventory, Contact, one admin page (papaya accent)  
+- [ ] Spot-check: Home, Inventory, Contact, one Workbench page (electric-blue accent)  
 - [ ] `npm run lint` + visual check on Vercel preview  
 
 ---

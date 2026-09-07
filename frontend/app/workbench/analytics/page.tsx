@@ -7,6 +7,17 @@ import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth } from "@/lib/api-workbench";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/cn";
+import {
+  CHANNEL_ICON,
+  CHANNEL_TONE,
+  EngagementBadge,
+  OUTCOME_ICON,
+  OUTCOME_TONE,
+  STAGE_VISUAL,
+  STAGES,
+  StageIcon,
+  stageTone,
+} from "@/components/workbench/EngagementVisuals";
 
 type LiveSession = {
   id: string;
@@ -63,8 +74,6 @@ type AnalyticsOverview = {
   progressions: Progression[];
   generated_at: string;
 };
-
-const STAGES = ["new", "contacted", "engaged", "qualified", "proposal", "won", "lost"] as const;
 
 function formatTime(value: string) {
   return new Date(value).toLocaleString();
@@ -189,28 +198,41 @@ export default function AdminAnalyticsPage() {
           </div>
           <Link
             href="/workbench/studio?mode=agent"
-            className="text-sm text-accent-admin hover:underline"
+            className="rounded-lg bg-accent-admin px-3 py-2 text-sm font-semibold text-black transition hover:brightness-110"
           >
-            Log engagement in Studio Agent →
+            Log engagement in Studio Agent
           </Link>
         </div>
         <div className="mt-4 grid gap-2 sm:grid-cols-4 lg:grid-cols-7">
-          {STAGES.map((stage) => (
-            <button
-              key={stage}
-              type="button"
-              onClick={() => void openStage(stage)}
-              className={cn(
-                "rounded-xl border px-3 py-3 text-left transition",
-                stageFilter === stage
-                  ? "border-accent-admin/50 bg-accent-admin/10"
-                  : "border-white/10 bg-white/[0.03] hover:border-white/20",
-              )}
-            >
-              <p className="text-[11px] uppercase tracking-wide text-text-muted">{stage}</p>
-              <p className="mt-1 font-mono text-xl text-white">{pipeline[stage] ?? 0}</p>
-            </button>
-          ))}
+          {STAGES.map((stage) => {
+            const visual = STAGE_VISUAL[stage];
+            const count = pipeline[stage] ?? 0;
+            const active = stageFilter === stage;
+            return (
+              <button
+                key={stage}
+                type="button"
+                onClick={() => void openStage(stage)}
+                className={cn(
+                  "rounded-xl border px-3 py-3 text-left transition",
+                  visual.bg,
+                  active ? "ring-2 ring-accent-admin/70" : visual.border,
+                  "hover:brightness-110",
+                )}
+              >
+                <span className="flex items-center justify-between gap-2">
+                  <StageIcon name={visual.icon} color={visual.color} />
+                  {count > 0 ? (
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: visual.color }} />
+                  ) : null}
+                </span>
+                <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide" style={{ color: visual.color }}>
+                  {stage}
+                </p>
+                <p className="mt-1 font-mono text-xl text-white">{count}</p>
+              </button>
+            );
+          })}
         </div>
         {stageFilter ? (
           <div className="mt-4 rounded-xl border border-white/10 p-4">
@@ -268,17 +290,22 @@ export default function AdminAnalyticsPage() {
                     <button
                       type="button"
                       onClick={() => void applyStage(p.engagement_id!)}
-                      className="rounded-full bg-accent-admin px-3 py-1 text-xs font-semibold text-black"
+                      className="rounded-lg bg-accent-admin px-3 py-2 text-xs font-semibold text-black transition hover:brightness-110"
                     >
                       Apply {p.suggested_stage}
                     </button>
                   ) : null}
-                  {p.actions.map((a) =>
+                  {p.actions.map((a, idx) =>
                     a.href ? (
                       <Link
                         key={a.id}
                         href={a.href}
-                        className="rounded-full border border-white/15 px-3 py-1 text-xs text-white/80 hover:border-accent-admin/40"
+                        className={cn(
+                          "rounded-lg px-3 py-2 text-xs font-semibold transition",
+                          idx === 0 && !p.suggested_stage
+                            ? "bg-accent-admin text-black hover:brightness-110"
+                            : "border border-accent-admin/40 bg-accent-admin/15 text-accent-admin hover:bg-accent-admin/25",
+                        )}
                       >
                         {a.label}
                       </Link>
@@ -321,9 +348,29 @@ export default function AdminAnalyticsPage() {
                       {e.customer_company || e.customer_email}
                       <p className="text-xs text-text-muted line-clamp-1">{e.summary}</p>
                     </td>
-                    <td className="px-4 py-3">{e.channel}</td>
-                    <td className="px-4 py-3">{e.outcome}</td>
-                    <td className="px-4 py-3">{e.customer_lead_stage}</td>
+                    <td className="px-4 py-3">
+                      <EngagementBadge
+                        value={e.channel}
+                        icon={CHANNEL_ICON[e.channel] ?? "globe"}
+                        className={CHANNEL_TONE[e.channel] ?? "border-white/20 bg-white/10 text-white/70"}
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <EngagementBadge
+                        value={e.outcome}
+                        icon={OUTCOME_ICON[e.outcome] ?? "flag"}
+                        className={OUTCOME_TONE[e.outcome] ?? "border-white/20 bg-white/10 text-white/70"}
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <EngagementBadge
+                        value={e.customer_lead_stage}
+                        icon={
+                          STAGE_VISUAL[e.customer_lead_stage as (typeof STAGES)[number]]?.icon ?? "spark"
+                        }
+                        className={stageTone(e.customer_lead_stage)}
+                      />
+                    </td>
                   </tr>
                 ))
               )}

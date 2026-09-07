@@ -16,8 +16,8 @@ from app.ai.jobs import enqueue_import_profile_enrichment
 from app.ai.client import AiDisabledError, AiError, ai_is_ready, resolve_model
 from app.ai.opportunities import customer_latest_opportunities
 from app.auth import get_current_workbench_user
-from app.customer_search import search_customers
-from app.customer_utils import normalize_website, refresh_customer_search_document
+from app.customer_search import OFFER_FAMILIES, search_customers
+from app.customer_utils import guessed_logo_url, normalize_website, refresh_customer_search_document
 from app.db import get_db
 from app.models import (
     Campaign,
@@ -48,7 +48,7 @@ from app.settings import get_settings
 router = APIRouter(prefix="/workbench/customers", dependencies=[Depends(get_current_workbench_user)])
 
 
-def customer_to_out(c: Customer) -> CustomerOut:
+def customer_to_out(c: Customer, *, fit_score: float | None = None) -> CustomerOut:
     return CustomerOut(
         id=str(c.id),
         email=c.email,
@@ -57,6 +57,7 @@ def customer_to_out(c: Customer) -> CustomerOut:
         phone=c.phone,
         role=c.role,
         website=c.website,
+        logo_url=c.logo_url,
         tags=list(c.tags or []),
         source=c.source,
         notes=c.notes,
@@ -66,11 +67,12 @@ def customer_to_out(c: Customer) -> CustomerOut:
         lead_stage=getattr(c, "lead_stage", None) or "new",
         created_at=c.created_at,
         updated_at=c.updated_at,
+        fit_score=fit_score,
     )
 
 
-def _customer_to_out(c: Customer) -> CustomerOut:
-    return customer_to_out(c)
+def _customer_to_out(c: Customer, *, fit_score: float | None = None) -> CustomerOut:
+    return customer_to_out(c, fit_score=fit_score)
 
 
 @router.get("", response_model=CustomerListOut)
@@ -78,26 +80,48 @@ def list_customers(
     search: str | None = Query(default=None),
     tag: str | None = Query(default=None),
     segment_id: str | None = Query(default=None),
+    segment_ids: list[str] = Query(default=[]),
+    opportunity: str | None = Query(default=None),
+    offer_family: str | None = Query(default=None),
     limit: int = Query(default=25, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
 ):
-    segment_filter: dict[str, Any] | None = None
+    family = (opportunity or offer_family or "").strip() or None
+    if family and family not in OFFER_FAMILIES:
+        raise HTTPException(status_code=400, detail="Invalid opportunity / offer_family")
+
+    raw_ids = [*(segment_ids or [])]
     if segment_id:
-        seg = db.get(Segment, segment_id)
+        raw_ids.append(segment_id)
+    seen: set[str] = set()
+    unique_ids: list[str] = []
+    for sid in raw_ids:
+        if sid and sid not in seen:
+            seen.add(sid)
+            unique_ids.append(sid)
+
+    segment_filters: list[dict[str, Any]] = []
+    for sid in unique_ids:
+        try:
+            seg_uuid = uuid.UUID(sid)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail="Invalid segment id") from exc
+        seg = db.get(Segment, seg_uuid)
         if not seg:
             raise HTTPException(status_code=404, detail="Segment not found")
-        segment_filter = dict(seg.filter_json or {})
+        segment_filters.append(dict(seg.filter_json or {}))
 
     rows, total = search_customers(
         db,
         search,
-        segment_filter_json=segment_filter,
+        segment_filters=segment_filters or None,
         tag=tag,
+        offer_family=family,
         limit=limit,
         offset=offset,
     )
-    items = [_customer_to_out(c) for c in rows]
+    items = [_customer_to_out(c, fit_score=score) for c, score in rows]
     return CustomerListOut(
         items=items,
         total=total,
@@ -181,6 +205,14 @@ def update_customer(customer_id: str, body: CustomerUpdate, db: Session = Depend
         c.lead_stage = stage
     if body.website is not None:
         c.website = normalize_website(body.website)
+    if body.logo_url is not None:
+        raw = body.logo_url.strip()
+        if not raw:
+            c.logo_url = None
+        elif raw.startswith("data:image/") and len(raw) <= 400_000:
+            c.logo_url = raw
+        else:
+            c.logo_url = normalize_website(raw)
     if body.tags is not None:
         c.tags = body.tags
     if body.consent_marketing is not None:
@@ -189,6 +221,23 @@ def update_customer(customer_id: str, body: CustomerUpdate, db: Session = Depend
         if body.consent_marketing and not previous:
             c.consent_at = dt.datetime.now(dt.timezone.utc)
     refresh_customer_search_document(c)
+    db.commit()
+    db.refresh(c)
+    return _customer_to_out(c)
+
+
+@router.post("/{customer_id}/logo/fetch", response_model=CustomerOut)
+def fetch_customer_logo(customer_id: str, db: Session = Depends(get_db)):
+    c = db.get(Customer, customer_id)
+    if not c:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    url = guessed_logo_url(c.website, c.email)
+    if not url:
+        raise HTTPException(
+            status_code=400,
+            detail="Add a company website (or a work email domain) to fetch a logo",
+        )
+    c.logo_url = url
     db.commit()
     db.refresh(c)
     return _customer_to_out(c)

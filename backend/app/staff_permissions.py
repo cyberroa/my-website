@@ -55,11 +55,15 @@ ROUTE_CAPABILITIES: dict[str, frozenset[str]] = {
     "competitors": frozenset({"sales", "marketing"}),
     "import": frozenset({"sales", "support", "technician"}),
     "alerts": frozenset({"sales", "support", "technician"}),
+    "staff_feedback": frozenset(),  # owner + ops lead — checked separately
+    "actions": frozenset({"sales", "marketing", "support"}),
 }
 
 # href → route id for nav filtering
 HREF_ROUTE_IDS: dict[str, str] = {
     "/workbench/studio": "ai_studio",
+    "/workbench/actions": "actions",
+    "/workbench/analytics": "live",
     "/workbench/briefings": "briefings",
     "/workbench/live": "live",
     "/workbench/insights": "insights",
@@ -80,6 +84,7 @@ HREF_ROUTE_IDS: dict[str, str] = {
     "/workbench/competitors": "competitors",
     "/workbench/import": "import",
     "/workbench/alerts": "alerts",
+    "/workbench/feedback": "staff_feedback",
 }
 
 
@@ -117,6 +122,19 @@ def effective_capabilities(staff: WorkbenchStaff) -> set[str]:
 
 def is_owner_tier(staff: WorkbenchStaff) -> bool:
     return normalize_tier(getattr(staff, "staff_tier", None), legacy_role=getattr(staff, "role", None)) == "owner"
+
+
+def is_ops_lead_tier(staff: WorkbenchStaff) -> bool:
+    return normalize_tier(getattr(staff, "staff_tier", None), legacy_role=getattr(staff, "role", None)) == "admin"
+
+
+def is_owner_or_ops_lead(staff: WorkbenchStaff) -> bool:
+    return is_owner_tier(staff) or is_ops_lead_tier(staff)
+
+
+def require_owner_or_ops_lead(staff: WorkbenchStaff) -> None:
+    if not is_owner_or_ops_lead(staff):
+        raise HTTPException(status_code=403, detail="Owner or ops lead access required")
 
 
 def has_capability(staff: WorkbenchStaff, capability: str) -> bool:
@@ -162,6 +180,8 @@ def require_accounting(staff: WorkbenchStaff) -> None:
 def can_access_route(staff: WorkbenchStaff, route_id: str) -> bool:
     if route_id == "team":
         return is_owner_tier(staff)
+    if route_id == "staff_feedback":
+        return is_owner_or_ops_lead(staff)
     if route_id == "payroll":
         return is_owner_tier(staff) or has_capability(staff, "accounting")
     # My Pay is for staff accepting packages — owners use Team + Payroll instead

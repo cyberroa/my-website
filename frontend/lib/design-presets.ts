@@ -24,8 +24,9 @@ Brand intent:
 
 Color tokens (use names + hex when describing visuals):
 - Page background #000000, raised #111111, cards #0a0a0a, muted #1e1e1e
-- Public accent ice #6EC9F0 — eyebrows, CTAs, forms on public marketing
-- Admin accent papaya #FF8700 — admin UI only; do not use as public marketing primary
+- Public accent ice #6EC9F0 — eyebrows, CTAs, forms on public marketing only
+- Workbench accent electric blue #2BB4FF — staff CTAs and chrome
+- Engagement up #34D399, watch/stale #FFFF84, high priority #E07A5F — labels and signals only
 - Text primary #ffffff, secondary #bbbbbb, muted #777777
 
 Typography:
@@ -65,13 +66,13 @@ Focus: public marketing surfaces only. Lead with ice accent (#6EC9F0). Prefer Or
     swatch: "#a9b4c2",
     systemPrompt: `${DESIGN_MD_SYSTEM_PROMPT}
 
-Focus: B2B email. Subject + body, concise, CAN-SPAM friendly. Placeholders {{name}} / {{company}} when useful. Ice for link emphasis in HTML briefs; never papaya in customer-facing email.`,
+Focus: B2B email. Subject + body, concise, CAN-SPAM friendly. Placeholders {{name}} / {{company}} when useful. Ice for link emphasis in HTML briefs.`,
   },
   {
     id: "social-linkedin",
     name: "LinkedIn Social",
     blurb: "Professional posts & teasers",
-    swatch: "#FF8700",
+    swatch: "#6EC9F0",
     systemPrompt: `${DESIGN_MD_SYSTEM_PROMPT}
 
 Focus: LinkedIn for imaging professionals. Short paragraphs, one clear CTA (parts, sell-to-us, contact). No hashtag spam. Visual briefs: dark industrial stills, ice accents sparingly.`,
@@ -116,7 +117,7 @@ Focus: capital buyers considering new PET/CT. Position Titan as first consult fo
     id: "winback-neglect",
     name: "Win-back / Neglect Rescue",
     blurb: "Quiet accounts at risk of competitors",
-    swatch: "#FF8700",
+    swatch: "#6EC9F0",
     systemPrompt: `${DESIGN_MD_SYSTEM_PROMPT}
 
 Focus: respectful win-back for quiet accounts. Offer audit, parts, or quick consult so they stay with Titan instead of a competitor site.`,

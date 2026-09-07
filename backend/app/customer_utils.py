@@ -17,6 +17,30 @@ def normalize_website(raw: str | None) -> str | None:
     return url[:500]
 
 
+def hostname_for_logo(website: str | None, email: str | None) -> str | None:
+    from urllib.parse import urlparse
+
+    host: str | None = None
+    if website:
+        parsed = urlparse(website if "://" in website else f"https://{website}")
+        host = (parsed.hostname or "").lower().strip(".")
+        if host.startswith("www."):
+            host = host[4:]
+    consumer = {"gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "icloud.com", "aol.com"}
+    if (not host or host in consumer) and email and "@" in email:
+        domain = email.split("@", 1)[1].lower().strip()
+        if domain not in consumer:
+            host = domain
+    return host or None
+
+
+def guessed_logo_url(website: str | None, email: str | None) -> str | None:
+    host = hostname_for_logo(website, email)
+    if not host:
+        return None
+    return f"https://www.google.com/s2/favicons?domain={host}&sz=128"
+
+
 def build_customer_search_document(c: Customer) -> str:
     parts = [
         c.email or "",

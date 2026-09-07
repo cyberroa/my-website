@@ -13,6 +13,7 @@ import {
 } from '@/lib/workbench-nav';
 import { apiFetchWithAuth } from '@/lib/api-workbench';
 import { createClient } from "@/lib/supabase/client";
+import { WorkbenchHelpFlyout } from "@/components/workbench/WorkbenchHelpFlyout";
 import { cn } from "@/lib/cn";
 
 function Chevron({ open }: { open: boolean }) {
@@ -58,10 +59,8 @@ function NavPanel({
               href={link.href}
               onClick={onNavigate}
               className={cn(
-                "block px-3.5 py-2 transition",
-                active
-                  ? "bg-accent-admin/15 text-accent-admin"
-                  : "text-text-secondary hover:bg-white/5 hover:text-white",
+                "block bg-[#0a0a0a] px-3.5 py-2 text-left text-sm transition hover:bg-[#1a1a1a]",
+                active ? "bg-[#1a1a1a] text-accent-admin" : "text-white/90",
               )}
             >
               <span className="block text-sm font-semibold">{link.label}</span>
@@ -170,14 +169,26 @@ export function WorkbenchNav() {
   const homeHref = "/workbench";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#16161b]/90 shadow-[inset_0_-1px_0_0_rgba(255,135,0,0.22)] backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#16161b]/90 shadow-[inset_0_-1px_0_0_rgba(43,180,255,0.28)] backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-3">
         <div className="flex min-w-0 items-center gap-4">
           <Link
             href={homeHref}
-            className="shrink-0 font-display text-sm font-bold tracking-wider text-accent-admin transition hover:brightness-110"
+            className="inline-flex shrink-0 items-center gap-2 font-display text-sm font-bold tracking-wider text-accent-admin transition hover:brightness-110"
             onMouseEnter={() => setOpenId(null)}
           >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
             Titan Workbench
           </Link>
 
@@ -209,7 +220,7 @@ export function WorkbenchNav() {
                     <div
                       id={`${menuId}-${group.id}`}
                       role="menu"
-                      className="absolute left-0 top-full z-50 mt-1.5 overflow-hidden rounded-lg border border-white/12 bg-[#1a1a22] shadow-[0_16px_40px_rgba(0,0,0,0.45)]"
+                      className="absolute left-0 top-full z-50 mt-1.5 overflow-hidden rounded-xl border border-white/15 bg-[#0a0a0a] py-1 text-white shadow-2xl ring-1 ring-black"
                       onMouseEnter={clearCloseTimer}
                     >
                       <NavPanel
@@ -226,6 +237,7 @@ export function WorkbenchNav() {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          <WorkbenchHelpFlyout />
           <Link
             href="/"
             className="hidden rounded-lg border border-white/15 bg-white/[0.03] px-3 py-1.5 text-sm font-semibold text-text-secondary transition hover:border-accent-admin/40 hover:bg-accent-admin/5 hover:text-white sm:inline-flex"

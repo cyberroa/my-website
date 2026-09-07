@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { WorkbenchPageHeader } from "@/components/ui";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth } from '@/lib/api-workbench';
 import { createClient } from "@/lib/supabase/client";
@@ -139,34 +140,30 @@ export default function AdminCampaignsPage() {
           </label>
           <label className="block text-sm">
             <span className="text-text-muted">Template *</span>
-            <select
+            <WorkbenchSelect
               required
-              className="mt-1 w-full rounded-md border border-white/10 bg-black/40 px-3 py-2"
+              className="mt-1"
               value={form.template_id}
-              onChange={(e) => setForm((f) => ({ ...f, template_id: e.target.value }))}
-            >
-              <option value="">Choose…</option>
-              {templates.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
+              onChange={(template_id) => setForm((f) => ({ ...f, template_id }))}
+              placeholder="Choose…"
+              options={[
+                { value: "", label: "Choose…" },
+                ...templates.map((t) => ({ value: t.id, label: t.name })),
+              ]}
+            />
           </label>
           <label className="block text-sm">
             <span className="text-text-muted">Segment (optional — all customers if blank)</span>
-            <select
-              className="mt-1 w-full rounded-md border border-white/10 bg-black/40 px-3 py-2"
+            <WorkbenchSelect
+              className="mt-1"
               value={form.segment_id}
-              onChange={(e) => setForm((f) => ({ ...f, segment_id: e.target.value }))}
-            >
-              <option value="">All customers</option>
-              {segments.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
+              onChange={(segment_id) => setForm((f) => ({ ...f, segment_id }))}
+              placeholder="All customers"
+              options={[
+                { value: "", label: "All customers" },
+                ...segments.map((s) => ({ value: s.id, label: s.name })),
+              ]}
+            />
           </label>
           <div className="sm:col-span-2">
             <button

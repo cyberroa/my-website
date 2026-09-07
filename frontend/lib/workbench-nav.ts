@@ -8,6 +8,8 @@ export type WorkbenchNavLink = {
   requiredCapabilities?: string[];
   /** Owner tier only */
   ownerOnly?: boolean;
+  /** Owner or ops-lead (admin) tier */
+  adminOrOwner?: boolean;
   /** Accounting capability or owner */
   accountingOnly?: boolean;
   /** Hide from owners (e.g. My Pay — owners assign packages, staff accept) */
@@ -26,13 +28,24 @@ export const WORKBENCH_NAV_GROUPS: WorkbenchNavGroup[] = [
   {
     id: "ai",
     label: "AI",
-    href: "/workbench/studio",
+    href: "/workbench",
     links: [
+      {
+        href: "/workbench",
+        label: "Operations Center",
+        detail: "Home dashboard and today’s queue",
+      },
       {
         href: "/workbench/studio",
         label: "AI Studio",
         detail: "Prompts, models, generate content",
         requiredCapabilities: ["marketing"],
+      },
+      {
+        href: "/workbench/actions",
+        label: "Actions",
+        detail: "Team action queue and live progressions",
+        requiredCapabilities: ["sales", "marketing", "support"],
       },
       {
         href: "/workbench/analytics",
@@ -134,6 +147,12 @@ export const WORKBENCH_NAV_GROUPS: WorkbenchNavGroup[] = [
         ownerOnly: true,
       },
       {
+        href: "/workbench/feedback",
+        label: "Staff feedback",
+        detail: "Inbox from the ? help flyout",
+        adminOrOwner: true,
+      },
+      {
         href: "/workbench/mypay",
         label: "My Pay",
         detail: "Accept your terms",
@@ -196,6 +215,7 @@ export function canAccessNavLink(access: StaffAccess | null, link: WorkbenchNavL
   const isOwner = access.staffTier === "owner";
   if (link.hideForOwner && isOwner) return false;
   if (link.ownerOnly) return isOwner;
+  if (link.adminOrOwner) return isOwner || access.staffTier === "admin";
   if (link.accountingOnly) {
     return isOwner || access.effectiveCapabilities.includes("accounting");
   }

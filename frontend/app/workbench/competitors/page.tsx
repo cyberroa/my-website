@@ -196,7 +196,7 @@ export default function AdminCompetitorsPage() {
             onClick={() => setTab(t)}
             className={`rounded-lg px-4 py-2 text-sm font-medium capitalize transition ${
               tab === t
-                ? "bg-[var(--color-papaya,#ff8c42)] text-black"
+                ? "bg-accent-admin text-black"
                 : "border border-white/15 text-text-muted hover:border-white/30 hover:text-white"
             }`}
           >
@@ -260,7 +260,7 @@ export default function AdminCompetitorsPage() {
                           type="button"
                           disabled={busy === s.id}
                           onClick={() => void toggleActive(s)}
-                          className="block text-xs text-[var(--color-papaya,#ff8c42)] hover:underline disabled:opacity-50"
+                          className="block text-xs text-accent-admin hover:underline disabled:opacity-50"
                         >
                           {s.active ? "Deactivate" : "Activate"}
                         </button>
@@ -304,7 +304,7 @@ export default function AdminCompetitorsPage() {
             />
             <button
               type="submit"
-              className="w-full rounded-lg bg-[var(--color-papaya,#ff8c42)] px-3 py-2 text-sm font-medium text-black"
+              className="w-full rounded-lg bg-accent-admin px-3 py-2 text-sm font-medium text-black"
             >
               Create
             </button>
@@ -344,7 +344,7 @@ export default function AdminCompetitorsPage() {
                           href={row.listing_url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[var(--color-papaya,#ff8c42)] hover:underline"
+                          className="text-accent-admin hover:underline"
                         >
                           {row.title}
                         </a>

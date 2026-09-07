@@ -128,6 +128,7 @@ class Customer(Base):
     source: Mapped[str | None] = mapped_column(String(80), nullable=True, index=True)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     website: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    logo_url: Mapped[str | None] = mapped_column(Text, nullable=True)
     search_document: Mapped[str | None] = mapped_column(Text, nullable=True)
     consent_marketing: Mapped[bool] = mapped_column(
         Boolean, nullable=False, server_default="false"
@@ -488,6 +489,19 @@ class MarketingGoal(Base):
 # --------------------------------------------------------------------------
 # Phase I — staff payroll
 # --------------------------------------------------------------------------
+
+
+class WorkbenchFeedback(Base):
+    __tablename__ = "workbench_feedback"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    staff_email: Mapped[str] = mapped_column(String(320), nullable=False, index=True)
+    message: Mapped[str] = mapped_column(Text, nullable=False)
+    page_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    read_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class WorkbenchStaff(Base):

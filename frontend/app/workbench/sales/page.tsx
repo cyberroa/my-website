@@ -3,6 +3,7 @@
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { WorkbenchPageHeader } from "@/components/ui";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth } from "@/lib/api-workbench";
 import { createClient } from "@/lib/supabase/client";
@@ -182,19 +183,20 @@ function AdminSalesPageInner() {
         onSubmit={(e) => void logSale(e)}
         className="grid gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-5 md:grid-cols-4"
       >
-        <select
+        <WorkbenchSelect
+          className="md:col-span-2"
           value={customerId}
-          onChange={(e) => setCustomerId(e.target.value)}
-          className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white md:col-span-2"
+          onChange={setCustomerId}
           required
-        >
-          <option value="">Select customer…</option>
-          {customers.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.email} {c.name ? `(${c.name})` : ""}
-            </option>
-          ))}
-        </select>
+          placeholder="Select customer…"
+          options={[
+            { value: "", label: "Select customer…" },
+            ...customers.map((c) => ({
+              value: c.id,
+              label: `${c.email}${c.name ? ` (${c.name})` : ""}`,
+            })),
+          ]}
+        />
         <input
           type="number"
           step="0.01"
@@ -209,65 +211,68 @@ function AdminSalesPageInner() {
           Log sale
         </button>
 
-        <select
+        <WorkbenchSelect
+          className="md:col-span-2"
           value={closerId}
-          onChange={(e) => setCloserId(e.target.value)}
-          className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white md:col-span-2"
-        >
-          <option value="">Closer (default: you)</option>
-          {staff.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.display_name || s.email}
-            </option>
-          ))}
-        </select>
-        <select
+          onChange={setCloserId}
+          placeholder="Closer (default: you)"
+          options={[
+            { value: "", label: "Closer (default: you)" },
+            ...staff.map((s) => ({
+              value: s.id,
+              label: s.display_name || s.email,
+            })),
+          ]}
+        />
+        <WorkbenchSelect
+          className="md:col-span-2"
           value={leadOwnerId}
-          onChange={(e) => setLeadOwnerId(e.target.value)}
-          className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white md:col-span-2"
-        >
-          <option value="">Lead owner (optional)</option>
-          {staff.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.display_name || s.email}
-            </option>
-          ))}
-        </select>
+          onChange={setLeadOwnerId}
+          placeholder="Lead owner (optional)"
+          options={[
+            { value: "", label: "Lead owner (optional)" },
+            ...staff.map((s) => ({
+              value: s.id,
+              label: s.display_name || s.email,
+            })),
+          ]}
+        />
 
-        <select
+        <WorkbenchSelect
           value={sourceType}
-          onChange={(e) => {
-            setSourceType(e.target.value as "" | "campaign" | "engagement");
+          onChange={(v) => {
+            setSourceType(v as "" | "campaign" | "engagement");
             setSourceId("");
           }}
-          className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white"
-        >
-          <option value="">Source type…</option>
-          <option value="engagement">Engagement</option>
-          <option value="campaign">Campaign</option>
-        </select>
-        <select
+          placeholder="Source type…"
+          options={[
+            { value: "", label: "Source type…" },
+            { value: "engagement", label: "Engagement" },
+            { value: "campaign", label: "Campaign" },
+          ]}
+        />
+        <WorkbenchSelect
+          className="md:col-span-3"
           value={sourceId}
-          onChange={(e) => setSourceId(e.target.value)}
+          onChange={setSourceId}
           disabled={!sourceType}
-          className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white md:col-span-3 disabled:opacity-40"
-        >
-          <option value="">Select source…</option>
-          {sourceType === "engagement"
-            ? engagements.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.channel}/{e.outcome} — {e.summary.slice(0, 60)}
-                </option>
-              ))
-            : null}
-          {sourceType === "campaign"
-            ? campaigns.map((c) => (
-                <option key={c.campaign_id} value={c.campaign_id}>
-                  {c.campaign_name}
-                </option>
-              ))
-            : null}
-        </select>
+          placeholder="Select source…"
+          options={[
+            { value: "", label: "Select source…" },
+            ...(sourceType === "engagement"
+              ? engagements.map((e) => ({
+                  value: e.id,
+                  label: `${e.channel}/${e.outcome} — ${e.summary.slice(0, 60)}`,
+                }))
+              : []),
+            ...(sourceType === "campaign"
+              ? campaigns.map((c) => ({
+                  value: c.campaign_id,
+                  label: c.campaign_name,
+                }))
+              : []),
+          ]}
+        />
 
         <input
           value={notes}

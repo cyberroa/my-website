@@ -25,8 +25,8 @@ html {
 [data-area="admin"] input:not([type="checkbox"]):not([type="radio"]):focus,
 [data-area="admin"] textarea:focus,
 [data-area="admin"] select:focus {
-  box-shadow: 0 0 0 2px rgb(255 135 0 / 0.28);
-  border-color: rgba(255, 135, 0, 0.45);
+  box-shadow: 0 0 0 2px rgb(43 180 255 / 0.32);
+  border-color: rgba(43, 180, 255, 0.5);
 }
 
 /* Lift common admin cards / tables above the charcoal shell */

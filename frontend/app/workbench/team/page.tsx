@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { WorkbenchPageHeader } from "@/components/ui";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth } from '@/lib/api-workbench';
 import { createClient } from "@/lib/supabase/client";
@@ -155,17 +156,11 @@ export default function AdminTeamPage() {
             className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white"
             required
           />
-          <select
+          <WorkbenchSelect
             value={tier}
-            onChange={(e) => setTier(e.target.value)}
-            className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white"
-          >
-            {TIER_OPTIONS.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.label}
-              </option>
-            ))}
-          </select>
+            onChange={setTier}
+            options={TIER_OPTIONS.map((t) => ({ value: t.id, label: t.label }))}
+          />
           <button type="submit" className="rounded-lg bg-accent-admin px-4 py-2 text-sm font-semibold text-black">
             Add staff
           </button>
@@ -240,17 +235,11 @@ export default function AdminTeamPage() {
             </div>
             {editingId === s.id ? (
               <div className="space-y-2 rounded-lg border border-white/10 bg-black/20 p-3">
-                <select
+                <WorkbenchSelect
                   value={editTier}
-                  onChange={(e) => setEditTier(e.target.value)}
-                  className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white"
-                >
-                  {TIER_OPTIONS.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.label}
-                    </option>
-                  ))}
-                </select>
+                  onChange={setEditTier}
+                  options={TIER_OPTIONS.map((t) => ({ value: t.id, label: t.label }))}
+                />
                 {editTier === "staff" ? (
                   <div className="flex flex-wrap gap-3">
                     {CAP_OPTIONS.map((c) => (

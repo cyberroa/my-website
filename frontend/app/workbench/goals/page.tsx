@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { WorkbenchPageHeader } from "@/components/ui";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth } from '@/lib/api-workbench';
 import { createClient } from "@/lib/supabase/client";
@@ -191,17 +192,11 @@ export default function AdminGoalsPage() {
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <select
+          <WorkbenchSelect
             value={channel}
-            onChange={(e) => setChannel(e.target.value)}
-            className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white"
-          >
-            {CHANNELS.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
+            onChange={setChannel}
+            options={CHANNELS.map((c) => ({ value: c, label: c }))}
+          />
           <button
             type="submit"
             className="rounded-lg bg-accent-admin px-4 py-2 text-sm font-semibold text-black"

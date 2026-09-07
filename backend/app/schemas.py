@@ -182,6 +182,7 @@ class CustomerUpdate(BaseModel):
     consent_marketing: bool | None = None
     consent_source: str | None = Field(default=None, max_length=120)
     lead_stage: str | None = Field(default=None, max_length=24)
+    logo_url: str | None = Field(default=None, max_length=400_000)
 
 
 class CustomerOut(BaseModel):
@@ -201,6 +202,8 @@ class CustomerOut(BaseModel):
     lead_stage: str = "new"
     created_at: datetime
     updated_at: datetime
+    fit_score: float | None = None
+    logo_url: str | None = None
 
 
 class CustomerListOut(BaseModel):
@@ -492,4 +495,34 @@ class AiStatusOut(BaseModel):
     default_model: str
     briefing_model: str
     sentiment_model: str
+
+
+class HelpAskIn(BaseModel):
+    message: str = Field(min_length=2, max_length=4_000)
+
+
+class HelpGuideLinkOut(BaseModel):
+    title: str
+    href: str
+
+
+class HelpAskOut(BaseModel):
+    answer: str
+    guides: list[HelpGuideLinkOut]
+    ai: bool = True
+
+
+class HelpFeedbackIn(BaseModel):
+    message: str = Field(min_length=5, max_length=8_000)
+    page_path: str | None = Field(default=None, max_length=500)
+
+
+class HelpFeedbackOut(BaseModel):
+    id: str
+    staff_email: str
+    message: str
+    page_path: str | None = None
+    created_at: datetime
+    read_at: datetime | None = None
+    confirm: str = ""
 

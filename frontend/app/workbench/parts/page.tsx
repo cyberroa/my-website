@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { WorkbenchPageHeader } from "@/components/ui";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 import { ApiError, apiFetch, type ApiCategory, type ApiPart } from "@/lib/api";
 import { apiFetchWithAuth } from '@/lib/api-workbench';
 import { createClient } from "@/lib/supabase/client";
@@ -149,18 +150,19 @@ export default function AdminPartsPage() {
           </label>
           <label className="block text-sm">
             <span className="text-text-muted">Category slug</span>
-            <select
-              className="mt-1 w-full rounded-md border border-white/10 bg-black/40 px-3 py-2"
+            <WorkbenchSelect
+              className="mt-1"
               value={form.category_slug}
-              onChange={(e) => setForm((f) => ({ ...f, category_slug: e.target.value }))}
-            >
-              <option value="">—</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.slug}>
-                  {c.name} ({c.slug})
-                </option>
-              ))}
-            </select>
+              onChange={(category_slug) => setForm((f) => ({ ...f, category_slug }))}
+              placeholder="—"
+              options={[
+                { value: "", label: "—" },
+                ...categories.map((c) => ({
+                  value: c.slug,
+                  label: `${c.name} (${c.slug})`,
+                })),
+              ]}
+            />
           </label>
           <label className="block text-sm">
             <span className="text-text-muted">Status</span>

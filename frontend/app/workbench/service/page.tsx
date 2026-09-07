@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { WorkbenchPageHeader } from "@/components/ui";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth } from '@/lib/api-workbench';
 import { createClient } from "@/lib/supabase/client";
@@ -203,19 +204,20 @@ export default function AdminServicePage() {
         onSubmit={submitJob}
         className="grid gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-5 md:grid-cols-2"
       >
-        <select
+        <WorkbenchSelect
+          className="md:col-span-2"
           value={customerId}
-          onChange={(e) => setCustomerId(e.target.value)}
-          className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white md:col-span-2"
+          onChange={setCustomerId}
           required
-        >
-          <option value="">Customer site…</option>
-          {customers.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.email} {c.name ? `(${c.name})` : ""}
-            </option>
-          ))}
-        </select>
+          placeholder="Customer site…"
+          options={[
+            { value: "", label: "Customer site…" },
+            ...customers.map((c) => ({
+              value: c.id,
+              label: `${c.email}${c.name ? ` (${c.name})` : ""}`,
+            })),
+          ]}
+        />
 
         {mode === "schedule" ? (
           <>
@@ -242,17 +244,11 @@ export default function AdminServicePage() {
           </>
         ) : (
           <>
-            <select
+            <WorkbenchSelect
               value={jobType}
-              onChange={(e) => setJobType(e.target.value)}
-              className="rounded-md border border-white/15 bg-[#121218] px-3 py-2 text-sm text-white"
-            >
-              {JOB_TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
+              onChange={setJobType}
+              options={JOB_TYPES.map((t) => ({ value: t, label: t }))}
+            />
             <input
               type="number"
               step="0.25"

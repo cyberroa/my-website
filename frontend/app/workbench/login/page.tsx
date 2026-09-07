@@ -1,10 +1,34 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense } from "react";
 import { Eyebrow } from "@/components/ui";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/env-public";
 import { useSearchParams } from "next/navigation";
+
+function GoogleMark() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" aria-hidden>
+      <path
+        fill="#4285F4"
+        d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.4c-.3 1.5-1.1 2.7-2.4 3.6v3h3.9c2.3-2.1 3.6-5.2 3.6-8.7Z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.2 0-5.9-2.1-6.8-5H1.2v3.1C3.2 21.3 7.3 24 12 24Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.2 14.3c-.2-.7-.4-1.4-.4-2.3s.1-1.6.4-2.3V6.6H1.2C.4 8.2 0 10 0 12s.4 3.8 1.2 5.4l4-3.1Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 4.8c1.7 0 3.3.6 4.5 1.7l3.4-3.4C18 1.1 15.2 0 12 0 7.3 0 3.2 2.7 1.2 6.6l4 3.1c.9-2.9 3.6-4.9 6.8-4.9Z"
+      />
+    </svg>
+  );
+}
 
 function LoginInner() {
   const sp = useSearchParams();
@@ -52,14 +76,23 @@ function LoginInner() {
       {err === "auth" ? (
         <p className="mt-6 text-sm text-red-400">Sign-in failed. Please try again.</p>
       ) : null}
-      <button
-        type="button"
-        disabled={!supabaseOk}
-        onClick={() => void signIn()}
-        className="mt-10 rounded-lg bg-accent-admin px-8 py-3 text-sm font-semibold text-black transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        Continue with Google
-      </button>
+      <div className="mt-10 flex w-full max-w-xs flex-col gap-3">
+        <button
+          type="button"
+          disabled={!supabaseOk}
+          onClick={() => void signIn()}
+          className="inline-flex items-center justify-center gap-2.5 rounded-lg border border-accent-admin bg-[#2a2a30] px-8 py-3 text-sm font-semibold text-white transition hover:bg-[#33333a] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <GoogleMark />
+          Continue with Google
+        </button>
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center rounded-lg border border-white/15 bg-[#2a2a30] px-8 py-3 text-sm font-semibold text-white/70 transition hover:border-white/25 hover:bg-[#33333a] hover:text-white"
+        >
+          Back to Titan Imaging
+        </Link>
+      </div>
     </div>
   );
 }

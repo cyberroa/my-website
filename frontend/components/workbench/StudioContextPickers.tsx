@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { apiFetchWithAuth } from "@/lib/api-workbench";
 import { cn } from "@/lib/cn";
+import { workbenchDropdownItem, workbenchDropdownPanel } from "@/lib/workbench-ui";
 
 export type StudioSegmentRef = {
   id: string;
@@ -33,6 +34,7 @@ type Props = {
   onSegmentChange: (segment: StudioSegmentRef | null) => void;
   onCustomerChange: (customer: StudioCustomerRef | null) => void;
   className?: string;
+  customerSearchQuery?: string;
 };
 
 function customerLabel(c: StudioCustomerRef): string {
@@ -83,6 +85,7 @@ function TypeaheadField<T extends { id: string }>({
   fetchResults,
   renderItem,
   onSelect,
+  initialQuery,
 }: {
   label: string;
   placeholder: string;
@@ -91,12 +94,13 @@ function TypeaheadField<T extends { id: string }>({
   fetchResults: (query: string) => Promise<T[]>;
   renderItem: (item: T) => ReactNode;
   onSelect: (item: T) => void;
+  initialQuery?: string;
 }) {
   const listId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
-  const [query, setQuery] = useState("");
-  const [debounced, setDebounced] = useState("");
-  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState(initialQuery ?? "");
+  const [debounced, setDebounced] = useState(initialQuery ?? "");
+  const [open, setOpen] = useState(Boolean(initialQuery));
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<T[]>([]);
 
@@ -164,7 +168,7 @@ function TypeaheadField<T extends { id: string }>({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-40 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-white/15 bg-[#111111] py-1 shadow-2xl ring-1 ring-black/80"
+          className={workbenchDropdownPanel}
         >
           {!token ? (
             <li className="px-3 py-2 text-sm text-white/45">Sign in to search</li>
@@ -177,7 +181,7 @@ function TypeaheadField<T extends { id: string }>({
               <li key={item.id} role="option">
                 <button
                   type="button"
-                  className="w-full bg-[#111111] px-3 py-2 text-left text-sm text-white/90 transition hover:bg-[#1a1a1a]"
+                  className={workbenchDropdownItem}
                   onClick={() => {
                     onSelect(item);
                     setQuery("");
@@ -202,6 +206,7 @@ export function StudioContextPickers({
   onSegmentChange,
   onCustomerChange,
   className,
+  customerSearchQuery,
 }: Props) {
   const fetchSegments = useCallback(
     async (q: string) => {
@@ -273,6 +278,7 @@ export function StudioContextPickers({
           label="Attach customer (dossier)"
           placeholder="Search customers…"
           token={token}
+          initialQuery={customerSearchQuery}
           fetchResults={fetchCustomers}
           onSelect={onCustomerChange}
           renderItem={(c) => (

@@ -16,8 +16,20 @@ const config: Config = {
           titanium: "#a9b4c2",
           /** Public marketing accent */
           ice: "#6EC9F0",
-          /** Admin backend accent — McLaren papaya; distinct from public ice */
-          admin: "#FF8700",
+          /** Workbench mid-tone — Lambo electric blue */
+          admin: "#2BB4FF",
+          /** Icy highlight on body creases — scheduled / upcoming */
+          highlight: "#7DEAFF",
+          /** Cerulean in vents/shadows — pending / waiting */
+          deep: "#0076E6",
+          /** Midnight contours — completed / grounded chrome */
+          navy: "#0B3D73",
+          /** Engagement up / healthy activity */
+          signal: "#34D399",
+          /** Stale engagement / medium watch — pale yellow */
+          caution: "#FFFF84",
+          /** High priority — terracotta, not racing red */
+          alert: "#E07A5F",
         },
         text: {
           primary: "#ffffff",

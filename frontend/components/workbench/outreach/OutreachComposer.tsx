@@ -1,6 +1,7 @@
 "use client";
 
 import { MERGE_VARIABLES, type OutreachPreview, type OutreachTemplate } from "./types";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 
 type Props = {
   templates: OutreachTemplate[];
@@ -35,18 +36,16 @@ export function OutreachComposer({
     <div className="space-y-4 rounded-xl border border-white/10 bg-background-card p-4">
       <label className="block text-sm">
         <span className="text-text-muted">Template</span>
-        <select
-          className="mt-1 w-full rounded-md border border-white/10 bg-black/40 px-3 py-2 text-sm"
+        <WorkbenchSelect
+          className="mt-1"
           value={templateId}
-          onChange={(e) => onTemplateId(e.target.value)}
-        >
-          <option value="">Start blank</option>
-          {templates.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.name}
-            </option>
-          ))}
-        </select>
+          onChange={onTemplateId}
+          placeholder="Start blank"
+          options={[
+            { value: "", label: "Start blank" },
+            ...templates.map((t) => ({ value: t.id, label: t.name })),
+          ]}
+        />
       </label>
 
       <label className="block text-sm">

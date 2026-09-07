@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { WorkbenchPageHeader } from "@/components/ui";
+import { WorkbenchMultiSelect } from "@/components/workbench/WorkbenchMultiSelect";
+import { WorkbenchSelect } from "@/components/workbench/WorkbenchSelect";
 import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth, apiUploadWithAuth } from '@/lib/api-workbench';
 import { createClient } from "@/lib/supabase/client";
@@ -22,12 +24,24 @@ type Customer = {
   consent_marketing: boolean;
   consent_source: string | null;
   created_at: string;
+  fit_score?: number | null;
 };
 
 type CustomerListResponse = {
   items: Customer[];
   total: number;
 };
+
+type SegmentOpt = { id: string; name: string };
+
+const OPPORTUNITY_OPTIONS = [
+  { value: "", label: "All opportunities" },
+  { value: "audit", label: "Audit candidates" },
+  { value: "used_system", label: "System buyers (used)" },
+  { value: "new_system", label: "System buyers (new)" },
+  { value: "parts", label: "Parts warmth / at-risk" },
+  { value: "sell_to_titan", label: "Sell to Titan" },
+];
 
 type ImportResult = {
   created: number;
@@ -57,28 +71,57 @@ export default function AdminCustomersPage() {
 }
 
 function CustomersPageInner() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const initialSearch = searchParams.get("search") ?? "";
+  const urlSearch = searchParams.get("search") ?? "";
+  const opportunity = searchParams.get("opportunity") ?? "";
+  const segmentIds = searchParams.getAll("segment_ids");
+  const queryKey = searchParams.toString();
   const [token, setToken] = useState<string | null>(null);
   const [rows, setRows] = useState<Customer[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState(initialSearch);
+  const [search, setSearch] = useState(urlSearch);
+  const [segments, setSegments] = useState<SegmentOpt[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [file, setFile] = useState<File | null>(null);
   const [dryRun, setDryRun] = useState(true);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
 
+  const applyFilters = useCallback(
+    (next: { search?: string; opportunity?: string; segmentIds?: string[] }) => {
+      const q = (next.search ?? search).trim();
+      const opp = next.opportunity ?? opportunity;
+      const segs = next.segmentIds ?? segmentIds;
+      const params = new URLSearchParams();
+      if (q) params.set("search", q);
+      if (opp) params.set("opportunity", opp);
+      segs.forEach((id) => params.append("segment_ids", id));
+      const qs = params.toString();
+      router.replace(qs ? `/workbench/customers?${qs}` : "/workbench/customers", { scroll: false });
+    },
+    [router, search, opportunity, queryKey],
+  );
+
   const load = useCallback(
-    async (t: string, q?: string) => {
+    async (t: string) => {
       setLoading(true);
       setError(null);
       try {
-        const path = q
-          ? `/api/v1/workbench/customers?search=${encodeURIComponent(q)}&limit=100`
-          : "/api/v1/workbench/customers?limit=100";
-        const r = await apiFetchWithAuth<CustomerListResponse>(path, t);
+        const sp = new URLSearchParams(queryKey);
+        const params = new URLSearchParams({ limit: "100" });
+        const q = (sp.get("search") ?? "").trim();
+        const opp = sp.get("opportunity") ?? "";
+        if (q) params.set("search", q);
+        if (opp) params.set("opportunity", opp);
+        sp.getAll("segment_ids").forEach((id) => params.append("segment_ids", id));
+        const r = await apiFetchWithAuth<CustomerListResponse>(
+          `/api/v1/workbench/customers?${params}`,
+          t,
+        );
         setRows(r.items);
+        setTotal(r.total);
       } catch (e) {
         setError(
           e instanceof ApiError ? JSON.stringify(e.body ?? e.message) : "Failed to load",
@@ -87,19 +130,28 @@ function CustomersPageInner() {
         setLoading(false);
       }
     },
-    [],
+    [queryKey],
   );
+
+  useEffect(() => {
+    setSearch(urlSearch);
+  }, [urlSearch]);
 
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getSession().then(({ data: { session } }) => {
       setToken(session?.access_token ?? null);
       if (session?.access_token) {
-        const q = initialSearch.trim() || undefined;
-        void load(session.access_token, q);
+        void load(session.access_token);
+        void apiFetchWithAuth<{ items: SegmentOpt[] }>(
+          "/api/v1/workbench/segments?limit=100",
+          session.access_token,
+        )
+          .then((r) => setSegments(r.items ?? []))
+          .catch(() => undefined);
       } else setLoading(false);
     });
-  }, [load, initialSearch]);
+  }, [load]);
 
   async function saveCustomer(e: React.FormEvent) {
     e.preventDefault();
@@ -127,7 +179,7 @@ function CustomersPageInner() {
         body: JSON.stringify(payload),
       });
       setForm(emptyForm);
-      await load(token, search);
+      await load(token);
     } catch (err) {
       setError(
         err instanceof ApiError ? JSON.stringify(err.body ?? err.message) : "Save failed",
@@ -139,7 +191,7 @@ function CustomersPageInner() {
     if (!token || !confirm("Delete this customer? Their campaign history is kept.")) return;
     try {
       await apiFetchWithAuth(`/api/v1/workbench/customers/${id}`, token, { method: "DELETE" });
-      await load(token, search);
+      await load(token);
     } catch (err) {
       setError(
         err instanceof ApiError ? JSON.stringify(err.body ?? err.message) : "Delete failed",
@@ -162,7 +214,7 @@ function CustomersPageInner() {
         { dry_run: dryRun },
       );
       setImportResult(res);
-      if (!dryRun) await load(token, search);
+      if (!dryRun) await load(token);
     } catch (err) {
       setError(
         err instanceof ApiError ? JSON.stringify(err.body ?? err.message) : "Import failed",
@@ -335,21 +387,63 @@ function CustomersPageInner() {
         </p>
       ) : null}
 
-      <div className="mt-10 flex flex-wrap items-center gap-3">
-        <input
-          className="w-full max-w-sm rounded-md border border-white/10 bg-black/40 px-3 py-2 text-sm"
-          placeholder="Search email / name / company"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      <div className="mt-10 flex flex-wrap items-end gap-3">
+        <label className="block min-w-[12rem] flex-1 text-sm">
+          <span className="text-text-muted">Search</span>
+          <input
+            className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-accent-admin/40"
+            placeholder="Email / name / company"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") applyFilters({ search });
+            }}
+          />
+        </label>
+        <label className="block w-full min-w-[12rem] text-sm sm:w-56">
+          <span className="text-text-muted">Opportunity</span>
+          <WorkbenchSelect
+            className="mt-1"
+            value={opportunity}
+            onChange={(v) => applyFilters({ opportunity: v })}
+            options={OPPORTUNITY_OPTIONS}
+            placeholder="All opportunities"
+          />
+        </label>
+        <label className="block w-full min-w-[12rem] text-sm sm:w-56">
+          <span className="text-text-muted">Segments</span>
+          <WorkbenchMultiSelect
+            className="mt-1"
+            values={segmentIds}
+            onChange={(ids) => applyFilters({ segmentIds: ids })}
+            options={segments.map((s) => ({ value: s.id, label: s.name }))}
+            placeholder="Any segment"
+          />
+        </label>
         <button
           type="button"
           className="rounded-lg border border-white/15 px-4 py-2 text-sm font-semibold text-text-secondary hover:border-accent-admin hover:text-accent-admin"
-          onClick={() => token && void load(token, search)}
+          onClick={() => applyFilters({ search })}
         >
           Search
         </button>
+        {urlSearch || opportunity || segmentIds.length ? (
+          <button
+            type="button"
+            className="rounded-lg px-3 py-2 text-sm text-text-muted hover:text-white"
+            onClick={() => {
+              setSearch("");
+              router.replace("/workbench/customers", { scroll: false });
+            }}
+          >
+            Clear
+          </button>
+        ) : null}
       </div>
+      <p className="mt-2 text-xs text-text-muted">
+        {loading ? "Loading…" : `${total} matching customer${total === 1 ? "" : "s"}`}
+        {opportunity ? " · ordered by fit score" : ""}
+      </p>
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-white/10">
         <table className="min-w-full text-left text-sm">
@@ -359,6 +453,7 @@ function CustomersPageInner() {
               <th className="px-4 py-3 font-semibold">Name</th>
               <th className="px-4 py-3 font-semibold">Company</th>
               <th className="px-4 py-3 font-semibold">Tags</th>
+              {opportunity ? <th className="px-4 py-3 font-semibold">Score</th> : null}
               <th className="px-4 py-3 font-semibold">Consent</th>
               <th className="px-4 py-3 font-semibold" />
             </tr>
@@ -366,14 +461,14 @@ function CustomersPageInner() {
           <tbody>
             {loading ? (
               <tr>
-                <td className="px-4 py-6 text-text-muted" colSpan={6}>
+                <td className="px-4 py-6 text-text-muted" colSpan={opportunity ? 7 : 6}>
                   Loading…
                 </td>
               </tr>
             ) : rows.length === 0 ? (
               <tr>
-                <td className="px-4 py-6 text-text-muted" colSpan={6}>
-                  No customers yet.
+                <td className="px-4 py-6 text-text-muted" colSpan={opportunity ? 7 : 6}>
+                  No customers match these filters.
                 </td>
               </tr>
             ) : (
@@ -394,6 +489,11 @@ function CustomersPageInner() {
                   <td className="px-4 py-3 text-text-muted">
                     {c.tags.length ? c.tags.join(", ") : "—"}
                   </td>
+                  {opportunity ? (
+                    <td className="px-4 py-3 font-medium text-accent-admin">
+                      {c.fit_score != null ? c.fit_score.toFixed(1) : "—"}
+                    </td>
+                  ) : null}
                   <td className="px-4 py-3 text-text-muted">
                     {c.consent_marketing ? "yes" : "no"}
                   </td>
