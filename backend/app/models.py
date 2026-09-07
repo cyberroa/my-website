@@ -134,6 +134,9 @@ class Customer(Base):
     )
     consent_source: Mapped[str | None] = mapped_column(String(120), nullable=True)
     consent_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    lead_stage: Mapped[str] = mapped_column(
+        String(24), nullable=False, server_default="new", index=True
+    )  # new|contacted|engaged|qualified|proposal|won|lost
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
@@ -145,6 +148,9 @@ class Customer(Base):
     sessions: Mapped[list["BrowserSession"]] = relationship(back_populates="customer")
     briefing: Mapped["CustomerBriefing | None"] = relationship(
         back_populates="customer", uselist=False, cascade="all, delete-orphan"
+    )
+    engagements: Mapped[list["CustomerEngagement"]] = relationship(
+        back_populates="customer", cascade="all, delete-orphan"
     )
 
 
@@ -819,4 +825,82 @@ class CustomerFitScore(Base):
     as_of_date: Mapped[dt.date] = mapped_column(Date, nullable=False, index=True)
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+# --------------------------------------------------------------------------
+# Sales engagement loop — activity log, mailbox sync
+# --------------------------------------------------------------------------
+
+
+class CustomerEngagement(Base):
+    """Staff/AI-logged customer touch (call, email, meeting, note)."""
+
+    __tablename__ = "customer_engagements"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    customer_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("customers.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    staff_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("workbench_staff.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    channel: Mapped[str] = mapped_column(
+        String(32), nullable=False, server_default="note", index=True
+    )  # phone|meeting|email_inbound|email_paste|note|studio_agent
+    occurred_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), index=True
+    )
+    summary: Mapped[str] = mapped_column(Text, nullable=False, server_default="")
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    transcript: Mapped[str | None] = mapped_column(Text, nullable=True)
+    raw_email: Mapped[str | None] = mapped_column(Text, nullable=True)
+    outcome: Mapped[str] = mapped_column(
+        String(40), nullable=False, server_default="other", index=True
+    )  # interested|callback|objection|not_interested|meeting_set|won|lost|other
+    interest_tags: Mapped[list] = mapped_column(JSONB, nullable=False, server_default="[]")
+    offer_family: Mapped[str | None] = mapped_column(String(40), nullable=True, index=True)
+    campaign_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("campaigns.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    campaign_recipient_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("campaign_recipients.id", ondelete="SET NULL"), nullable=True
+    )
+    outreach_batch_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    mailbox_thread_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    ai_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
+    ai_sentiment: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    suggested_stage: Mapped[str | None] = mapped_column(String(24), nullable=True)
+    applied_stage: Mapped[str | None] = mapped_column(String(24), nullable=True)
+    sale_amount_hint_cents: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    customer: Mapped["Customer"] = relationship(back_populates="engagements")
+    staff: Mapped["WorkbenchStaff | None"] = relationship()
+    campaign: Mapped["Campaign | None"] = relationship()
+
+
+class MailboxConnection(Base):
+    """Shared work inbox OAuth connection (Gmail or Microsoft 365)."""
+
+    __tablename__ = "mailbox_connections"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    provider: Mapped[str] = mapped_column(String(24), nullable=False)  # gmail|microsoft
+    email_address: Mapped[str] = mapped_column(CITEXT(), nullable=False, unique=True)
+    access_token_enc: Mapped[str | None] = mapped_column(Text, nullable=True)
+    refresh_token_enc: Mapped[str | None] = mapped_column(Text, nullable=True)
+    token_expires_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    sync_cursor: Mapped[str | None] = mapped_column(Text, nullable=True)
+    last_synced_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[str] = mapped_column(String(24), nullable=False, server_default="pending")
+    created_by: Mapped[str | None] = mapped_column(String(320), nullable=True)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()
     )

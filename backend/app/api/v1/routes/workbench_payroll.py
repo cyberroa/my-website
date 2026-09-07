@@ -385,6 +385,8 @@ def list_conversions(
                 "currency": c.currency,
                 "closed_at": c.closed_at.isoformat(),
                 "status": c.status,
+                "source_type": c.source_type,
+                "source_id": str(c.source_id) if c.source_id else None,
                 "lead_owner_staff_id": str(c.lead_owner_staff_id) if c.lead_owner_staff_id else None,
                 "closer_staff_id": str(c.closer_staff_id) if c.closer_staff_id else None,
                 "notes": c.notes,
@@ -413,7 +415,8 @@ def create_conversion(
     conv = SaleConversion(
         id=uuid.uuid4(),
         customer_id=cust.id,
-        source_type=body.get("source_type"),
+        source_type=(body.get("source_type") or None),
+        source_id=uuid.UUID(body["source_id"]) if body.get("source_id") else None,
         amount_cents=int(body.get("amount_cents") or 0),
         currency=(body.get("currency") or "USD")[:3],
         closed_at=closed_at,

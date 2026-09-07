@@ -162,6 +162,7 @@ class CustomerBase(BaseModel):
     notes: str | None = Field(default=None, max_length=20_000)
     consent_marketing: bool = False
     consent_source: str | None = Field(default=None, max_length=120)
+    lead_stage: str = Field(default="new", max_length=24)
 
 
 class CustomerCreate(CustomerBase):
@@ -180,6 +181,7 @@ class CustomerUpdate(BaseModel):
     notes: str | None = Field(default=None, max_length=20_000)
     consent_marketing: bool | None = None
     consent_source: str | None = Field(default=None, max_length=120)
+    lead_stage: str | None = Field(default=None, max_length=24)
 
 
 class CustomerOut(BaseModel):
@@ -196,6 +198,7 @@ class CustomerOut(BaseModel):
     consent_marketing: bool = False
     consent_source: str | None = None
     consent_at: datetime | None = None
+    lead_stage: str = "new"
     created_at: datetime
     updated_at: datetime
 

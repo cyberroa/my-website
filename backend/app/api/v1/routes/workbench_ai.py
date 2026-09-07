@@ -16,6 +16,7 @@ from app.ai.goals import refresh_all_auto_goals
 from app.ai.opportunities import run_opportunity_detection
 from app.ai.segments_ai import approve_ai_segment, propose_segment, reject_ai_segment
 from app.ai.snapshots import customer_warmth_history, run_engagement_snapshots
+from app.ai.images import GeminiImageError
 from app.ai.studio import (
     promote_studio_output,
     seed_default_presets,
@@ -186,9 +187,166 @@ async def studio_image_endpoint(
         raise HTTPException(status_code=400, detail="prompt required")
     try:
         run = await studio_image(db, prompt=prompt, created_by=admin.email)
+    except GeminiImageError as exc:
+        code = 503 if exc.status_code in (None, 401, 403) else 502
+        if exc.status_code == 429:
+            code = 429
+        raise HTTPException(status_code=code, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     return {"id": str(run.id), "output_image_url": run.output_image_url}
+
+
+@router.post("/studio/agent")
+async def studio_agent_endpoint(
+    body: dict[str, Any],
+    db: Session = Depends(get_db),
+    admin: WorkbenchUser = Depends(get_current_workbench_user),
+):
+    """Log a customer engagement from Studio Agent (voice/text or pasted email)."""
+    from sqlalchemy import select
+
+    from app.ai.engagement import (
+        ai_extract_engagement,
+        create_engagement,
+        engagement_to_out,
+        match_customer_from_email_text,
+        recent_campaigns_for_customer,
+        recompute_fit_for_customer,
+    )
+    from app.ai.studio import enrich_studio_context
+    from app.models import Customer, WorkbenchStaff
+    from app.staff_permissions import CAPABILITIES, sync_legacy_role
+
+    text = (body.get("text") or body.get("user") or body.get("transcript") or "").strip()
+    raw_email = (body.get("raw_email") or "").strip() or None
+    if raw_email and not text:
+        text = raw_email
+    if not text:
+        raise HTTPException(status_code=400, detail="text or raw_email required")
+
+    channel = (body.get("channel") or ("email_paste" if raw_email else "studio_agent"))[:32]
+    customer_id = body.get("customer_id") or (body.get("context") or {}).get("customer_id")
+    customer = None
+    if customer_id:
+        customer = db.get(Customer, customer_id)
+    if not customer and (raw_email or channel in ("email_paste", "email_inbound")):
+        customer = match_customer_from_email_text(db, raw_email or text)
+    if not customer:
+        raise HTTPException(
+            status_code=400,
+            detail="customer_id required (or include a known customer email in the paste)",
+        )
+
+    staff = db.scalar(select(WorkbenchStaff).where(WorkbenchStaff.email == admin.email))
+    if not staff:
+        settings = get_settings()
+        is_owner = admin.email in settings.owner_emails_set
+        staff = WorkbenchStaff(
+            id=uuid.uuid4(),
+            email=admin.email,
+            display_name=admin.email.split("@")[0],
+            role="owner" if is_owner else "admin",
+            staff_tier="owner" if is_owner else "admin",
+            capabilities=sorted(CAPABILITIES) if is_owner else [],
+        )
+        sync_legacy_role(staff)
+        db.add(staff)
+        db.flush()
+
+    dossier = enrich_studio_context(
+        db, {"customer_id": str(customer.id), **(body.get("context") or {})}
+    )
+    dossier["recent_campaigns"] = recent_campaigns_for_customer(db, customer)
+    dossier["lead_stage"] = getattr(customer, "lead_stage", None) or "new"
+
+    extracted = await ai_extract_engagement(
+        text=text, customer=customer, channel=channel, dossier=dossier
+    )
+
+    campaign_id = body.get("campaign_id")
+    campaign_recipient_id = body.get("campaign_recipient_id")
+    apply = body.get("apply_stage")
+    if apply is None:
+        apply = extracted["outcome"] in (
+            "interested",
+            "meeting_set",
+            "won",
+            "lost",
+            "not_interested",
+            "callback",
+        )
+
+    row = create_engagement(
+        db,
+        customer=customer,
+        channel=channel,
+        summary=extracted["summary"],
+        staff_id=staff.id,
+        notes=body.get("notes"),
+        transcript=body.get("transcript") or (text if channel == "studio_agent" else None),
+        raw_email=raw_email,
+        outcome=extracted["outcome"],
+        interest_tags=extracted.get("interest_tags") or [],
+        offer_family=extracted.get("offer_family"),
+        campaign_id=uuid.UUID(campaign_id) if campaign_id else None,
+        campaign_recipient_id=uuid.UUID(campaign_recipient_id) if campaign_recipient_id else None,
+        ai_summary=extracted["summary"],
+        ai_sentiment=extracted.get("ai_sentiment"),
+        suggested_stage=extracted.get("suggested_stage"),
+        apply_stage=bool(apply),
+        sale_amount_hint_cents=extracted.get("sale_amount_hint_cents"),
+    )
+    scores = recompute_fit_for_customer(db, customer)
+    db.commit()
+    db.refresh(row)
+    db.refresh(customer)
+
+    next_actions = extracted.get("next_actions") or []
+    for a in next_actions:
+        if isinstance(a, dict) and a.get("id") == "view_customer":
+            a["href"] = f"/workbench/customers/{customer.id}"
+        if isinstance(a, dict) and a.get("id") in ("draft_email", "studio_agent", "log_call"):
+            base = a.get("href") or "/workbench/studio"
+            sep = "&" if "?" in base else "?"
+            if f"customer=" not in base:
+                a["href"] = f"{base}{sep}customer={customer.id}"
+
+    draft_sale = None
+    if extracted["outcome"] == "won" or extracted.get("sale_amount_hint_cents"):
+        draft_sale = {
+            "customer_id": str(customer.id),
+            "amount_cents": extracted.get("sale_amount_hint_cents"),
+            "source_type": "engagement",
+            "source_id": str(row.id),
+            "closer_staff_id": str(staff.id),
+            "notes": extracted["summary"],
+            "confirm_required": True,
+        }
+
+    return {
+        "engagement": engagement_to_out(row),
+        "lead_stage": customer.lead_stage,
+        "fit_scores": scores,
+        "extraction": extracted,
+        "next_actions": next_actions,
+        "draft_sale": draft_sale,
+        "message": "Engagement logged. Confirm any sale amount on Sales before commissions post.",
+    }
+
+
+@router.post("/studio/email-paste")
+async def studio_email_paste_endpoint(
+    body: dict[str, Any],
+    db: Session = Depends(get_db),
+    admin: WorkbenchUser = Depends(get_current_workbench_user),
+):
+    """Paste/forward an email thread for AI summarize + score."""
+    payload = dict(body or {})
+    payload["channel"] = "email_paste"
+    if payload.get("raw_email") is None and payload.get("text"):
+        payload["raw_email"] = payload["text"]
+    return await studio_agent_endpoint(body=payload, db=db, admin=admin)
 
 
 @router.get("/studio/runs")
@@ -555,6 +713,20 @@ async def job_slack_hot_alerts_manual(db: Session = Depends(get_db)):
     hot = await alert_hot_opportunities(db)
     digest = await alert_research_digest(db)
     return {"hot": hot, "research": digest}
+
+
+@router.post("/jobs/mailbox-sync", dependencies=[Depends(_verify_cron)])
+async def job_mailbox_sync(db: Session = Depends(get_db), limit: int = 25):
+    from app.mailbox import sync_mailbox
+
+    return await sync_mailbox(db, limit=min(limit, 50))
+
+
+@router.post("/jobs/mailbox-sync/manual")
+async def job_mailbox_sync_manual(db: Session = Depends(get_db), limit: int = 25):
+    from app.mailbox import sync_mailbox
+
+    return await sync_mailbox(db, limit=min(limit, 50))
 
 
 @router.post("/agent/enqueue")

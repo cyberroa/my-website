@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from app.ai.client import chat_completion, resolve_model
 from app.ai.evidence import list_evidence
 from app.ai.fit_scores import customer_fit_scores_out
-from app.ai.images import generate_gemini_image, store_image_data_url
+from app.ai.images import GeminiImageError, generate_gemini_image, store_image_data_url
 from app.ai.opportunities import customer_latest_opportunities
 from app.ai.prompts import STUDIO_DEFAULT_SYSTEM
 from app.models import AiPromptPreset, AiStudioRun, Campaign, Customer, EmailTemplate, Segment, SocialPost
@@ -63,6 +63,7 @@ def enrich_studio_context(db: Session, context: dict | None) -> dict:
                 "tags": list(customer.tags or []),
                 "notes": (customer.notes or "")[:3000],
                 "website": customer.website,
+                "lead_stage": getattr(customer, "lead_stage", None) or "new",
             }
             ctx["opportunities"] = customer_latest_opportunities(db, cid)
             ctx["fit_scores"] = customer_fit_scores_out(db, cid)
@@ -127,9 +128,10 @@ async def studio_complete(
 
 
 async def studio_image(db: Session, *, prompt: str, created_by: str | None) -> AiStudioRun:
-    data_url = await generate_gemini_image(prompt)
-    if not data_url:
-        raise ValueError("Image generation not configured (set GOOGLE_AI_API_KEY)")
+    try:
+        data_url = await generate_gemini_image(prompt)
+    except GeminiImageError:
+        raise
 
     run = AiStudioRun(
         id=uuid.uuid4(),

@@ -28,10 +28,30 @@ export const WORKBENCH_NAV_GROUPS: WorkbenchNavGroup[] = [
     label: "AI",
     href: "/workbench/studio",
     links: [
-      { href: "/workbench/studio", label: "AI Studio", detail: "Prompts, models, generate content", requiredCapabilities: ["marketing"] },
-      { href: "/workbench/live", label: "Live", detail: "Active visitors and hot leads", requiredCapabilities: ["sales", "marketing"] },
-      { href: "/workbench/insights", label: "Market Map", detail: "CRM graph exploration", requiredCapabilities: ["sales", "marketing"] },
-      { href: "/workbench/briefings", label: "Briefings", detail: "Daily AI staff reports", requiredCapabilities: ["marketing"] },
+      {
+        href: "/workbench/studio",
+        label: "AI Studio",
+        detail: "Prompts, models, generate content",
+        requiredCapabilities: ["marketing"],
+      },
+      {
+        href: "/workbench/analytics",
+        label: "Analytics",
+        detail: "Live visitors, pipeline, progressions",
+        requiredCapabilities: ["sales", "marketing"],
+      },
+      {
+        href: "/workbench/insights",
+        label: "Market Map",
+        detail: "CRM graph exploration",
+        requiredCapabilities: ["sales", "marketing"],
+      },
+      {
+        href: "/workbench/briefings",
+        label: "Briefings",
+        detail: "Daily AI staff reports",
+        requiredCapabilities: ["marketing"],
+      },
     ],
   },
   {
@@ -39,9 +59,24 @@ export const WORKBENCH_NAV_GROUPS: WorkbenchNavGroup[] = [
     label: "CRM",
     href: "/workbench/customers",
     links: [
-      { href: "/workbench/customers", label: "Customers", detail: "List, import, 360 timeline", requiredCapabilities: ["sales", "support", "marketing"] },
-      { href: "/workbench/segments", label: "Segments", detail: "Audience filters", requiredCapabilities: ["sales", "support", "marketing"] },
-      { href: "/workbench/goals", label: "Goals", detail: "Opportunity-driven segments", requiredCapabilities: ["sales", "support", "marketing"] },
+      {
+        href: "/workbench/customers",
+        label: "Customers",
+        detail: "List, import, 360 timeline",
+        requiredCapabilities: ["sales", "support", "marketing"],
+      },
+      {
+        href: "/workbench/segments",
+        label: "Segments",
+        detail: "Audience filters",
+        requiredCapabilities: ["sales", "support", "marketing"],
+      },
+      {
+        href: "/workbench/goals",
+        label: "Goals",
+        detail: "Opportunity-driven segments",
+        requiredCapabilities: ["sales", "support", "marketing"],
+      },
     ],
   },
   {
@@ -49,10 +84,30 @@ export const WORKBENCH_NAV_GROUPS: WorkbenchNavGroup[] = [
     label: "Marketing",
     href: "/workbench/campaigns",
     links: [
-      { href: "/workbench/templates", label: "Templates", detail: "Reusable email copy", requiredCapabilities: ["marketing"] },
-      { href: "/workbench/campaigns", label: "Campaigns", detail: "Send via Resend", requiredCapabilities: ["marketing"] },
-      { href: "/workbench/social", label: "Social", detail: "LinkedIn via Make", requiredCapabilities: ["marketing"] },
-      { href: "/workbench/outreach", label: "Outreach", detail: "One-off email blasts", requiredCapabilities: ["marketing"] },
+      {
+        href: "/workbench/templates",
+        label: "Templates",
+        detail: "Reusable email copy",
+        requiredCapabilities: ["marketing"],
+      },
+      {
+        href: "/workbench/campaigns",
+        label: "Campaigns",
+        detail: "Send via Resend",
+        requiredCapabilities: ["marketing"],
+      },
+      {
+        href: "/workbench/social",
+        label: "Social",
+        detail: "LinkedIn via Make",
+        requiredCapabilities: ["marketing"],
+      },
+      {
+        href: "/workbench/outreach",
+        label: "Outreach",
+        detail: "One-off email blasts",
+        requiredCapabilities: ["marketing"],
+      },
     ],
   },
   {
@@ -60,11 +115,36 @@ export const WORKBENCH_NAV_GROUPS: WorkbenchNavGroup[] = [
     label: "Sales & Pay",
     href: "/workbench/sales",
     links: [
-      { href: "/workbench/sales", label: "Sales", detail: "Log conversions", requiredCapabilities: ["sales"] },
-      { href: "/workbench/service", label: "Service", detail: "Field repair & site jobs", requiredCapabilities: ["technician", "support"] },
-      { href: "/workbench/team", label: "Team", detail: "Staff profiles and pay packages", ownerOnly: true },
-      { href: "/workbench/mypay", label: "My Pay", detail: "Accept your terms", hideForOwner: true },
-      { href: "/workbench/payroll", label: "Payroll", detail: "Payout dashboard", accountingOnly: true },
+      {
+        href: "/workbench/sales",
+        label: "Sales",
+        detail: "Log conversions",
+        requiredCapabilities: ["sales"],
+      },
+      {
+        href: "/workbench/service",
+        label: "Service",
+        detail: "Field repair & site jobs",
+        requiredCapabilities: ["technician", "support"],
+      },
+      {
+        href: "/workbench/team",
+        label: "Team",
+        detail: "Staff profiles and pay packages",
+        ownerOnly: true,
+      },
+      {
+        href: "/workbench/mypay",
+        label: "My Pay",
+        detail: "Accept your terms",
+        hideForOwner: true,
+      },
+      {
+        href: "/workbench/payroll",
+        label: "Payroll",
+        detail: "Payout dashboard",
+        accountingOnly: true,
+      },
     ],
   },
   {
@@ -72,11 +152,36 @@ export const WORKBENCH_NAV_GROUPS: WorkbenchNavGroup[] = [
     label: "Inventory",
     href: "/workbench/parts",
     links: [
-      { href: "/workbench/parts", label: "Parts", detail: "Stock and pricing", requiredCapabilities: ["sales", "support", "technician"] },
-      { href: "/workbench/categories", label: "Categories", detail: "Part categories", requiredCapabilities: ["sales", "support", "technician"] },
-      { href: "/workbench/competitors", label: "Competitors", detail: "Firecrawl listings + price compare", requiredCapabilities: ["sales", "marketing"] },
-      { href: "/workbench/import", label: "Import", detail: "Bulk parts upload", requiredCapabilities: ["sales", "support", "technician"] },
-      { href: "/workbench/alerts", label: "Alerts", detail: "Back-in-stock subscribers", requiredCapabilities: ["sales", "support", "technician"] },
+      {
+        href: "/workbench/parts",
+        label: "Parts",
+        detail: "Stock and pricing",
+        requiredCapabilities: ["sales", "support", "technician"],
+      },
+      {
+        href: "/workbench/categories",
+        label: "Categories",
+        detail: "Part categories",
+        requiredCapabilities: ["sales", "support", "technician"],
+      },
+      {
+        href: "/workbench/competitors",
+        label: "Competitors",
+        detail: "Firecrawl listings + price compare",
+        requiredCapabilities: ["sales", "marketing"],
+      },
+      {
+        href: "/workbench/import",
+        label: "Import",
+        detail: "Bulk parts upload",
+        requiredCapabilities: ["sales", "support", "technician"],
+      },
+      {
+        href: "/workbench/alerts",
+        label: "Alerts",
+        detail: "Back-in-stock subscribers",
+        requiredCapabilities: ["sales", "support", "technician"],
+      },
     ],
   },
 ];
@@ -100,7 +205,10 @@ export function canAccessNavLink(access: StaffAccess | null, link: WorkbenchNavL
   return needed.some((c) => access.effectiveCapabilities.includes(c));
 }
 
-export function filterNavGroups(groups: WorkbenchNavGroup[], access: StaffAccess | null): WorkbenchNavGroup[] {
+export function filterNavGroups(
+  groups: WorkbenchNavGroup[],
+  access: StaffAccess | null,
+): WorkbenchNavGroup[] {
   return groups
     .map((g) => ({
       ...g,

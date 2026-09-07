@@ -20,6 +20,7 @@ type Customer = {
   consent_marketing: boolean;
   consent_source: string | null;
   consent_at: string | null;
+  lead_stage?: string;
   created_at: string;
   updated_at: string;
 };
@@ -243,14 +244,33 @@ export default function AdminCustomerDetailPage() {
       ) : (
         <>
           <section className="mt-6">
-            <h1 className="text-2xl font-bold md:text-3xl">
-              {data.customer.name || data.customer.email}
-            </h1>
-            <p className="mt-1 text-sm text-text-muted">
-              {data.customer.email}
-              {data.customer.company ? ` · ${data.customer.company}` : null}
-              {data.customer.role ? ` · ${data.customer.role}` : null}
-            </p>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h1 className="text-2xl font-bold md:text-3xl">
+                  {data.customer.name || data.customer.email}
+                </h1>
+                <p className="mt-1 text-sm text-text-muted">
+                  {data.customer.email}
+                  {data.customer.company ? ` · ${data.customer.company}` : null}
+                  {data.customer.role ? ` · ${data.customer.role}` : null}
+                  {data.customer.lead_stage ? ` · stage ${data.customer.lead_stage}` : null}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href={`/workbench/studio?mode=agent&customer=${id}`}
+                  className="rounded-lg border border-accent-admin/40 bg-accent-admin/10 px-3 py-2 text-sm font-semibold text-accent-admin"
+                >
+                  Log engagement
+                </Link>
+                <Link
+                  href={`/workbench/studio?customer=${id}`}
+                  className="rounded-lg border border-white/15 px-3 py-2 text-sm text-text-secondary hover:border-accent-admin hover:text-accent-admin"
+                >
+                  Open in Studio
+                </Link>
+              </div>
+            </div>
           </section>
 
           <div className="mt-6 rounded-xl border border-white/10 bg-background-card p-6">
@@ -303,9 +323,17 @@ export default function AdminCustomerDetailPage() {
             <div className="mt-6 rounded-xl border border-white/10 bg-background-card p-6">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-lg font-semibold">Opportunities</h2>
-                <Link href="/workbench/goals" className="text-sm text-accent-admin hover:underline">
-                  Goals →
-                </Link>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link
+                    href={`/workbench/studio?customer=${id}`}
+                    className="text-sm text-accent-admin hover:underline"
+                  >
+                    Open in Studio
+                  </Link>
+                  <Link href="/workbench/goals" className="text-sm text-accent-admin hover:underline">
+                    Goals →
+                  </Link>
+                </div>
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {opportunities.map((o) => (
@@ -347,30 +375,38 @@ export default function AdminCustomerDetailPage() {
           <div className="mt-6 rounded-xl border border-white/10 bg-background-card p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg font-semibold">Agent</h2>
-              <button
-                type="button"
-                disabled={!token || agentBusy}
-                className="rounded-md border border-white/15 px-3 py-1.5 text-xs font-semibold text-white hover:border-white/30 disabled:opacity-50"
-                onClick={async () => {
-                  if (!token || !id) return;
-                  setAgentBusy(true);
-                  try {
-                    await apiFetchWithAuth(`/api/v1/workbench/customers/${id}/agent/research`, token, {
-                      method: "POST",
-                      body: JSON.stringify({ reason: "Manual research from customer 360" }),
-                    });
-                    await load(token);
-                  } catch (e) {
-                    setError(
-                      e instanceof ApiError ? JSON.stringify(e.body ?? e.message) : "Research enqueue failed",
-                    );
-                  } finally {
-                    setAgentBusy(false);
-                  }
-                }}
-              >
-                {agentBusy ? "Queuing…" : "Queue research"}
-              </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href={`/workbench/studio?customer=${id}`}
+                  className="rounded-md border border-white/15 px-3 py-1.5 text-xs font-semibold text-white/80 transition hover:border-white/30 hover:text-white"
+                >
+                  Open in Studio
+                </Link>
+                <button
+                  type="button"
+                  disabled={!token || agentBusy}
+                  className="rounded-md border border-white/15 px-3 py-1.5 text-xs font-semibold text-white hover:border-white/30 disabled:opacity-50"
+                  onClick={async () => {
+                    if (!token || !id) return;
+                    setAgentBusy(true);
+                    try {
+                      await apiFetchWithAuth(`/api/v1/workbench/customers/${id}/agent/research`, token, {
+                        method: "POST",
+                        body: JSON.stringify({ reason: "Manual research from customer 360" }),
+                      });
+                      await load(token);
+                    } catch (e) {
+                      setError(
+                        e instanceof ApiError ? JSON.stringify(e.body ?? e.message) : "Research enqueue failed",
+                      );
+                    } finally {
+                      setAgentBusy(false);
+                    }
+                  }}
+                >
+                  {agentBusy ? "Queuing…" : "Queue research"}
+                </button>
+              </div>
             </div>
             {agentTasks.length === 0 ? (
               <p className="mt-3 text-sm text-text-muted">No research tasks yet.</p>

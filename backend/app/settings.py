@@ -1,12 +1,21 @@
 from __future__ import annotations
 
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Always load backend/.env regardless of process cwd (uvicorn aliases, IDE runners).
+_BACKEND_DIR = Path(__file__).resolve().parent.parent
+_ENV_FILE = _BACKEND_DIR / ".env"
+
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=str(_ENV_FILE),
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     app_env: str = "local"
     port: int = 8000
@@ -59,7 +68,7 @@ class Settings(BaseSettings):
 
     # Phase H — Gemini image generation (optional; separate from OpenRouter)
     google_ai_api_key: str | None = None
-    gemini_image_model: str = "gemini-2.0-flash-preview-image-generation"
+    gemini_image_model: str = "gemini-2.5-flash-image"
 
     # Phase I — owner emails (bootstrap owner role on staff)
     owner_emails: str = ""

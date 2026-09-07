@@ -32,6 +32,7 @@ from app.models import (
     AgentTask,
     ContactSubmission,
     Customer,
+    CustomerEngagement,
     CustomerEvidence,
     Event,
     Segment,
@@ -58,6 +59,17 @@ PERSONAS: list[dict[str, Any]] = [
         "tags": [DEMO_TAG, "GE-Omni", "parts-warm", "price-sensitive"],
         "notes": "Viewing CT tubes repeatedly. Mentions competitor quotes.",
         "persona": "parts_warm",
+        "lead_stage": "engaged",
+        "engagements": [
+            {
+                "channel": "phone",
+                "outcome": "interested",
+                "summary": "Called about CT tube pricing vs competitor quote.",
+                "offer_family": "parts",
+                "days_ago": 1,
+                "apply": True,
+            }
+        ],
         "events": [
             ("part_view", 1, {"part_number": "CT-1001"}),
             ("part_view", 2, {"part_number": "CT-1001"}),
@@ -81,6 +93,26 @@ PERSONAS: list[dict[str, Any]] = [
         "tags": [DEMO_TAG, "audit", "fleet-aging"],
         "notes": "Considering PET/CT mechanical audit; no audit on file this year.",
         "persona": "audit_candidate",
+        "lead_stage": "qualified",
+        "engagements": [
+            {
+                "channel": "email_paste",
+                "outcome": "meeting_set",
+                "summary": "Reply: interested in PET/CT mechanical audit next month.",
+                "offer_family": "audit",
+                "days_ago": 3,
+                "apply": True,
+                "suggested_only": False,
+            },
+            {
+                "channel": "studio_agent",
+                "outcome": "callback",
+                "summary": "Staff note: director asked for follow-up after budget meeting.",
+                "offer_family": "audit",
+                "days_ago": 0,
+                "apply": False,
+            },
+        ],
         "events": [
             ("page_view", 5, {"path": "/services"}),
             ("page_view", 4, {"path": "/contact"}),
@@ -349,6 +381,8 @@ def _get_or_create_customer(db, persona: dict[str, Any]) -> tuple[Customer, bool
         existing.consent_marketing = True
         existing.consent_source = DEMO_SOURCE
         existing.consent_at = existing.consent_at or NOW
+        if persona.get("lead_stage"):
+            existing.lead_stage = persona["lead_stage"]
         refresh_customer_search_document(existing)
         return existing, False
 
@@ -365,6 +399,7 @@ def _get_or_create_customer(db, persona: dict[str, Any]) -> tuple[Customer, bool
         consent_marketing=True,
         consent_source=DEMO_SOURCE,
         consent_at=NOW,
+        lead_stage=persona.get("lead_stage") or "new",
     )
     refresh_customer_search_document(c)
     db.add(c)
@@ -483,6 +518,50 @@ def _seed_sell(db, customer: Customer, persona: dict[str, Any]) -> bool:
         )
     )
     return True
+
+
+def _seed_engagements(db, customer: Customer, persona: dict[str, Any]) -> int:
+    specs = persona.get("engagements") or []
+    if not specs:
+        return 0
+    # Drop prior demo engagements for idempotency
+    old = list(
+        db.execute(
+            select(CustomerEngagement).where(
+                CustomerEngagement.customer_id == customer.id,
+                CustomerEngagement.summary.like("[demo]%"),
+            )
+        )
+        .scalars()
+        .all()
+    )
+    for row in old:
+        db.delete(row)
+    db.flush()
+
+    from app.ai.engagement import create_engagement
+
+    count = 0
+    for spec in specs:
+        when = _days_ago(int(spec.get("days_ago", 1)))
+        create_engagement(
+            db,
+            customer=customer,
+            channel=spec.get("channel") or "note",
+            summary=f"[demo] {spec.get('summary') or 'Demo engagement'}",
+            outcome=spec.get("outcome") or "other",
+            offer_family=spec.get("offer_family"),
+            ai_summary=f"[demo] {spec.get('summary')}",
+            ai_sentiment="positive" if spec.get("outcome") in ("interested", "meeting_set") else "neutral",
+            suggested_stage=spec.get("suggested_stage") or persona.get("lead_stage"),
+            apply_stage=bool(spec.get("apply", True)),
+            occurred_at=when,
+            record_evidence_row=False,
+        )
+        count += 1
+    if persona.get("lead_stage"):
+        customer.lead_stage = persona["lead_stage"]
+    return count
 
 
 def _seed_evidence(db, customer: Customer, persona: dict[str, Any]) -> int:
@@ -615,7 +694,7 @@ def main() -> None:
     db = SessionLocal()
     try:
         customers_new = customers_upd = 0
-        events = contacts = sells = evidence = tasks = 0
+        events = contacts = sells = evidence = tasks = engagements = 0
 
         for persona in PERSONAS:
             customer, created = _get_or_create_customer(db, persona)
@@ -628,6 +707,7 @@ def main() -> None:
                 contacts += 1
             if _seed_sell(db, customer, persona):
                 sells += 1
+            engagements += _seed_engagements(db, customer, persona)
             evidence += _seed_evidence(db, customer, persona)
             if _seed_agent_task(db, customer, persona):
                 tasks += 1
@@ -638,15 +718,16 @@ def main() -> None:
         print("Demo CRM seed complete (no OpenRouter calls).")
         print(f"  customers: {customers_new} created, {customers_upd} updated")
         print(f"  events: {events}  contacts: {contacts}  sells: {sells}")
-        print(f"  evidence: {evidence}  agent stubs: {tasks}")
+        print(f"  engagements: {engagements}  evidence: {evidence}  agent stubs: {tasks}")
         print(f"  segments: {seg_new} created, {seg_upd} updated")
         print()
         print("Next (still free — rule-based):")
         print("  1. start-backend && start-frontend")
-        print("  2. Workbench → Customers (filter demo / .example.com)")
-        print("  3. POST /api/v1/workbench/ai/jobs/opportunities/manual")
-        print("  4. POST /api/v1/workbench/ai/jobs/fit-scores/manual")
-        print("  5. Keep AI_ENABLED=false until one deliberate Studio/agent test")
+        print("  2. Workbench → Analytics (pipeline + progressions)")
+        print("  3. Studio → Agent mode to log a call or paste email")
+        print("  4. POST /api/v1/workbench/ai/jobs/opportunities/manual")
+        print("  5. POST /api/v1/workbench/ai/jobs/fit-scores/manual")
+        print("  6. Keep AI_ENABLED=false until one deliberate Studio/agent test")
     finally:
         db.close()
 

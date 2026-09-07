@@ -8,6 +8,7 @@ from app.api.v1.routes import (
     workbench_campaigns,
     workbench_competitors,
     workbench_customers,
+    workbench_engagement,
     workbench_goals,
     workbench_payroll,
     workbench_sessions,
@@ -31,6 +32,7 @@ api_router.include_router(sell.router, tags=["sell"])
 api_router.include_router(workbench.router, tags=["workbench"])
 api_router.include_router(workbench_customers.router, tags=["workbench-customers"])
 api_router.include_router(workbench_ai.router, tags=["workbench-ai"])
+api_router.include_router(workbench_engagement.router, tags=["workbench-engagement"])
 api_router.include_router(workbench_goals.router, tags=["workbench-goals"])
 api_router.include_router(workbench_competitors.router, tags=["workbench-competitors"])
 api_router.include_router(workbench_payroll.router, tags=["workbench-payroll"])
@@ -42,4 +44,3 @@ api_router.include_router(inventory_alerts_public.router, tags=["inventory-alert
 api_router.include_router(events_public.router, tags=["activity"])
 api_router.include_router(unsubscribe_public.router, tags=["unsubscribe"])
 api_router.include_router(webhooks.router, tags=["webhooks"])
-

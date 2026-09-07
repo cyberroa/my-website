@@ -5,11 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { WorkbenchPageHeader } from "@/components/ui";
 import { apiFetchWithAuth } from "@/lib/api-workbench";
 import { FEATURE_HREF_TO_GUIDE_SLUG } from "@/lib/workbench-guides";
-import {
-  WORKBENCH_NAV_GROUPS,
-  filterNavGroups,
-  type StaffAccess,
-} from "@/lib/workbench-nav";
+import { WORKBENCH_NAV_GROUPS, filterNavGroups, type StaffAccess } from "@/lib/workbench-nav";
 import { createClient } from "@/lib/supabase/client";
 
 type MeResponse = {
@@ -51,7 +47,11 @@ function RankingCards() {
   if (!rankings) return null;
 
   const cards: { title: string; rows: RankRow[]; href: string }[] = [
-    { title: "Top audit candidates", rows: rankings.audit_candidates || [], href: "/workbench/customers" },
+    {
+      title: "Top audit candidates",
+      rows: rankings.audit_candidates || [],
+      href: "/workbench/customers",
+    },
     {
       title: "System buyers (used)",
       rows: rankings.system_buyers_used || [],
@@ -62,7 +62,7 @@ function RankingCards() {
       rows: rankings.system_buyers_new || [],
       href: "/workbench/customers",
     },
-    { title: "Parts warmth / at-risk", rows: rankings.parts_warmth || [], href: "/workbench/live" },
+    { title: "Parts warmth / at-risk", rows: rankings.parts_warmth || [], href: "/workbench/analytics" },
   ];
 
   if (cards.every((c) => c.rows.length === 0)) {
@@ -81,7 +81,10 @@ function RankingCards() {
       </h2>
       <div className="grid gap-4 md:grid-cols-2">
         {cards.map((card) => (
-          <div key={card.title} className="rounded-xl border border-white/10 bg-background-card p-4">
+          <div
+            key={card.title}
+            className="rounded-xl border border-white/10 bg-background-card p-4"
+          >
             <div className="flex items-center justify-between gap-2">
               <h3 className="text-sm font-semibold text-white">{card.title}</h3>
               <Link href={card.href} className="text-xs text-accent-admin hover:underline">
@@ -123,7 +126,8 @@ export default function WorkbenchWelcomePage() {
         .then((me) => {
           setAccess({
             staffTier: me.staff_tier || me.staff?.staff_tier || "staff",
-            effectiveCapabilities: me.effective_capabilities || me.staff?.effective_capabilities || [],
+            effectiveCapabilities:
+              me.effective_capabilities || me.staff?.effective_capabilities || [],
           });
         })
         .catch(() => undefined);
@@ -186,9 +190,7 @@ export default function WorkbenchWelcomePage() {
                 >
                   <div className="min-w-0">
                     <p className="font-medium text-white">{link.label}</p>
-                    {link.detail ? (
-                      <p className="text-sm text-text-muted">{link.detail}</p>
-                    ) : null}
+                    {link.detail ? <p className="text-sm text-text-muted">{link.detail}</p> : null}
                   </div>
                   <div className="flex shrink-0 gap-2">
                     <Link

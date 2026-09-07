@@ -19,7 +19,17 @@ from app.auth import get_current_workbench_user
 from app.customer_search import search_customers
 from app.customer_utils import normalize_website, refresh_customer_search_document
 from app.db import get_db
-from app.models import Campaign, CampaignRecipient, ContactSubmission, Customer, Event, Segment, SellSubmission
+from app.models import (
+    Campaign,
+    CampaignRecipient,
+    ContactSubmission,
+    Customer,
+    CustomerEngagement,
+    Event,
+    SaleConversion,
+    Segment,
+    SellSubmission,
+)
 from app.schemas import (
     AiStatusOut,
     CustomerBriefingOut,
@@ -53,6 +63,7 @@ def customer_to_out(c: Customer) -> CustomerOut:
         consent_marketing=c.consent_marketing,
         consent_source=c.consent_source,
         consent_at=c.consent_at,
+        lead_stage=getattr(c, "lead_stage", None) or "new",
         created_at=c.created_at,
         updated_at=c.updated_at,
     )
@@ -127,6 +138,7 @@ def create_customer(body: CustomerCreate, db: Session = Depends(get_db)):
         consent_marketing=body.consent_marketing,
         consent_source=body.consent_source,
         consent_at=dt.datetime.now(dt.timezone.utc) if body.consent_marketing else None,
+        lead_stage=(body.lead_stage or "new")[:24],
     )
     refresh_customer_search_document(c)
     db.add(c)
@@ -160,6 +172,13 @@ def update_customer(customer_id: str, body: CustomerUpdate, db: Session = Depend
         v = getattr(body, field)
         if v is not None:
             setattr(c, field, v)
+    if body.lead_stage is not None:
+        from app.ai.engagement import LEAD_STAGES, normalize_stage
+
+        stage = normalize_stage(body.lead_stage)
+        if stage not in LEAD_STAGES:
+            raise HTTPException(status_code=400, detail="Invalid lead_stage")
+        c.lead_stage = stage
     if body.website is not None:
         c.website = normalize_website(body.website)
     if body.tags is not None:
@@ -313,6 +332,66 @@ def customer_timeline(customer_id: str, db: Session = Depends(get_db)):
                 occurred_at=row.created_at,
                 label="Sell inquiry",
                 data=data,
+            )
+        )
+
+    engagements = (
+        db.execute(
+            select(CustomerEngagement)
+            .where(CustomerEngagement.customer_id == c.id)
+            .order_by(CustomerEngagement.occurred_at.desc())
+            .limit(100)
+        )
+        .scalars()
+        .all()
+    )
+    for eng in engagements:
+        items.append(
+            TimelineItem(
+                kind=f"engagement:{eng.channel}",
+                occurred_at=eng.occurred_at,
+                label=f"{eng.channel} — {eng.outcome}",
+                data={
+                    "id": str(eng.id),
+                    "summary": eng.summary,
+                    "outcome": eng.outcome,
+                    "offer_family": eng.offer_family,
+                    "ai_summary": eng.ai_summary,
+                    "suggested_stage": eng.suggested_stage,
+                    "applied_stage": eng.applied_stage,
+                    "campaign_id": str(eng.campaign_id) if eng.campaign_id else None,
+                    "staff_id": str(eng.staff_id) if eng.staff_id else None,
+                },
+            )
+        )
+
+    conversions = (
+        db.execute(
+            select(SaleConversion)
+            .where(SaleConversion.customer_id == c.id)
+            .order_by(SaleConversion.closed_at.desc())
+            .limit(50)
+        )
+        .scalars()
+        .all()
+    )
+    for conv in conversions:
+        items.append(
+            TimelineItem(
+                kind=f"sale:{conv.status}",
+                occurred_at=conv.closed_at,
+                label=f"Sale {conv.status} — ${conv.amount_cents / 100:.2f}",
+                data={
+                    "id": str(conv.id),
+                    "amount_cents": conv.amount_cents,
+                    "source_type": conv.source_type,
+                    "source_id": str(conv.source_id) if conv.source_id else None,
+                    "closer_staff_id": str(conv.closer_staff_id) if conv.closer_staff_id else None,
+                    "lead_owner_staff_id": str(conv.lead_owner_staff_id)
+                    if conv.lead_owner_staff_id
+                    else None,
+                    "notes": conv.notes,
+                },
             )
         )
 

@@ -26,12 +26,16 @@ export const WORKBENCH_GUIDES: WorkbenchGuide[] = [
     status: "stub",
   },
   {
-    slug: "live",
-    title: "Live",
-    featureHref: "/workbench/live",
-    featureLabel: "Open Live",
-    summary: "See active visitors and hot leads on the public site.",
-    steps: ["Open Live to review current sessions.", "Use visitor context to prioritize outreach.", "Full guide coming as Live matures."],
+    slug: "analytics",
+    title: "Analytics",
+    featureHref: "/workbench/analytics",
+    featureLabel: "Open Analytics",
+    summary: "Live visitors, lead-stage pipeline, and engagement progressions.",
+    steps: [
+      "Review pipeline stage counts and open progressions.",
+      "Use Studio Agent to log calls or paste email threads.",
+      "Apply suggested stages and confirm won sales on Sales for commissions.",
+    ],
     status: "stub",
   },
   {

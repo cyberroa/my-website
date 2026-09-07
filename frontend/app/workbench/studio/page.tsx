@@ -1,9 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useId, useRef, useState } from "react";
 import { ApiError } from "@/lib/api";
 import { apiFetchWithAuth } from '@/lib/api-workbench';
+import {
+  StudioContextPickers,
+  type StudioCustomerRef,
+  type StudioSegmentRef,
+} from "@/components/workbench/StudioContextPickers";
 import {
   MARKETING_DESIGN_PRESETS,
   getDesignPreset,
@@ -38,7 +44,16 @@ type Run = {
   created_at: string;
 };
 
-type Mode = "text" | "image";
+type Mode = "text" | "image" | "agent";
+
+type AgentResult = {
+  engagement: { id: string; outcome: string; summary: string; suggested_stage?: string | null; applied_stage?: string | null };
+  lead_stage: string;
+  fit_scores: { offer_family: string; score: number; reasons: string[] }[];
+  next_actions: { id: string; label: string; href?: string }[];
+  draft_sale: { customer_id: string; amount_cents: number | null; source_id: string; confirm_required: boolean } | null;
+  message: string;
+};
 
 const SUGGESTIONS = [
   "Warm-lead nurture email for a hospital GE PET/CT parts inquiry",
@@ -130,7 +145,35 @@ function IconBookmark({ className }: { className?: string }) {
   );
 }
 
+function IconMic({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z"
+      />
+      <path strokeLinecap="round" d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+    </svg>
+  );
+}
+
 export default function AdminAiStudioPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto flex min-h-[50vh] max-w-3xl items-center justify-center px-4 py-16 text-sm text-white/50">
+          Loading AI Studio…
+        </main>
+      }
+    >
+      <AdminAiStudioPageInner />
+    </Suspense>
+  );
+}
+
+function AdminAiStudioPageInner() {
+  const searchParams = useSearchParams();
   const [token, setToken] = useState<string | null>(null);
   const [status, setStatus] = useState<AiStatus | null>(null);
   const [presets, setPresets] = useState<Preset[]>([]);
@@ -144,9 +187,15 @@ export default function AdminAiStudioPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [promoteName, setPromoteName] = useState("AI Draft");
-  const [contextSegmentId, setContextSegmentId] = useState("");
-  const [contextCustomerId, setContextCustomerId] = useState("");
+  const [contextSegment, setContextSegment] = useState<StudioSegmentRef | null>(null);
+  const [contextCustomer, setContextCustomer] = useState<StudioCustomerRef | null>(null);
   const [mode, setMode] = useState<Mode>("text");
+  const [listening, setListening] = useState(false);
+  const [agentResult, setAgentResult] = useState<AgentResult | null>(null);
+  const [pasteEmailMode, setPasteEmailMode] = useState(false);
+  const recognitionRef = useRef<{ stop: () => void } | null>(null);
+  /** Prompt text before the current mic session (speech replaces only the live utterance). */
+  const micBaselineRef = useRef("");
   const [modelOpen, setModelOpen] = useState(false);
   const [designOpen, setDesignOpen] = useState(false);
   const [presetsOpen, setPresetsOpen] = useState(false);
@@ -187,6 +236,108 @@ export default function AdminAiStudioPage() {
       if (session?.access_token) void load(session.access_token);
     });
   }, [load]);
+
+  // Deep-link: /workbench/studio?segment=<uuid>&customer=<uuid>&mode=agent
+  useEffect(() => {
+    if (!token) return;
+    const segmentId = searchParams.get("segment")?.trim();
+    const customerId = searchParams.get("customer")?.trim();
+    const modeParam = searchParams.get("mode")?.trim();
+    if (modeParam === "agent" || modeParam === "image" || modeParam === "text") {
+      setMode(modeParam);
+    }
+    if (!segmentId && !customerId) return;
+
+    let cancelled = false;
+    const run = async () => {
+      try {
+        if (segmentId) {
+          const seg = await apiFetchWithAuth<StudioSegmentRef>(
+            `/api/v1/workbench/segments/${segmentId}`,
+            token,
+          );
+          if (!cancelled) setContextSegment(seg);
+        }
+        if (customerId) {
+          const cust = await apiFetchWithAuth<StudioCustomerRef>(
+            `/api/v1/workbench/customers/${customerId}`,
+            token,
+          );
+          if (!cancelled) setContextCustomer(cust);
+        }
+      } catch {
+        // Invalid IDs stay unset; user can still search manually
+      }
+    };
+    void run();
+    return () => {
+      cancelled = true;
+    };
+  }, [token, searchParams]);
+
+  function toggleMic() {
+    type RecResult = { isFinal: boolean; 0: { transcript: string }; length: number };
+    type Rec = {
+      continuous: boolean;
+      interimResults: boolean;
+      lang: string;
+      start: () => void;
+      stop: () => void;
+      onresult: ((ev: { resultIndex: number; results: ArrayLike<RecResult> & { length: number } }) => void) | null;
+      onerror: ((ev?: { error?: string }) => void) | null;
+      onend: (() => void) | null;
+    };
+    const w = window as unknown as {
+      SpeechRecognition?: new () => Rec;
+      webkitSpeechRecognition?: new () => Rec;
+    };
+    const SR = w.SpeechRecognition || w.webkitSpeechRecognition;
+    if (!SR) {
+      setError("Speech recognition is not supported in this browser. Type or paste instead.");
+      return;
+    }
+    if (listening && recognitionRef.current) {
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+      setListening(false);
+      return;
+    }
+    // Snapshot existing draft so interim partials replace the live utterance instead of stacking.
+    micBaselineRef.current = userPrompt.trim();
+    const recognition = new SR();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
+    recognition.onresult = (event) => {
+      let finalChunk = "";
+      let interimChunk = "";
+      // Rebuild from the full results list every time — do not append onto previous prompt state.
+      for (let i = 0; i < event.results.length; i++) {
+        const result = event.results[i];
+        const piece = result[0]?.transcript ?? "";
+        if (result.isFinal) finalChunk += piece;
+        else interimChunk += piece;
+      }
+      const spoken = `${finalChunk}${interimChunk}`.replace(/\s+/g, " ").trim();
+      const base = micBaselineRef.current.trim();
+      setUserPrompt(base && spoken ? `${base} ${spoken}` : spoken || base);
+    };
+    recognition.onerror = (ev) => {
+      if (ev?.error && ev.error !== "aborted" && ev.error !== "no-speech") {
+        setError(`Microphone error: ${ev.error}`);
+      }
+      setListening(false);
+      recognitionRef.current = null;
+    };
+    recognition.onend = () => {
+      setListening(false);
+      recognitionRef.current = null;
+    };
+    recognitionRef.current = recognition;
+    recognition.start();
+    setListening(true);
+    setError(null);
+  }
 
   useEffect(() => {
     if (!modelOpen && !designOpen && !presetsOpen) return;
@@ -332,7 +483,45 @@ export default function AdminAiStudioPage() {
     setLoading(true);
     setError(null);
     try {
-      if (mode === "image") {
+      if (mode === "agent") {
+        if (!contextCustomer && !pasteEmailMode) {
+          setError("Select a customer (or paste an email thread that includes their address).");
+          setLoading(false);
+          return;
+        }
+        const endpoint = pasteEmailMode
+          ? "/api/v1/workbench/ai/studio/email-paste"
+          : "/api/v1/workbench/ai/studio/agent";
+        const res = await apiFetchWithAuth<AgentResult>(endpoint, token, {
+          method: "POST",
+          body: JSON.stringify({
+            text: userPrompt,
+            raw_email: pasteEmailMode ? userPrompt : undefined,
+            channel: pasteEmailMode ? "email_paste" : "studio_agent",
+            transcript: !pasteEmailMode ? userPrompt : undefined,
+            customer_id: contextCustomer?.id,
+            context: {
+              ...(contextSegment ? { segment_id: contextSegment.id } : {}),
+              ...(contextCustomer ? { customer_id: contextCustomer.id } : {}),
+            },
+          }),
+        });
+        setAgentResult(res);
+        setOutput(
+          [
+            res.message,
+            `Stage: ${res.lead_stage}`,
+            `Outcome: ${res.engagement.outcome}`,
+            res.engagement.summary,
+            res.fit_scores?.length
+              ? `Fit: ${res.fit_scores.map((f) => `${f.offer_family} ${f.score.toFixed(0)}`).join(", ")}`
+              : "",
+          ]
+            .filter(Boolean)
+            .join("\n\n"),
+        );
+        setImageUrl(null);
+      } else if (mode === "image") {
         const res = await apiFetchWithAuth<{ output_image_url: string }>(
           "/api/v1/workbench/ai/studio/image",
           token,
@@ -340,6 +529,7 @@ export default function AdminAiStudioPage() {
         );
         setImageUrl(res.output_image_url);
         setOutput("");
+        setAgentResult(null);
       } else {
         const res = await apiFetchWithAuth<{ output_text: string }>(
           "/api/v1/workbench/ai/studio/complete",
@@ -351,13 +541,14 @@ export default function AdminAiStudioPage() {
               system: systemPrompt,
               user: userPrompt,
               context: {
-                ...(contextSegmentId.trim() ? { segment_id: contextSegmentId.trim() } : {}),
-                ...(contextCustomerId.trim() ? { customer_id: contextCustomerId.trim() } : {}),
+                ...(contextSegment ? { segment_id: contextSegment.id } : {}),
+                ...(contextCustomer ? { customer_id: contextCustomer.id } : {}),
               },
             }),
           },
         );
         setOutput(res.output_text);
+        setAgentResult(null);
       }
       await load(token);
     } catch (e) {
@@ -379,7 +570,7 @@ export default function AdminAiStudioPage() {
           target,
           name: promoteName,
           image_url: imageUrl,
-          segment_id: contextSegmentId.trim() || undefined,
+          segment_id: contextSegment?.id || undefined,
         }),
       },
     );
@@ -389,7 +580,9 @@ export default function AdminAiStudioPage() {
   const ready = status?.configured;
   const canSend =
     Boolean(token && userPrompt.trim() && !loading) &&
-    (mode === "text" ? Boolean(ready) : Boolean(status?.gemini_configured));
+    (mode === "text" || mode === "agent"
+      ? Boolean(ready) || mode === "agent"
+      : Boolean(status?.gemini_configured));
   const activeDesign = getDesignPreset(designPresetId);
 
   const activePreset = presets.find((p) => p.id === activePresetId) ?? null;
@@ -517,7 +710,11 @@ export default function AdminAiStudioPage() {
                   placeholder={
                     mode === "image"
                       ? "Describe the ad or social image to generate…"
-                      : "What marketing email, social post, or outreach shall we write?"
+                      : mode === "agent"
+                        ? pasteEmailMode
+                          ? "Paste a full email thread (From/To/body) to summarize and score…"
+                          : "Describe the call or meeting in your own words — or use the mic…"
+                        : "What marketing email, social post, or outreach shall we write?"
                   }
                   className="w-full resize-none rounded-xl bg-black/45 px-3.5 py-3 text-base leading-relaxed text-white outline-none placeholder:text-white/45 md:text-[17px]"
                 />
@@ -567,7 +764,48 @@ export default function AdminAiStudioPage() {
                     >
                       Image
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => setMode("agent")}
+                      title="Log customer engagements by voice or text"
+                      className={cn(
+                        "rounded-full px-3 py-1.5 text-sm font-medium transition",
+                        mode === "agent" ? "bg-white text-black" : "text-white/65 hover:text-white",
+                      )}
+                    >
+                      Agent
+                    </button>
                   </div>
+                  {mode === "agent" ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setPasteEmailMode((v) => !v)}
+                        className={cn(
+                          "rounded-full px-3 py-1.5 text-xs font-medium transition",
+                          pasteEmailMode
+                            ? "bg-accent-admin/20 text-accent-admin"
+                            : "text-white/55 hover:text-white",
+                        )}
+                      >
+                        {pasteEmailMode ? "Email paste on" : "Paste email"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => toggleMic()}
+                        className={cn(
+                          "inline-flex h-9 w-9 items-center justify-center rounded-full transition",
+                          listening
+                            ? "bg-red-500 text-white"
+                            : "text-white/70 hover:bg-white/10 hover:text-white",
+                        )}
+                        title={listening ? "Stop listening" : "Speak to Agent"}
+                        aria-pressed={listening}
+                      >
+                        <IconMic className="h-4 w-4" />
+                      </button>
+                    </>
+                  ) : null}
                 </div>
 
                 <div className="flex items-center gap-1.5">
@@ -919,30 +1157,56 @@ export default function AdminAiStudioPage() {
           </p>
         )}
 
-        <div className="mt-6 grid w-full max-w-xl gap-3 sm:grid-cols-2">
-          <label className="block text-left text-xs text-white/50">
-            Segment ID (playbook context)
-            <input
-              value={contextSegmentId}
-              onChange={(e) => setContextSegmentId(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-accent-admin/40"
-              placeholder="UUID from Segments"
-            />
-          </label>
-          <label className="block text-left text-xs text-white/50">
-            Customer ID (dossier context)
-            <input
-              value={contextCustomerId}
-              onChange={(e) => setContextCustomerId(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-accent-admin/40"
-              placeholder="UUID from Customers"
-            />
-          </label>
-        </div>
+        {mode === "text" || mode === "agent" ? (
+          <StudioContextPickers
+            className="mt-6"
+            token={token}
+            segment={contextSegment}
+            customer={contextCustomer}
+            onSegmentChange={setContextSegment}
+            onCustomerChange={setContextCustomer}
+          />
+        ) : null}
 
         {/* Results */}
         {(output || imageUrl) && (
           <section className="mt-12 w-full space-y-4">
+            {mode === "agent" && agentResult ? (
+              <div className="rounded-[1.5rem] border border-white/10 bg-[#25252b]/80 p-5 shadow-xl backdrop-blur">
+                <h2 className="text-sm font-semibold text-white/70">Engagement logged</h2>
+                <p className="mt-2 whitespace-pre-wrap text-sm text-white/85">{output}</p>
+                {agentResult.next_actions?.length ? (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {agentResult.next_actions.map((a) =>
+                      a.href ? (
+                        <Link
+                          key={a.id}
+                          href={a.href}
+                          className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/80 hover:border-accent-admin/40 hover:text-accent-admin"
+                        >
+                          {a.label}
+                        </Link>
+                      ) : (
+                        <span
+                          key={a.id}
+                          className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/50"
+                        >
+                          {a.label}
+                        </span>
+                      ),
+                    )}
+                    {agentResult.draft_sale ? (
+                      <Link
+                        href={`/workbench/sales?customer=${agentResult.draft_sale.customer_id}&engagement=${agentResult.draft_sale.source_id}${agentResult.draft_sale.amount_cents ? `&amount=${(agentResult.draft_sale.amount_cents / 100).toFixed(2)}` : ""}`}
+                        className="rounded-full bg-accent-admin px-3 py-1.5 text-xs font-semibold text-black"
+                      >
+                        Confirm sale on Sales
+                      </Link>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            ) : (
             <div className="rounded-[1.5rem] border border-white/10 bg-[#25252b]/80 p-5 shadow-xl backdrop-blur">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <h2 className="text-sm font-semibold text-white/70">Output</h2>
@@ -1002,6 +1266,7 @@ export default function AdminAiStudioPage() {
                 </Link>
               </div>
             </div>
+            )}
           </section>
         )}
 
