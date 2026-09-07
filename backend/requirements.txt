@@ -4,7 +4,7 @@ sqlalchemy>=2.0.52
 alembic
 psycopg2-binary
 pydantic>=2.13.5
-pydantic-settings>=2
+pydantic-settings>=2.15.0
 email-validator
 python-dotenv
 httpx
