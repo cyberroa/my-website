@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import {
   MOCK_TEAM_ACTIONS,
   TEAM_ACTION_STATE_STYLE,
+  teamActionPath,
   type TeamActionState,
 } from "@/lib/workbench-team-actions";
 import { cn } from "@/lib/cn";
@@ -66,7 +67,7 @@ export default function WorkbenchActionsPage() {
         eyebrow="AI"
         title="Actions"
         align="start"
-        description="Today’s team queue. Each row opens the workspace to finish that job. Live items come from Analytics progressions."
+        description="Today’s team queue. Open an action to see its event stream, then continue in the workspace. Live items come from Analytics progressions."
       />
 
       <section>
@@ -79,11 +80,11 @@ export default function WorkbenchActionsPage() {
             return (
               <li key={item.n}>
                 <Link
-                  href={item.href}
+                  href={teamActionPath(item.id)}
                   className="flex gap-3 px-5 py-4 transition hover:bg-white/[0.03]"
                 >
                   <span
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${tone.mark}`}
+                    className={`inline-flex h-6 shrink-0 items-center justify-center rounded-full px-2.5 text-[11px] font-bold tabular-nums ${tone.mark}`}
                   >
                     {item.n}
                   </span>

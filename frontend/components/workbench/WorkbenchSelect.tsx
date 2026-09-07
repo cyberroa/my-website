@@ -23,6 +23,8 @@ type Props = {
   name?: string;
   id?: string;
   className?: string;
+  /** Size the control to the longest option label. */
+  fitToOptions?: boolean;
 };
 
 export function WorkbenchSelect({
@@ -35,6 +37,7 @@ export function WorkbenchSelect({
   name,
   id,
   className,
+  fitToOptions,
 }: Props) {
   const listId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
@@ -58,10 +61,21 @@ export function WorkbenchSelect({
   }, [open]);
 
   return (
-    <div ref={rootRef} className={cn("relative", className)}>
+    <div ref={rootRef} className={cn("relative", fitToOptions && "inline-grid", className)}>
       {name || required ? (
         <input type="hidden" name={name} value={value} required={required} />
       ) : null}
+      {fitToOptions
+        ? options.map((opt) => (
+            <span
+              key={`size-${opt.value || "empty"}`}
+              className="invisible col-start-1 row-start-1 whitespace-nowrap px-3 py-2 pr-8 text-sm"
+              aria-hidden
+            >
+              {opt.label}
+            </span>
+          ))
+        : null}
       <button
         type="button"
         id={id}
@@ -70,9 +84,18 @@ export function WorkbenchSelect({
         aria-controls={listId}
         aria-haspopup="listbox"
         onClick={() => setOpen((v) => !v)}
-        className={workbenchDropdownTrigger}
+        className={cn(
+          workbenchDropdownTrigger,
+          "w-full",
+          fitToOptions && "col-start-1 row-start-1 whitespace-nowrap",
+        )}
       >
-        <span className={cn("min-w-0 truncate", selected ? "text-white" : "text-white/45")}>
+        <span
+          className={cn(
+            fitToOptions ? "whitespace-nowrap" : "min-w-0 truncate",
+            selected ? "text-white" : "text-white/45",
+          )}
+        >
           {selected?.label || placeholder}
         </span>
         <svg

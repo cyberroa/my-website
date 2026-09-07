@@ -62,7 +62,7 @@ export function WorkbenchMultiSelect({
         aria-controls={listId}
         aria-haspopup="listbox"
         onClick={() => setOpen((v) => !v)}
-        className={workbenchDropdownTrigger}
+        className={cn(workbenchDropdownTrigger, "w-full")}
       >
         <span className={cn("min-w-0 truncate", selected.length ? "text-white" : "text-white/45")}>
           {label}
