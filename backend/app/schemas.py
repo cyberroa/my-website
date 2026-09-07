@@ -224,6 +224,10 @@ class SegmentCreate(BaseModel):
     slug: str | None = Field(default=None, max_length=200)
     description: str | None = Field(default=None, max_length=20_000)
     filter_json: dict[str, Any] = Field(default_factory=dict)
+    playbook_markdown: str | None = Field(default=None, max_length=50_000)
+    recommended_services: list[Any] = Field(default_factory=list)
+    labels: list[str] = Field(default_factory=list)
+    research_summary: str | None = Field(default=None, max_length=20_000)
 
 
 class SegmentUpdate(BaseModel):
@@ -231,6 +235,10 @@ class SegmentUpdate(BaseModel):
     slug: str | None = Field(default=None, min_length=1, max_length=200)
     description: str | None = Field(default=None, max_length=20_000)
     filter_json: dict[str, Any] | None = None
+    playbook_markdown: str | None = Field(default=None, max_length=50_000)
+    recommended_services: list[Any] | None = None
+    labels: list[str] | None = None
+    research_summary: str | None = Field(default=None, max_length=20_000)
 
 
 class SegmentOut(BaseModel):
@@ -242,6 +250,12 @@ class SegmentOut(BaseModel):
     ai_managed: bool = False
     ai_proposal_status: str | None = None
     ai_rationale: str | None = None
+    playbook_markdown: str | None = None
+    recommended_services: list[Any] = Field(default_factory=list)
+    labels: list[str] = Field(default_factory=list)
+    research_summary: str | None = None
+    last_researched_at: str | None = None
+    research_budget_used: int = 0
 
 
 class SegmentListItemOut(SegmentOut):

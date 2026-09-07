@@ -402,15 +402,66 @@ def get_briefing(briefing_id: str, db: Session = Depends(get_db)):
     }
 
 
-@router.post("/briefings/generate")
-async def generate_briefing_manual(db: Session = Depends(get_db)):
+@router.post("/briefings/weekly-market")
+async def weekly_market_briefing(db: Session = Depends(get_db)):
+    """Optional weekly competitive market briefing from competitor listings + rankings."""
+    from app.ai.client import chat_completion, resolve_model
+    from app.ai.fit_scores import dashboard_rankings
+    from app.models import CompetitorListing, CompetitorSource
+    import json
+
+    rankings = dashboard_rankings(db)
+    sources = list(db.execute(select(CompetitorSource).where(CompetitorSource.active.is_(True))).scalars().all())
+    listings = list(
+        db.execute(select(CompetitorListing).order_by(CompetitorListing.scraped_at.desc()).limit(40))
+        .scalars()
+        .all()
+    )
+    payload = {
+        "competitors": [{"name": s.name, "last_scraped_at": s.last_scraped_at.isoformat() if s.last_scraped_at else None} for s in sources],
+        "sample_listings": [
+            {
+                "part_number": l.part_number,
+                "title": l.title,
+                "price_cents": l.price_cents,
+            }
+            for l in listings[:25]
+        ],
+        "rankings_preview": {
+            "audit": rankings.get("audit_candidates", [])[:5],
+            "used_buyers": rankings.get("system_buyers_used", [])[:5],
+            "parts": rankings.get("parts_warmth", [])[:5],
+        },
+    }
     try:
-        row = await generate_daily_briefing(db)
+        raw = await chat_completion(
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You write a weekly competitive market briefing for Titan Imaging Service "
+                        "(GE PET/CT parts, audits, used/new systems). Return JSON "
+                        "{title, markdown_body}. Emphasize beating competitor prices and "
+                        "accounts Titan must not neglect."
+                    ),
+                },
+                {"role": "user", "content": json.dumps(payload, default=str)[:20_000]},
+            ],
+            model=resolve_model("daily_report"),
+            response_format="json",
+            temperature=0.35,
+            max_tokens=1500,
+        )
+        data = json.loads(raw)
     except AiDisabledError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except AiError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
-    return {"id": str(row.id), "title": row.title}
+    return {
+        "title": data.get("title") or "Weekly market briefing",
+        "markdown_body": data.get("markdown_body") or "",
+        "chart_payload": payload,
+    }
 
 
 @router.post("/briefings/{briefing_id}/deliver")
@@ -423,11 +474,151 @@ async def deliver_briefing(briefing_id: str, db: Session = Depends(get_db)):
 
 @router.post("/jobs/daily-briefing", dependencies=[Depends(_verify_cron)])
 async def job_daily_briefing(db: Session = Depends(get_db)):
+    from app.ai.fit_scores import run_fit_score_snapshots
+    from app.ai.slack_alerts import alert_hot_opportunities, alert_research_digest
+
     try:
+        run_opportunity_detection(db)
+        run_fit_score_snapshots(db)
         row = await generate_daily_briefing(db)
         delivery = await deliver_daily_briefing(db, row)
+        hot = await alert_hot_opportunities(db)
+        digest = await alert_research_digest(db)
     except AiDisabledError:
         return {"skipped": True, "reason": "AI disabled"}
     except AiError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
-    return {"id": str(row.id), "delivery": delivery}
+    return {"id": str(row.id), "delivery": delivery, "hot": hot, "research": digest}
+
+
+# --- Agentic CRM: research agent, rankings, Slack alerts ---
+
+
+@router.get("/rankings")
+def ai_rankings(db: Session = Depends(get_db)):
+    from app.ai.fit_scores import dashboard_rankings
+
+    return dashboard_rankings(db)
+
+
+@router.post("/jobs/fit-scores", dependencies=[Depends(_verify_cron)])
+def job_fit_scores(db: Session = Depends(get_db)):
+    from app.ai.fit_scores import run_fit_score_snapshots
+
+    return run_fit_score_snapshots(db)
+
+
+@router.post("/jobs/fit-scores/manual")
+def job_fit_scores_manual(db: Session = Depends(get_db)):
+    from app.ai.fit_scores import run_fit_score_snapshots
+
+    return run_fit_score_snapshots(db)
+
+
+@router.post("/jobs/agent-dispatch", dependencies=[Depends(_verify_cron)])
+async def job_agent_dispatch(db: Session = Depends(get_db), limit: int = 5):
+    from app.ai.agent_queue import process_due_tasks
+
+    try:
+        return await process_due_tasks(db, limit=min(limit, 10))
+    except AiDisabledError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except AiError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+
+
+@router.post("/jobs/agent-dispatch/manual")
+async def job_agent_dispatch_manual(db: Session = Depends(get_db), limit: int = 5):
+    from app.ai.agent_queue import process_due_tasks
+
+    try:
+        return await process_due_tasks(db, limit=min(limit, 10))
+    except AiDisabledError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except AiError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+
+
+@router.post("/jobs/slack-hot-alerts", dependencies=[Depends(_verify_cron)])
+async def job_slack_hot_alerts(db: Session = Depends(get_db)):
+    from app.ai.slack_alerts import alert_hot_opportunities, alert_research_digest
+
+    hot = await alert_hot_opportunities(db)
+    digest = await alert_research_digest(db)
+    return {"hot": hot, "research": digest}
+
+
+@router.post("/jobs/slack-hot-alerts/manual")
+async def job_slack_hot_alerts_manual(db: Session = Depends(get_db)):
+    from app.ai.slack_alerts import alert_hot_opportunities, alert_research_digest
+
+    hot = await alert_hot_opportunities(db)
+    digest = await alert_research_digest(db)
+    return {"hot": hot, "research": digest}
+
+
+@router.post("/agent/enqueue")
+def agent_enqueue(
+    body: dict[str, Any],
+    db: Session = Depends(get_db),
+    admin: WorkbenchUser = Depends(get_current_workbench_user),
+):
+    from app.ai.agent_queue import enqueue_task, task_to_out
+
+    subject_type = (body.get("subject_type") or "").strip()
+    if subject_type not in ("customer", "segment"):
+        raise HTTPException(status_code=400, detail="subject_type must be customer or segment")
+    try:
+        subject_id = uuid.UUID(str(body.get("subject_id")))
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(status_code=400, detail="subject_id required") from exc
+    kind = (body.get("kind") or "research").strip()[:64]
+    task = enqueue_task(
+        db,
+        kind=kind,
+        subject_type=subject_type,
+        subject_id=subject_id,
+        reason=(body.get("reason") or "Manual research request")[:2000],
+        payload=body.get("payload") or {},
+        created_by=admin.email,
+    )
+    return task_to_out(task)
+
+
+@router.get("/agent/tasks")
+def agent_list_tasks(
+    subject_type: str,
+    subject_id: str,
+    db: Session = Depends(get_db),
+    limit: int = 20,
+):
+    from app.ai.agent_queue import list_tasks_for_subject, task_to_out
+
+    try:
+        sid = uuid.UUID(subject_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="invalid subject_id") from exc
+    rows = list_tasks_for_subject(db, subject_type, sid, limit=limit)
+    return [task_to_out(t) for t in rows]
+
+
+@router.post("/agent/tasks/{task_id}/run")
+async def agent_run_task(task_id: str, db: Session = Depends(get_db)):
+    from datetime import timezone
+
+    from app.ai.agent_queue import run_research_task, task_to_out
+    from app.models import AgentTask
+
+    task = db.get(AgentTask, task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    task.status = "leased"
+    task.started_at = datetime.now(timezone.utc)
+    db.commit()
+    try:
+        done = await run_research_task(db, task)
+    except AiDisabledError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except AiError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+    return task_to_out(done)

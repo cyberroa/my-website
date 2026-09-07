@@ -10,11 +10,14 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.ai.client import chat_completion, resolve_model
+from app.ai.evidence import pending_suggestion_count
+from app.ai.fit_scores import dashboard_rankings
+from app.ai.opportunities import hot_opportunities_above_threshold
 from app.ai.prompts import DAILY_REPORT_SYSTEM, daily_report_user_prompt
 from app.ai.snapshots import run_engagement_snapshots, warmth_movers
 from app.email import send_admin_email
 from app.engagement import HOT_LEAD_THRESHOLD, compute_score
-from app.models import Campaign, Customer, DailyBriefing, Event, MarketingGoal
+from app.models import AgentTask, Campaign, Customer, DailyBriefing, Event, MarketingGoal, Segment
 from app.settings import get_settings
 
 logger = logging.getLogger(__name__)
@@ -54,6 +57,30 @@ def gather_daily_aggregates(db: Session) -> dict:
         select(func.count()).select_from(Campaign).where(Campaign.status == "draft")
     ) or 0
 
+    research_done = (
+        db.scalar(
+            select(func.count())
+            .select_from(AgentTask)
+            .where(
+                AgentTask.status == "completed",
+                AgentTask.completed_at >= now - dt.timedelta(hours=36),
+            )
+        )
+        or 0
+    )
+    playbooks_updated = list(
+        db.execute(
+            select(Segment)
+            .where(Segment.last_researched_at.isnot(None))
+            .order_by(Segment.last_researched_at.desc())
+            .limit(8)
+        )
+        .scalars()
+        .all()
+    )
+    rankings = dashboard_rankings(db)
+    hot_opps = hot_opportunities_above_threshold(db, min_score=35.0, days=2)
+
     return {
         "report_date": dt.date.today().isoformat(),
         "hot_leads": hot[:15],
@@ -75,6 +102,31 @@ def gather_daily_aggregates(db: Session) -> dict:
             )
             .scalars()
             .all()
+        ],
+        "research": {
+            "tasks_completed_36h": research_done,
+            "pending_evidence_suggestions": pending_suggestion_count(db),
+            "playbooks_updated": [
+                {
+                    "name": s.name,
+                    "labels": list(s.labels or []),
+                    "last_researched_at": s.last_researched_at.isoformat() if s.last_researched_at else None,
+                    "summary": (s.research_summary or "")[:300],
+                }
+                for s in playbooks_updated
+            ],
+        },
+        "rankings": {
+            "audit_candidates": rankings.get("audit_candidates", [])[:8],
+            "system_buyers_used": rankings.get("system_buyers_used", [])[:8],
+            "system_buyers_new": rankings.get("system_buyers_new", [])[:8],
+            "parts_warmth": rankings.get("parts_warmth", [])[:8],
+        },
+        "hot_opportunities": hot_opps[:12],
+        "suggested_next": [
+            "Draft audit outreach for top audit candidates in AI Studio (audit-outreach preset)",
+            "Promote a used-system campaign for buy_used_petct ranked accounts",
+            "Review pending evidence suggestions before accepting CRM field updates",
         ],
     }
 

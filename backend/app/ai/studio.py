@@ -8,15 +8,75 @@ import uuid
 from sqlalchemy.orm import Session
 
 from app.ai.client import chat_completion, resolve_model
+from app.ai.evidence import list_evidence
+from app.ai.fit_scores import customer_fit_scores_out
 from app.ai.images import generate_gemini_image, store_image_data_url
+from app.ai.opportunities import customer_latest_opportunities
 from app.ai.prompts import STUDIO_DEFAULT_SYSTEM
-from app.models import AiPromptPreset, AiStudioRun, Campaign, EmailTemplate, SocialPost
+from app.models import AiPromptPreset, AiStudioRun, Campaign, Customer, EmailTemplate, Segment, SocialPost
 from app.settings import get_settings
 
 
 def _slugify(name: str) -> str:
     s = re.sub(r"[^a-z0-9]+", "-", name.strip().lower())
     return s.strip("-")[:200] or "preset"
+
+
+def enrich_studio_context(db: Session, context: dict | None) -> dict:
+    """Load segment playbooks and customer dossiers into Studio context."""
+    ctx = dict(context or {})
+    segment_id = ctx.get("segment_id")
+    customer_id = ctx.get("customer_id")
+
+    if segment_id:
+        try:
+            seg = db.get(Segment, uuid.UUID(str(segment_id)))
+        except ValueError:
+            seg = None
+        if seg:
+            ctx["segment"] = {
+                "id": str(seg.id),
+                "name": seg.name,
+                "slug": seg.slug,
+                "description": seg.description,
+                "labels": list(seg.labels or []),
+                "playbook_markdown": seg.playbook_markdown,
+                "research_summary": seg.research_summary,
+                "recommended_services": list(seg.recommended_services or []),
+                "filter_json": dict(seg.filter_json or {}),
+                "last_researched_at": seg.last_researched_at.isoformat() if seg.last_researched_at else None,
+            }
+
+    if customer_id:
+        try:
+            cid = uuid.UUID(str(customer_id))
+            customer = db.get(Customer, cid)
+        except ValueError:
+            customer = None
+            cid = None
+        if customer and cid:
+            ctx["customer"] = {
+                "id": str(customer.id),
+                "email": customer.email,
+                "name": customer.name,
+                "company": customer.company,
+                "tags": list(customer.tags or []),
+                "notes": (customer.notes or "")[:3000],
+                "website": customer.website,
+            }
+            ctx["opportunities"] = customer_latest_opportunities(db, cid)
+            ctx["fit_scores"] = customer_fit_scores_out(db, cid)
+            ctx["evidence"] = [
+                {
+                    "observation": e.observation,
+                    "strength": e.strength,
+                    "status": e.status,
+                    "suggested_field": e.suggested_field,
+                }
+                for e in list_evidence(db, cid, limit=15)
+            ]
+
+    return ctx
 
 
 async def studio_complete(
@@ -32,7 +92,7 @@ async def studio_complete(
     settings = get_settings()
     use_model = model or resolve_model("studio", settings)
     system = (system_prompt or STUDIO_DEFAULT_SYSTEM).strip()
-    ctx = context or {}
+    ctx = enrich_studio_context(db, context)
     ctx_block = json.dumps(ctx, default=str) if ctx else ""
     user = user_prompt
     if ctx_block:
@@ -126,8 +186,21 @@ def promote_studio_output(
         return {"type": "social", "id": str(post.id)}
 
     if target == "campaign":
+        # Allow one-shot: create template then draft campaign bound to segment
         if not template_id:
-            raise ValueError("template_id required for campaign promote")
+            slug = _slugify(name)
+            tpl = EmailTemplate(
+                id=uuid.uuid4(),
+                name=name,
+                slug=f"{slug}-{str(uuid.uuid4())[:8]}",
+                subject=name[:255],
+                body_md=output_text,
+                body_html=None,
+                tags=["ai-studio", "campaign-draft"],
+            )
+            db.add(tpl)
+            db.flush()
+            template_id = tpl.id
         camp = Campaign(
             id=uuid.uuid4(),
             name=name,
@@ -139,7 +212,12 @@ def promote_studio_output(
         )
         db.add(camp)
         db.commit()
-        return {"type": "campaign", "id": str(camp.id)}
+        return {
+            "type": "campaign",
+            "id": str(camp.id),
+            "template_id": str(camp.template_id),
+            "segment_id": str(segment_id) if segment_id else None,
+        }
 
     raise ValueError(f"Unknown promote target: {target}")
 
@@ -166,6 +244,41 @@ def seed_default_presets(db: Session) -> int:
             "category": "outreach",
             "system_prompt": STUDIO_DEFAULT_SYSTEM,
             "user_prompt_template": "Draft a personalized outreach email using customer context JSON.",
+        },
+        {
+            "name": "PET/CT audit outreach",
+            "slug": "audit-outreach",
+            "category": "email",
+            "system_prompt": STUDIO_DEFAULT_SYSTEM,
+            "user_prompt_template": "Draft an email offering a PET/CT mechanical audit / inspection. Emphasize extending equipment life and catching issues before downtime. Use segment playbook if present.",
+        },
+        {
+            "name": "Used system buyer",
+            "slug": "used-system-buyer",
+            "category": "email",
+            "system_prompt": STUDIO_DEFAULT_SYSTEM,
+            "user_prompt_template": "Draft outreach for a prospect interested in used/refurbished GE PET/CT systems. Highlight Titan System Sales and competitive pricing vs competitors in context.",
+        },
+        {
+            "name": "New system buyer",
+            "slug": "new-system-buyer",
+            "category": "email",
+            "system_prompt": STUDIO_DEFAULT_SYSTEM,
+            "user_prompt_template": "Draft consultative outreach for a facility evaluating new PET/CT acquisition. Position Titan as the first call for sourcing, install, and ongoing support.",
+        },
+        {
+            "name": "Parts nurture",
+            "slug": "parts-nurture",
+            "category": "email",
+            "system_prompt": STUDIO_DEFAULT_SYSTEM,
+            "user_prompt_template": "Write a parts nurture email referencing inventory context and beating competitor prices when competitor listings are present.",
+        },
+        {
+            "name": "Win-back neglect rescue",
+            "slug": "winback-neglect",
+            "category": "email",
+            "system_prompt": STUDIO_DEFAULT_SYSTEM,
+            "user_prompt_template": "Draft a respectful win-back email for a quiet account so they do not drift to a competitor. Offer audit, parts, or a quick consult CTA.",
         },
     ]
     added = 0

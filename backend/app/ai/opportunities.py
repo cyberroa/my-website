@@ -17,6 +17,7 @@ from app.models import (
     Event,
     OpportunitySnapshot,
     SellSubmission,
+    ServiceJob,
 )
 
 logger = logging.getLogger(__name__)
@@ -27,7 +28,24 @@ OPPORTUNITY_TYPES = (
     "sell_equipment",
     "consent_ready_nurture",
     "hot_lead",
+    # Buyer-side / service expansion (agentic CRM)
+    "buy_used_petct",
+    "buy_new_petct",
+    "audit_candidate",
+    "service_contract_gap",
 )
+
+BUYER_INTENTS = frozenset(
+    {
+        "buy_equipment",
+        "buy_used",
+        "buy_new",
+        "system_purchase",
+        "petct_purchase",
+        "equipment_purchase",
+    }
+)
+AUDIT_INTENTS = frozenset({"service_request", "audit_request", "pm_request", "repair_request"})
 
 
 def _as_utc(value: dt.datetime) -> dt.datetime:
@@ -48,6 +66,8 @@ def detect_customer_opportunities(
     now = now or dt.datetime.now(dt.timezone.utc)
     since_7 = now - dt.timedelta(days=7)
     since_3 = now - dt.timedelta(days=3)
+    since_90 = now - dt.timedelta(days=90)
+    since_365 = now - dt.timedelta(days=365)
 
     events = list(
         db.execute(
@@ -95,6 +115,16 @@ def detect_customer_opportunities(
         .scalars()
         .all()
     )
+    service_jobs = list(
+        db.execute(
+            select(ServiceJob)
+            .where(ServiceJob.customer_id == customer.id)
+            .order_by(ServiceJob.created_at.desc())
+            .limit(20)
+        )
+        .scalars()
+        .all()
+    )
 
     recent_part_views = sum(
         1
@@ -120,6 +150,18 @@ def detect_customer_opportunities(
             recent_email_engage = True
             break
 
+    tags_lower = {t.lower() for t in (customer.tags or [])}
+    notes_blob = " ".join(
+        filter(
+            None,
+            [
+                customer.notes or "",
+                " ".join(customer.tags or []),
+                " ".join((c.subject or "") + " " + (c.message or "") for c in contacts[:5]),
+            ],
+        )
+    ).lower()
+
     found: list[dict[str, Any]] = []
 
     # hot_lead
@@ -132,7 +174,7 @@ def detect_customer_opportunities(
             }
         )
 
-    # sell_equipment
+    # sell_equipment (customer selling TO Titan)
     sell_hit = None
     for s in sells:
         if _as_utc(s.created_at) >= since_7 or (s.ai_intent or "") == "sell_equipment":
@@ -199,6 +241,89 @@ def detect_customer_opportunities(
                 "opportunity_type": "consent_ready_nurture",
                 "score": 8.0,
                 "reasons": ["Marketing consent with low recent activity"],
+            }
+        )
+
+    # --- Buyer-side PET/CT intent ---
+    buy_used_hit = (
+        any((c.ai_intent or "").lower() in ("buy_used", "buy_equipment") for c in contacts)
+        or "buy_used" in tags_lower
+        or "used pet" in notes_blob
+        or "used ct" in notes_blob
+        or "refurbished" in notes_blob
+        or "pre-owned" in notes_blob
+    )
+    buy_new_hit = (
+        any((c.ai_intent or "").lower() in ("buy_new", "system_purchase") for c in contacts)
+        or "buy_new" in tags_lower
+        or "new pet" in notes_blob
+        or "new system" in notes_blob
+        or "capital purchase" in notes_blob
+    )
+    generic_buy = any((c.ai_intent or "").lower() in BUYER_INTENTS for c in contacts) or any(
+        k in notes_blob for k in ("looking to buy", "need a system", "replace our", "upgrade our pet")
+    )
+
+    if buy_used_hit or (generic_buy and not buy_new_hit):
+        found.append(
+            {
+                "opportunity_type": "buy_used_petct",
+                "score": round(max(score, 28.0), 1),
+                "reasons": [
+                    "Signals indicate interest in used/refurbished PET/CT systems",
+                    "Titan offer: System Sales (pre-owned GE PET/CT)",
+                ],
+            }
+        )
+    if buy_new_hit:
+        found.append(
+            {
+                "opportunity_type": "buy_new_petct",
+                "score": round(max(score, 30.0), 1),
+                "reasons": [
+                    "Signals indicate interest in new PET/CT acquisition",
+                    "Titan offer: consult + competitive system sourcing",
+                ],
+            }
+        )
+
+    # --- Audit / service contract ---
+    recent_audits = [
+        j
+        for j in service_jobs
+        if (j.job_type or "") == "audit" and j.completed_at and _as_utc(j.completed_at) >= since_365
+    ]
+    any_audit_ever = any((j.job_type or "") == "audit" for j in service_jobs)
+    audit_intent = any(
+        (c.ai_intent or "").lower() in AUDIT_INTENTS and _as_utc(c.created_at) >= since_90
+        for c in contacts
+    ) or any(k in notes_blob for k in ("mechanical audit", "pet/ct audit", "inspection", "pm overdue"))
+    follow_up_jobs = [j for j in service_jobs if j.follow_up_needed]
+
+    if (audit_intent or follow_up_jobs or ("audit" in tags_lower)) and not recent_audits:
+        found.append(
+            {
+                "opportunity_type": "audit_candidate",
+                "score": round(max(score, 24.0), 1),
+                "reasons": [
+                    "No completed PET/CT audit in the last year"
+                    if any_audit_ever or audit_intent
+                    else "Audit/inspection interest without recent audit on file",
+                    "Titan offer: mechanical audits, inspections, and repairs",
+                ],
+            }
+        )
+
+    has_contract_tag = any(t in tags_lower for t in ("service_contract", "under_contract", "pm_contract"))
+    if (any_audit_ever or parts_intent or recent_part_views >= 1) and not has_contract_tag:
+        found.append(
+            {
+                "opportunity_type": "service_contract_gap",
+                "score": round(max(score * 0.5, 14.0), 1),
+                "reasons": [
+                    "Active service/parts relationship without service-contract tag",
+                    "Titan offer: flexible service contracts and PM schedules",
+                ],
             }
         )
 
@@ -272,7 +397,6 @@ def customer_latest_opportunities(db: Session, customer_id: uuid.UUID, days: int
         .scalars()
         .all()
     )
-    # Dedupe by type keeping highest score / newest
     best: dict[str, OpportunitySnapshot] = {}
     for r in rows:
         prev = best.get(r.opportunity_type)
@@ -287,3 +411,40 @@ def customer_latest_opportunities(db: Session, customer_id: uuid.UUID, days: int
         }
         for r in best.values()
     ]
+
+
+def hot_opportunities_above_threshold(
+    db: Session, *, min_score: float = 40.0, days: int = 1
+) -> list[dict[str, Any]]:
+    since = dt.date.today() - dt.timedelta(days=days)
+    rows = list(
+        db.execute(
+            select(OpportunitySnapshot, Customer)
+            .join(Customer, Customer.id == OpportunitySnapshot.customer_id)
+            .where(
+                OpportunitySnapshot.as_of_date >= since,
+                OpportunitySnapshot.score >= min_score,
+            )
+            .order_by(OpportunitySnapshot.score.desc())
+            .limit(40)
+        ).all()
+    )
+    seen: set[tuple[str, str]] = set()
+    out: list[dict[str, Any]] = []
+    for snap, customer in rows:
+        key = (str(customer.id), snap.opportunity_type)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(
+            {
+                "customer_id": str(customer.id),
+                "email": customer.email,
+                "name": customer.name,
+                "company": customer.company,
+                "opportunity_type": snap.opportunity_type,
+                "score": float(snap.score),
+                "reasons": snap.reasons or [],
+            }
+        )
+    return out

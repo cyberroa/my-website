@@ -20,6 +20,8 @@ pip install -r requirements.txt
 ```bash
 alembic upgrade head
 python -m app.scripts.seed
+# Optional: rich synthetic CRM personas for agentic Workbench testing (no OpenRouter)
+python -m app.scripts.seed_demo_crm
 ```
 
 4. Start the server.

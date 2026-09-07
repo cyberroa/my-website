@@ -58,9 +58,40 @@ type Opportunity = {
 const OPP_LABELS: Record<string, string> = {
   warm_parts_inquiry: "Warm parts inquiry",
   cooling_engaged: "Cooling engaged",
-  sell_equipment: "Sell equipment",
+  sell_equipment: "Sell to Titan",
   consent_ready_nurture: "Consent-ready nurture",
   hot_lead: "Hot lead",
+  buy_used_petct: "Buy used PET/CT",
+  buy_new_petct: "Buy new PET/CT",
+  audit_candidate: "Audit candidate",
+  service_contract_gap: "Service contract gap",
+};
+
+type EvidenceItem = {
+  id: string;
+  observation: string;
+  strength: string;
+  status: string;
+  suggested_field: string | null;
+  suggested_value: string | null;
+  observed_at: string | null;
+};
+
+type AgentTask = {
+  id: string;
+  kind: string;
+  status: string;
+  reason: string | null;
+  result_summary: string | null;
+  open_questions: string[];
+  created_at: string | null;
+};
+
+type FitScore = {
+  offer_family: string;
+  score: number;
+  reasons: string[];
+  as_of_date: string;
 };
 
 function urgencyClass(urgency: unknown): string {
@@ -78,6 +109,10 @@ export default function AdminCustomerDetailPage() {
   const [briefingLoading, setBriefingLoading] = useState(false);
   const [briefingError, setBriefingError] = useState<string | null>(null);
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [fitScores, setFitScores] = useState<FitScore[]>([]);
+  const [evidence, setEvidence] = useState<EvidenceItem[]>([]);
+  const [agentTasks, setAgentTasks] = useState<AgentTask[]>([]);
+  const [agentBusy, setAgentBusy] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -121,13 +156,33 @@ export default function AdminCustomerDetailPage() {
         setConsent(r.customer.consent_marketing);
         void loadBriefing(t);
         try {
-          const opp = await apiFetchWithAuth<{ opportunities: Opportunity[] }>(
-            `/api/v1/workbench/customers/${id}/opportunities`,
-            t,
-          );
+          const opp = await apiFetchWithAuth<{
+            opportunities: Opportunity[];
+            fit_scores?: FitScore[];
+          }>(`/api/v1/workbench/customers/${id}/opportunities`, t);
           setOpportunities(opp.opportunities ?? []);
+          setFitScores(opp.fit_scores ?? []);
         } catch {
           setOpportunities([]);
+          setFitScores([]);
+        }
+        try {
+          const ev = await apiFetchWithAuth<{ items: EvidenceItem[] }>(
+            `/api/v1/workbench/customers/${id}/evidence`,
+            t,
+          );
+          setEvidence(ev.items ?? []);
+        } catch {
+          setEvidence([]);
+        }
+        try {
+          const tasks = await apiFetchWithAuth<AgentTask[]>(
+            `/api/v1/workbench/customers/${id}/agent/tasks`,
+            t,
+          );
+          setAgentTasks(tasks ?? []);
+        } catch {
+          setAgentTasks([]);
         }
       } catch (e) {
         setError(e instanceof ApiError ? JSON.stringify(e.body ?? e.message) : "Failed to load");
@@ -268,8 +323,142 @@ export default function AdminCustomerDetailPage() {
                   </div>
                 ))}
               </div>
+              {fitScores.length > 0 ? (
+                <div className="mt-4 border-t border-white/10 pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
+                    Offer fit scores
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {fitScores.map((f) => (
+                      <span
+                        key={f.offer_family}
+                        className="rounded-md border border-white/15 px-2 py-1 text-xs text-text-secondary"
+                        title={(f.reasons || []).join("; ")}
+                      >
+                        {f.offer_family}: {f.score}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
             </div>
           )}
+
+          <div className="mt-6 rounded-xl border border-white/10 bg-background-card p-6">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="text-lg font-semibold">Agent</h2>
+              <button
+                type="button"
+                disabled={!token || agentBusy}
+                className="rounded-md border border-white/15 px-3 py-1.5 text-xs font-semibold text-white hover:border-white/30 disabled:opacity-50"
+                onClick={async () => {
+                  if (!token || !id) return;
+                  setAgentBusy(true);
+                  try {
+                    await apiFetchWithAuth(`/api/v1/workbench/customers/${id}/agent/research`, token, {
+                      method: "POST",
+                      body: JSON.stringify({ reason: "Manual research from customer 360" }),
+                    });
+                    await load(token);
+                  } catch (e) {
+                    setError(
+                      e instanceof ApiError ? JSON.stringify(e.body ?? e.message) : "Research enqueue failed",
+                    );
+                  } finally {
+                    setAgentBusy(false);
+                  }
+                }}
+              >
+                {agentBusy ? "Queuing…" : "Queue research"}
+              </button>
+            </div>
+            {agentTasks.length === 0 ? (
+              <p className="mt-3 text-sm text-text-muted">No research tasks yet.</p>
+            ) : (
+              <ul className="mt-3 space-y-2 text-sm">
+                {agentTasks.slice(0, 5).map((t) => (
+                  <li key={t.id} className="rounded-lg border border-white/10 px-3 py-2">
+                    <div className="flex justify-between gap-2">
+                      <span className="font-medium text-white">
+                        {t.kind} · {t.status}
+                      </span>
+                      <span className="text-xs text-text-muted">
+                        {t.created_at ? new Date(t.created_at).toLocaleString() : ""}
+                      </span>
+                    </div>
+                    {t.reason ? <p className="mt-1 text-text-muted">{t.reason}</p> : null}
+                    {t.result_summary ? (
+                      <p className="mt-1 text-text-secondary">{t.result_summary}</p>
+                    ) : null}
+                    {(t.open_questions || []).length > 0 ? (
+                      <ul className="mt-1 list-disc pl-4 text-xs text-amber-100">
+                        {t.open_questions.map((q) => (
+                          <li key={q}>{q}</li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="mt-6 rounded-xl border border-white/10 bg-background-card p-6">
+            <h2 className="text-lg font-semibold">Evidence</h2>
+            {evidence.length === 0 ? (
+              <p className="mt-3 text-sm text-text-muted">No evidence rows yet.</p>
+            ) : (
+              <ul className="mt-3 space-y-2 text-sm">
+                {evidence.map((e) => (
+                  <li key={e.id} className="rounded-lg border border-white/10 px-3 py-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-xs uppercase tracking-wider text-text-muted">
+                        {e.strength} · {e.status}
+                      </span>
+                      {e.status === "suggested" && token ? (
+                        <span className="flex gap-2">
+                          <button
+                            type="button"
+                            className="text-xs text-emerald-300 hover:underline"
+                            onClick={async () => {
+                              await apiFetchWithAuth(
+                                `/api/v1/workbench/customers/${id}/evidence/${e.id}/resolve`,
+                                token,
+                                { method: "POST", body: JSON.stringify({ action: "accept" }) },
+                              );
+                              await load(token);
+                            }}
+                          >
+                            Accept
+                          </button>
+                          <button
+                            type="button"
+                            className="text-xs text-red-300 hover:underline"
+                            onClick={async () => {
+                              await apiFetchWithAuth(
+                                `/api/v1/workbench/customers/${id}/evidence/${e.id}/resolve`,
+                                token,
+                                { method: "POST", body: JSON.stringify({ action: "reject" }) },
+                              );
+                              await load(token);
+                            }}
+                          >
+                            Reject
+                          </button>
+                        </span>
+                      ) : null}
+                    </div>
+                    <p className="mt-1 text-text-secondary">{e.observation}</p>
+                    {e.suggested_field ? (
+                      <p className="mt-1 text-xs text-text-muted">
+                        Suggest {e.suggested_field}: {e.suggested_value}
+                      </p>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
 
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
             <div className="rounded-xl border border-white/10 bg-background-card p-6">

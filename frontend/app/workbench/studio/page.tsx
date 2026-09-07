@@ -144,6 +144,8 @@ export default function AdminAiStudioPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [promoteName, setPromoteName] = useState("AI Draft");
+  const [contextSegmentId, setContextSegmentId] = useState("");
+  const [contextCustomerId, setContextCustomerId] = useState("");
   const [mode, setMode] = useState<Mode>("text");
   const [modelOpen, setModelOpen] = useState(false);
   const [designOpen, setDesignOpen] = useState(false);
@@ -348,7 +350,10 @@ export default function AdminAiStudioPage() {
               model,
               system: systemPrompt,
               user: userPrompt,
-              context: {},
+              context: {
+                ...(contextSegmentId.trim() ? { segment_id: contextSegmentId.trim() } : {}),
+                ...(contextCustomerId.trim() ? { customer_id: contextCustomerId.trim() } : {}),
+              },
             }),
           },
         );
@@ -362,7 +367,7 @@ export default function AdminAiStudioPage() {
     }
   }
 
-  async function promote(target: "template" | "social") {
+  async function promote(target: "template" | "social" | "campaign") {
     if (!token || !output.trim()) return;
     const res = await apiFetchWithAuth<{ type: string; id: string }>(
       "/api/v1/workbench/ai/studio/promote",
@@ -374,6 +379,7 @@ export default function AdminAiStudioPage() {
           target,
           name: promoteName,
           image_url: imageUrl,
+          segment_id: contextSegmentId.trim() || undefined,
         }),
       },
     );
@@ -913,6 +919,27 @@ export default function AdminAiStudioPage() {
           </p>
         )}
 
+        <div className="mt-6 grid w-full max-w-xl gap-3 sm:grid-cols-2">
+          <label className="block text-left text-xs text-white/50">
+            Segment ID (playbook context)
+            <input
+              value={contextSegmentId}
+              onChange={(e) => setContextSegmentId(e.target.value)}
+              className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-accent-admin/40"
+              placeholder="UUID from Segments"
+            />
+          </label>
+          <label className="block text-left text-xs text-white/50">
+            Customer ID (dossier context)
+            <input
+              value={contextCustomerId}
+              onChange={(e) => setContextCustomerId(e.target.value)}
+              className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-accent-admin/40"
+              placeholder="UUID from Customers"
+            />
+          </label>
+        </div>
+
         {/* Results */}
         {(output || imageUrl) && (
           <section className="mt-12 w-full space-y-4">
@@ -958,6 +985,14 @@ export default function AdminAiStudioPage() {
                   className="rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white/85 transition hover:bg-white/5 disabled:opacity-40"
                 >
                   Create social draft
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void promote("campaign")}
+                  disabled={!output.trim()}
+                  className="rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white/85 transition hover:bg-white/5 disabled:opacity-40"
+                >
+                  Draft campaign
                 </button>
                 <Link
                   href="/workbench/templates"

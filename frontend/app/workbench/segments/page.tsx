@@ -15,6 +15,11 @@ type Segment = {
   ai_managed?: boolean;
   ai_proposal_status?: string | null;
   ai_rationale?: string | null;
+  playbook_markdown?: string | null;
+  recommended_services?: unknown[];
+  labels?: string[];
+  research_summary?: string | null;
+  last_researched_at?: string | null;
 };
 
 type Customer = {
@@ -35,6 +40,10 @@ const emptyForm = {
     null,
     2,
   ),
+  playbook_markdown: "",
+  labels: "",
+  research_summary: "",
+  recommended_services: "",
 };
 
 export default function AdminSegmentsPage() {
@@ -87,6 +96,16 @@ export default function AdminSegmentsPage() {
       slug: form.slug.trim() || null,
       description: form.description.trim() || null,
       filter_json: filter,
+      playbook_markdown: form.playbook_markdown.trim() || null,
+      research_summary: form.research_summary.trim() || null,
+      labels: form.labels
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+      recommended_services: form.recommended_services
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
     };
     try {
       if (editingId) {
@@ -159,9 +178,28 @@ export default function AdminSegmentsPage() {
       slug: s.slug,
       description: s.description ?? "",
       filter_json: JSON.stringify(s.filter_json ?? {}, null, 2),
+      playbook_markdown: s.playbook_markdown ?? "",
+      labels: (s.labels || []).join(", "),
+      research_summary: s.research_summary ?? "",
+      recommended_services: (s.recommended_services || [])
+        .map((x) => (typeof x === "string" ? x : JSON.stringify(x)))
+        .join(", "),
     });
     setPreview(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function queueResearch(segmentId: string) {
+    if (!token) return;
+    try {
+      await apiFetchWithAuth(`/api/v1/workbench/segments/${segmentId}/research`, token, {
+        method: "POST",
+        body: JSON.stringify({ reason: "Segment playbook research from Workbench" }),
+      });
+      await load(token);
+    } catch (err) {
+      setError(err instanceof ApiError ? JSON.stringify(err.body ?? err.message) : "Research failed");
+    }
   }
 
   return (
@@ -221,10 +259,46 @@ export default function AdminSegmentsPage() {
               onChange={(e) => setForm((f) => ({ ...f, filter_json: e.target.value }))}
             />
           </label>
+          <label className="block text-sm">
+            <span className="text-text-muted">Playbook (markdown)</span>
+            <textarea
+              className="mt-1 min-h-[120px] w-full rounded-md border border-white/10 bg-black/40 px-3 py-2 font-mono text-xs"
+              value={form.playbook_markdown}
+              onChange={(e) => setForm((f) => ({ ...f, playbook_markdown: e.target.value }))}
+              placeholder="ICP, Titan offers, messaging angles, competitor counterpoints…"
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="text-text-muted">Labels (comma separated)</span>
+            <input
+              className="mt-1 w-full rounded-md border border-white/10 bg-black/40 px-3 py-2"
+              value={form.labels}
+              onChange={(e) => setForm((f) => ({ ...f, labels: e.target.value }))}
+              placeholder="fleet-aging, price-sensitive, GE-Omni"
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="text-text-muted">Recommended services (comma separated)</span>
+            <input
+              className="mt-1 w-full rounded-md border border-white/10 bg-black/40 px-3 py-2"
+              value={form.recommended_services}
+              onChange={(e) => setForm((f) => ({ ...f, recommended_services: e.target.value }))}
+              placeholder="PET/CT mechanical audit, Parts & Support"
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="text-text-muted">Research summary</span>
+            <textarea
+              className="mt-1 min-h-[80px] w-full rounded-md border border-white/10 bg-black/40 px-3 py-2 text-sm"
+              value={form.research_summary}
+              onChange={(e) => setForm((f) => ({ ...f, research_summary: e.target.value }))}
+            />
+          </label>
           <p className="text-xs text-text-muted">
             Supported keys: <code>consent_marketing</code>, <code>source</code>,{" "}
             <code>tags_any</code>, <code>tags_all</code>, <code>email_contains</code>,{" "}
-            <code>company_contains</code>, <code>exclude_unsubscribed</code>.
+            <code>company_contains</code>, <code>exclude_unsubscribed</code>,{" "}
+            <code>opportunity_types</code>.
           </p>
           <div className="flex flex-wrap gap-3">
             <button
@@ -291,7 +365,26 @@ export default function AdminSegmentsPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 font-mono text-xs text-accent-admin">{s.slug}</td>
-                  <td className="px-4 py-3 text-text-muted">{s.description ?? "—"}</td>
+                  <td className="px-4 py-3 text-text-muted">
+                    {s.description ?? "—"}
+                    {s.labels && s.labels.length > 0 ? (
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {s.labels.map((l) => (
+                          <span
+                            key={l}
+                            className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] text-text-secondary"
+                          >
+                            {l}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                    {s.last_researched_at ? (
+                      <div className="mt-1 text-[10px] text-text-muted">
+                        Researched {new Date(s.last_researched_at).toLocaleDateString()}
+                      </div>
+                    ) : null}
+                  </td>
                   <td className="px-4 py-3 text-right">
                     <button
                       type="button"
@@ -299,6 +392,13 @@ export default function AdminSegmentsPage() {
                       onClick={() => void runPreview(s)}
                     >
                       Preview
+                    </button>
+                    <button
+                      type="button"
+                      className="mr-3 text-accent-admin hover:underline"
+                      onClick={() => void queueResearch(s.id)}
+                    >
+                      Research
                     </button>
                     {s.ai_proposal_status === "pending" && (
                       <button

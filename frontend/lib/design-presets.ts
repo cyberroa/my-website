@@ -85,6 +85,42 @@ Focus: LinkedIn for imaging professionals. Short paragraphs, one clear CTA (part
 
 Focus: landing/hero copy and layout briefs. Brand name as hero-level signal; one headline, one supporting sentence, one CTA group. Full-bleed imagery with standard dark gradient overlay. No stats strips or card grids in the first viewport.`,
   },
+  {
+    id: "audit-outreach",
+    name: "Audit Outreach",
+    blurb: "PET/CT mechanical audits & inspections",
+    swatch: "#6EC9F0",
+    systemPrompt: `${DESIGN_MD_SYSTEM_PROMPT}
+
+Focus: email/outreach for PET/CT mechanical audits and inspections. Emphasize extending equipment life, catching issues before downtime, and Titan's hands-on GE PET/CT expertise. CTA: book audit or contact.`,
+  },
+  {
+    id: "used-system-buyer",
+    name: "Used System Buyer",
+    blurb: "Refurbished / pre-owned PET/CT",
+    swatch: "#a9b4c2",
+    systemPrompt: `${DESIGN_MD_SYSTEM_PROMPT}
+
+Focus: buyers evaluating used/refurbished GE PET/CT systems. Highlight System Sales, testing, install support, and beating competitor pricing when context includes listings.`,
+  },
+  {
+    id: "new-system-buyer",
+    name: "New System Buyer",
+    blurb: "New PET/CT acquisition consult",
+    swatch: "#ffffff",
+    systemPrompt: `${DESIGN_MD_SYSTEM_PROMPT}
+
+Focus: capital buyers considering new PET/CT. Position Titan as first consult for sourcing, install, parts, and ongoing service—not a neglected vendor.`,
+  },
+  {
+    id: "winback-neglect",
+    name: "Win-back / Neglect Rescue",
+    blurb: "Quiet accounts at risk of competitors",
+    swatch: "#FF8700",
+    systemPrompt: `${DESIGN_MD_SYSTEM_PROMPT}
+
+Focus: respectful win-back for quiet accounts. Offer audit, parts, or quick consult so they stay with Titan instead of a competitor site.`,
+  },
 ];
 
 export function getDesignPreset(id: string | null | undefined): MarketingDesignPreset | undefined {

@@ -325,7 +325,90 @@ def customer_opportunities(customer_id: str, db: Session = Depends(get_db)):
     c = db.get(Customer, customer_id)
     if not c:
         raise HTTPException(status_code=404, detail="Customer not found")
-    return {"opportunities": customer_latest_opportunities(db, c.id)}
+    from app.ai.fit_scores import customer_fit_scores_out
+
+    return {
+        "opportunities": customer_latest_opportunities(db, c.id),
+        "fit_scores": customer_fit_scores_out(db, c.id),
+    }
+
+
+@router.get("/{customer_id}/evidence")
+def customer_evidence_list(
+    customer_id: str,
+    db: Session = Depends(get_db),
+    status: str | None = Query(default=None),
+):
+    from app.ai.evidence import evidence_to_out, list_evidence
+
+    c = db.get(Customer, customer_id)
+    if not c:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    rows = list_evidence(db, c.id, status=status, limit=80)
+    return {"items": [evidence_to_out(r) for r in rows]}
+
+
+@router.post("/{customer_id}/evidence/{evidence_id}/resolve")
+def customer_evidence_resolve(
+    customer_id: str,
+    evidence_id: str,
+    body: dict[str, Any],
+    db: Session = Depends(get_db),
+    admin=Depends(get_current_workbench_user),
+):
+    from app.ai.evidence import evidence_to_out, resolve_evidence
+
+    c = db.get(Customer, customer_id)
+    if not c:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    action = (body.get("action") or "").strip()
+    try:
+        row = resolve_evidence(
+            db,
+            uuid.UUID(evidence_id),
+            action=action,
+            resolved_by=getattr(admin, "email", None),
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    if str(row.customer_id) != str(c.id):
+        raise HTTPException(status_code=404, detail="Evidence not found for customer")
+    return evidence_to_out(row)
+
+
+@router.get("/{customer_id}/agent/tasks")
+def customer_agent_tasks(customer_id: str, db: Session = Depends(get_db)):
+    from app.ai.agent_queue import list_tasks_for_subject, task_to_out
+
+    c = db.get(Customer, customer_id)
+    if not c:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    rows = list_tasks_for_subject(db, "customer", c.id)
+    return [task_to_out(t) for t in rows]
+
+
+@router.post("/{customer_id}/agent/research")
+def customer_enqueue_research(
+    customer_id: str,
+    body: dict[str, Any] | None = None,
+    db: Session = Depends(get_db),
+    admin=Depends(get_current_workbench_user),
+):
+    from app.ai.agent_queue import enqueue_task, task_to_out
+
+    c = db.get(Customer, customer_id)
+    if not c:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    body = body or {}
+    task = enqueue_task(
+        db,
+        kind="research",
+        subject_type="customer",
+        subject_id=c.id,
+        reason=(body.get("reason") or "Customer research from Workbench")[:2000],
+        created_by=getattr(admin, "email", None),
+    )
+    return task_to_out(task)
 
 
 @router.get("/{customer_id}/briefing", response_model=CustomerBriefingOut)

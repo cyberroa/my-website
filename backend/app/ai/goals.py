@@ -41,6 +41,20 @@ SEED_GOALS: list[dict[str, Any]] = [
         "draft_on_threshold": 5,
     },
     {
+        "name": "Used PET/CT system buyers",
+        "description": "Accounts signaling interest in used/refurbished GE PET/CT systems.",
+        "opportunity_types": ["buy_used_petct"],
+        "channel": "email",
+        "draft_on_threshold": 5,
+    },
+    {
+        "name": "Audit candidates",
+        "description": "Facilities due for PET/CT mechanical audits and inspections.",
+        "opportunity_types": ["audit_candidate", "service_contract_gap"],
+        "channel": "email",
+        "draft_on_threshold": 8,
+    },
+    {
         "name": "Consent-ready nurture",
         "description": "Marketing-consent contacts with low recent activity.",
         "opportunity_types": ["consent_ready_nurture"],
@@ -253,6 +267,30 @@ def refresh_goal_membership(db: Session, goal: MarketingGoal) -> dict[str, Any]:
     goal.last_member_count = count
     goal.last_refreshed_at = dt.datetime.now(dt.timezone.utc)
 
+    # Refresh lightweight playbook summary when membership shifts
+    types = ", ".join(goal.opportunity_types or []) or "general"
+    summary = (
+        f"Goal-linked segment for «{goal.name}» targeting opportunities: {types}. "
+        f"Members now: {count} (was {prev}). "
+        f"Recommended Titan angles: map offers from opportunity types "
+        f"(parts, PET/CT audits, used/new systems, sell-to-us)."
+    )
+    seg.research_summary = summary[:20_000]
+    if not seg.playbook_markdown:
+        seg.playbook_markdown = (
+            f"# {seg.name}\n\n"
+            f"**Goal:** {goal.name}\n\n"
+            f"{goal.description or ''}\n\n"
+            f"**Opportunity types:** {types}\n\n"
+            f"Use Titan offers that match this subset: parts & support, mechanical audits, "
+            f"service contracts, used/new PET/CT systems, sell-to-us.\n"
+        )
+    labels = list(seg.labels or [])
+    for t in goal.opportunity_types or []:
+        if t not in labels:
+            labels.append(t)
+    seg.labels = labels[:40]
+
     flag = None
     if count == 0:
         flag = "empty"
@@ -267,6 +305,7 @@ def refresh_goal_membership(db: Session, goal: MarketingGoal) -> dict[str, Any]:
         "member_count": count,
         "previous_count": prev,
         "flag": flag,
+        "playbook_refreshed": True,
     }
 
 

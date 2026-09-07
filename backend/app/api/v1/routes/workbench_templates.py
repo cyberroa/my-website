@@ -164,6 +164,12 @@ def _segment_to_out(s: Segment) -> SegmentOut:
         ai_managed=bool(s.ai_managed),
         ai_proposal_status=s.ai_proposal_status,
         ai_rationale=s.ai_rationale,
+        playbook_markdown=s.playbook_markdown,
+        recommended_services=list(s.recommended_services or []),
+        labels=list(s.labels or []),
+        research_summary=s.research_summary,
+        last_researched_at=s.last_researched_at.isoformat() if s.last_researched_at else None,
+        research_budget_used=int(s.research_budget_used or 0),
     )
 
 
@@ -202,6 +208,10 @@ def create_segment(body: SegmentCreate, db: Session = Depends(get_db)):
         slug=slug,
         description=body.description,
         filter_json=body.filter_json or {},
+        playbook_markdown=body.playbook_markdown,
+        recommended_services=body.recommended_services or [],
+        labels=body.labels or [],
+        research_summary=body.research_summary,
     )
     db.add(s)
     db.commit()
@@ -230,12 +240,16 @@ def update_segment(segment_id: str, body: SegmentUpdate, db: Session = Depends(g
         if other is not None:
             raise HTTPException(status_code=400, detail="Slug already in use")
         s.slug = new_slug
-    for field in ("name", "description"):
+    for field in ("name", "description", "playbook_markdown", "research_summary"):
         v = getattr(body, field)
         if v is not None:
             setattr(s, field, v)
     if body.filter_json is not None:
         s.filter_json = body.filter_json
+    if body.recommended_services is not None:
+        s.recommended_services = body.recommended_services
+    if body.labels is not None:
+        s.labels = body.labels
     db.commit()
     db.refresh(s)
     return _segment_to_out(s)
@@ -249,6 +263,41 @@ def delete_segment(segment_id: str, db: Session = Depends(get_db)):
     db.delete(s)
     db.commit()
     return OkOut()
+
+
+@router.post("/segments/{segment_id}/research")
+def segment_enqueue_research(
+    segment_id: str,
+    body: dict | None = None,
+    db: Session = Depends(get_db),
+    admin=Depends(get_current_workbench_user),
+):
+    from app.ai.agent_queue import enqueue_task, task_to_out
+
+    s = db.get(Segment, segment_id)
+    if not s:
+        raise HTTPException(status_code=404, detail="Segment not found")
+    body = body or {}
+    task = enqueue_task(
+        db,
+        kind="research",
+        subject_type="segment",
+        subject_id=s.id,
+        reason=(body.get("reason") if isinstance(body, dict) else None)
+        or "Segment playbook research from Workbench",
+        created_by=getattr(admin, "email", None),
+    )
+    return task_to_out(task)
+
+
+@router.get("/segments/{segment_id}/agent/tasks")
+def segment_agent_tasks(segment_id: str, db: Session = Depends(get_db)):
+    from app.ai.agent_queue import list_tasks_for_subject, task_to_out
+
+    s = db.get(Segment, segment_id)
+    if not s:
+        raise HTTPException(status_code=404, detail="Segment not found")
+    return [task_to_out(t) for t in list_tasks_for_subject(db, "segment", s.id)]
 
 
 @router.post("/segments/{segment_id}/preview", response_model=SegmentPreviewOut)

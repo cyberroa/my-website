@@ -183,6 +183,13 @@ class Segment(Base):
     ai_proposal_status: Mapped[str | None] = mapped_column(String(24), nullable=True)
     ai_rationale: Mapped[str | None] = mapped_column(Text, nullable=True)
     ai_proposed_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Agentic CRM — durable segment playbook / research context
+    playbook_markdown: Mapped[str | None] = mapped_column(Text, nullable=True)
+    recommended_services: Mapped[list] = mapped_column(JSONB, nullable=False, server_default="[]")
+    labels: Mapped[list[str]] = mapped_column(ARRAY(Text), nullable=False, server_default="{}")
+    research_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
+    last_researched_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    research_budget_used: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
@@ -729,3 +736,87 @@ class CompetitorListing(Base):
     )
 
     source: Mapped["CompetitorSource"] = relationship(back_populates="listings")
+
+
+# --------------------------------------------------------------------------
+# Agentic CRM — evidence ledger, research agent queue, fit scores
+# --------------------------------------------------------------------------
+
+
+class CustomerEvidence(Base):
+    """Append-only observations about a customer (CompAI-style evidence ledger)."""
+
+    __tablename__ = "customer_evidence"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    customer_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("customers.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    source: Mapped[str] = mapped_column(String(120), nullable=False, server_default="agent")
+    tool_name: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    observation: Mapped[str] = mapped_column(Text, nullable=False)
+    strength: Mapped[str] = mapped_column(String(16), nullable=False, server_default="weak")  # strong|weak
+    suggested_field: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    suggested_value: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[str] = mapped_column(
+        String(24), nullable=False, server_default="suggested"
+    )  # accepted|suggested|rejected
+    observed_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    resolved_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    resolved_by: Mapped[str | None] = mapped_column(String(320), nullable=True)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class AgentTask(Base):
+    """Durable research work queue with leases (CompAI claimDue pattern)."""
+
+    __tablename__ = "agent_tasks"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    kind: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    subject_type: Mapped[str] = mapped_column(String(32), nullable=False)  # customer|segment
+    subject_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
+    status: Mapped[str] = mapped_column(
+        String(24), nullable=False, server_default="pending", index=True
+    )  # pending|leased|completed|failed|cancelled
+    due_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), index=True
+    )
+    lease_until: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    payload_json: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default="{}")
+    result_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
+    steps_json: Mapped[list] = mapped_column(JSONB, nullable=False, server_default="[]")
+    open_questions: Mapped[list] = mapped_column(JSONB, nullable=False, server_default="[]")
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_by: Mapped[str | None] = mapped_column(String(320), nullable=True)
+    started_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    completed_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()
+    )
+
+
+class CustomerFitScore(Base):
+    """Composite fit score per customer × offer family for ranking dashboards."""
+
+    __tablename__ = "customer_fit_scores"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    customer_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("customers.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    offer_family: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    score: Mapped[float] = mapped_column(Numeric(10, 1), nullable=False, server_default="0")
+    reasons: Mapped[list] = mapped_column(JSONB, nullable=False, server_default="[]")
+    as_of_date: Mapped[dt.date] = mapped_column(Date, nullable=False, index=True)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
