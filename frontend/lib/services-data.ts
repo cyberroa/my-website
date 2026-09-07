@@ -79,4 +79,16 @@ export const SERVICES: ServiceItem[] = [
       "Rapid shipping options",
     ],
   },
+  {
+    id: "7",
+    title: "PET/CT Mechanical Audits & Inspections",
+    preview: "Hands-on audits that extend equipment life and catch failures before downtime.",
+    body: "Titan Imaging performs mechanical audits and inspections on GE PET/CT systems so biomedical teams can prioritize repairs, plan parts, and keep scanners productive longer—often at a fraction of OEM service premiums.",
+    bullets: [
+      "Mechanical and performance inspection",
+      "Documented findings and repair recommendations",
+      "Parts and follow-up coordination",
+      "Service-contract and PM planning",
+    ],
+  },
 ];

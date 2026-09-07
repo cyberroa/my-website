@@ -20,6 +20,8 @@ pip install -r requirements.txt
 ```bash
 alembic upgrade head
 python -m app.scripts.seed
+# Optional: rich synthetic CRM personas for agentic Workbench testing (no OpenRouter)
+python -m app.scripts.seed_demo_crm
 ```
 
 4. Start the server.
@@ -38,6 +40,16 @@ uvicorn app.main:app --reload --port 8000
    - Optional: **`RESEND_API_KEY`**, **`ADMIN_NOTIFY_EMAIL`**, **`EMAIL_FROM`** for contact/sell notifications.
 4. On the **free** Render plan, **`preDeployCommand` is not available**, so **`scripts/render_start.sh`** runs migrations and seed, then **uvicorn**, on each container start (seed is safe to repeat). Paid plans can use a separate pre-deploy step in the dashboard if you prefer.
 5. Smoke-test: `GET https://<your-service>.onrender.com/health` should return `{"ok":true}`.
+
+### Phase 4B AI (OpenRouter)
+
+Optional. When `OPENROUTER_API_KEY` is set and `AI_ENABLED=true`:
+
+- `GET /api/v1/workbench/customers/{id}/briefing` — AI call-prep summary (cached)
+- `POST /api/v1/workbench/customers/{id}/briefing/regenerate` — force refresh
+- Contact/sell form submits enqueue sentiment classification (background)
+
+See `backend/.env.example` for `AI_MODEL_*` overrides. Swap models anytime via OpenRouter model IDs.
 
 **Vercel (frontend):** set **`NEXT_PUBLIC_API_URL`** to your Render service URL (e.g. `https://titan-imaging-api.onrender.com`) so the Next.js app calls the live API.
 

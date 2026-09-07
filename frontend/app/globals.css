@@ -14,7 +14,30 @@ html {
   overflow-y: scroll;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
+[data-area="admin"] input:not([type="checkbox"]):not([type="radio"]),
+[data-area="admin"] textarea,
+[data-area="admin"] select {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+[data-area="admin"] input:not([type="checkbox"]):not([type="radio"]):focus,
+[data-area="admin"] textarea:focus,
+[data-area="admin"] select:focus {
+  box-shadow: 0 0 0 2px rgb(43 180 255 / 0.32);
+  border-color: rgba(43, 180, 255, 0.5);
+}
+
+/* Lift common admin cards / tables above the charcoal shell */
+[data-area="admin"] main .rounded-xl.border {
+  background-color: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+[data-area="admin"] main table thead {
+  background-color: rgba(255, 255, 255, 0.04);
 }

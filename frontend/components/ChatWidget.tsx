@@ -36,7 +36,7 @@ export function ChatWidget() {
     <>
       <button
         type="button"
-        className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-accent-titanium text-xl text-black shadow-lg shadow-accent-titanium/40 transition hover:brightness-110"
+        className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-accent-ice text-xl text-black shadow-lg shadow-accent-ice/40 transition hover:brightness-110"
         aria-label="Open chat"
         onClick={() => setOpen((o) => !o)}
       >
@@ -45,7 +45,7 @@ export function ChatWidget() {
 
       {open ? (
         <div className="fixed bottom-24 right-5 z-40 flex max-h-[min(420px,70vh)] w-[min(320px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-xl border border-white/10 bg-background-raised shadow-xl">
-          <div className="flex items-center justify-between bg-accent-titanium px-3 py-2 font-semibold text-black">
+          <div className="flex items-center justify-between bg-accent-ice px-3 py-2 font-semibold text-black">
             <span>Chat</span>
             <button
               type="button"
@@ -65,7 +65,7 @@ export function ChatWidget() {
                   </>
                 ) : (
                   <>
-                    <strong className="text-accent-titanium">Assistant:</strong> {msg.text}
+                    <strong className="text-accent-ice">Assistant:</strong> {msg.text}
                   </>
                 )}
               </p>

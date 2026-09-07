@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import datetime as dt
 import uuid
 
 from sqlalchemy import select
 
+from app.customer_utils import normalize_website, refresh_customer_search_document
 from app.db import SessionLocal
-from app.models import Category, Part
+from app.models import Category, Customer, Part
 
 
 def _slugify(s: str) -> str:
@@ -55,6 +57,41 @@ def main() -> None:
                     status="in_stock" if stock > 0 else "out_of_stock",
                 )
             )
+
+        db.commit()
+
+        demo_customers = [
+            (
+                "jane.doe@stmarys.example.com",
+                "Jane Doe",
+                "St. Mary's Radiology",
+                "https://stmarys.example.com",
+            ),
+            (
+                "ops@midwest-imaging.example.com",
+                "Alex Chen",
+                "Midwest Imaging Center",
+                "https://midwest-imaging.example.com",
+            ),
+        ]
+        now = dt.datetime.now(dt.timezone.utc)
+        for email, name, company, website in demo_customers:
+            if db.scalar(select(Customer).where(Customer.email == email)) is not None:
+                continue
+            c = Customer(
+                id=uuid.uuid4(),
+                email=email,
+                name=name,
+                company=company,
+                website=normalize_website(website),
+                tags=["demo"],
+                source="seed",
+                consent_marketing=True,
+                consent_source="seed",
+                consent_at=now,
+            )
+            refresh_customer_search_document(c)
+            db.add(c)
 
         db.commit()
         print("Seed complete.")

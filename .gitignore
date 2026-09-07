@@ -10,6 +10,7 @@ backend/.venv/
 .eggs/
 dist/
 build/
+.secrets
 
 # OS / editor
 .DS_Store

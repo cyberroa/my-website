@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Any
+from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, model_validator
 
 
 class CategoryOut(BaseModel):
@@ -90,15 +91,58 @@ class InventoryAlertSubscribeIn(BaseModel):
 
 
 class OutreachSendIn(BaseModel):
-    recipients: list[EmailStr] = Field(min_length=1, max_length=200)
+    customer_ids: list[UUID] = Field(default_factory=list, max_length=500)
+    segment_ids: list[UUID] = Field(default_factory=list, max_length=50)
+    recipients: list[EmailStr] = Field(default_factory=list, max_length=500)
+    template_id: UUID | None = None
     subject: str = Field(min_length=1, max_length=200)
-    body: str = Field(min_length=1, max_length=20_000)
+    body_md: str = Field(min_length=1, max_length=20_000)
+    body_html: str | None = Field(default=None, max_length=100_000)
+    body: str | None = Field(default=None, max_length=20_000)
+
+    @model_validator(mode="before")
+    @classmethod
+    def body_alias(cls, data: Any) -> Any:
+        if isinstance(data, dict) and data.get("body") and not data.get("body_md"):
+            data = {**data, "body_md": data["body"]}
+        return data
+
+    @model_validator(mode="after")
+    def require_audience(self) -> OutreachSendIn:
+        if not self.customer_ids and not self.segment_ids and not self.recipients:
+            raise ValueError("At least one of customer_ids, segment_ids, or recipients is required")
+        return self
+
+
+class OutreachPreviewIn(BaseModel):
+    customer_ids: list[UUID] = Field(default_factory=list, max_length=500)
+    segment_ids: list[UUID] = Field(default_factory=list, max_length=50)
+    recipients: list[EmailStr] = Field(default_factory=list, max_length=500)
+    subject: str = Field(min_length=1, max_length=200)
+    body_md: str = Field(min_length=1, max_length=20_000)
+    body_html: str | None = Field(default=None, max_length=100_000)
+
+    @model_validator(mode="after")
+    def require_audience(self) -> OutreachPreviewIn:
+        if not self.customer_ids and not self.segment_ids and not self.recipients:
+            raise ValueError("At least one of customer_ids, segment_ids, or recipients is required")
+        return self
+
+
+class OutreachPreviewOut(BaseModel):
+    recipient_count: int
+    sample_email: str
+    sample_name: str | None = None
+    subject: str
+    html: str
+    text: str
 
 
 class OutreachSendOut(BaseModel):
     sent: int
     skipped_suppressed: int = 0
     failed: int = 0
+    audience_total: int = 0
 
 
 # --------------------------------------------------------------------------
@@ -112,11 +156,13 @@ class CustomerBase(BaseModel):
     company: str | None = Field(default=None, max_length=200)
     phone: str | None = Field(default=None, max_length=40)
     role: str | None = Field(default=None, max_length=120)
+    website: str | None = Field(default=None, max_length=500)
     tags: list[str] = Field(default_factory=list)
     source: str | None = Field(default=None, max_length=80)
     notes: str | None = Field(default=None, max_length=20_000)
     consent_marketing: bool = False
     consent_source: str | None = Field(default=None, max_length=120)
+    lead_stage: str = Field(default="new", max_length=24)
 
 
 class CustomerCreate(CustomerBase):
@@ -129,11 +175,14 @@ class CustomerUpdate(BaseModel):
     company: str | None = Field(default=None, max_length=200)
     phone: str | None = Field(default=None, max_length=40)
     role: str | None = Field(default=None, max_length=120)
+    website: str | None = Field(default=None, max_length=500)
     tags: list[str] | None = None
     source: str | None = Field(default=None, max_length=80)
     notes: str | None = Field(default=None, max_length=20_000)
     consent_marketing: bool | None = None
     consent_source: str | None = Field(default=None, max_length=120)
+    lead_stage: str | None = Field(default=None, max_length=24)
+    logo_url: str | None = Field(default=None, max_length=400_000)
 
 
 class CustomerOut(BaseModel):
@@ -143,14 +192,26 @@ class CustomerOut(BaseModel):
     company: str | None = None
     phone: str | None = None
     role: str | None = None
+    website: str | None = None
     tags: list[str] = Field(default_factory=list)
     source: str | None = None
     notes: str | None = None
     consent_marketing: bool = False
     consent_source: str | None = None
     consent_at: datetime | None = None
+    lead_stage: str = "new"
     created_at: datetime
     updated_at: datetime
+    fit_score: float | None = None
+    logo_url: str | None = None
+
+
+class CustomerListOut(BaseModel):
+    items: list[CustomerOut]
+    total: int
+    limit: int
+    offset: int
+    has_more: bool
 
 
 class CustomerImportResult(BaseModel):
@@ -169,6 +230,10 @@ class SegmentCreate(BaseModel):
     slug: str | None = Field(default=None, max_length=200)
     description: str | None = Field(default=None, max_length=20_000)
     filter_json: dict[str, Any] = Field(default_factory=dict)
+    playbook_markdown: str | None = Field(default=None, max_length=50_000)
+    recommended_services: list[Any] = Field(default_factory=list)
+    labels: list[str] = Field(default_factory=list)
+    research_summary: str | None = Field(default=None, max_length=20_000)
 
 
 class SegmentUpdate(BaseModel):
@@ -176,6 +241,10 @@ class SegmentUpdate(BaseModel):
     slug: str | None = Field(default=None, min_length=1, max_length=200)
     description: str | None = Field(default=None, max_length=20_000)
     filter_json: dict[str, Any] | None = None
+    playbook_markdown: str | None = Field(default=None, max_length=50_000)
+    recommended_services: list[Any] | None = None
+    labels: list[str] | None = None
+    research_summary: str | None = Field(default=None, max_length=20_000)
 
 
 class SegmentOut(BaseModel):
@@ -184,6 +253,27 @@ class SegmentOut(BaseModel):
     slug: str
     description: str | None = None
     filter_json: dict[str, Any] = Field(default_factory=dict)
+    ai_managed: bool = False
+    ai_proposal_status: str | None = None
+    ai_rationale: str | None = None
+    playbook_markdown: str | None = None
+    recommended_services: list[Any] = Field(default_factory=list)
+    labels: list[str] = Field(default_factory=list)
+    research_summary: str | None = None
+    last_researched_at: str | None = None
+    research_budget_used: int = 0
+
+
+class SegmentListItemOut(SegmentOut):
+    member_count: int = 0
+
+
+class SegmentListOut(BaseModel):
+    items: list[SegmentListItemOut]
+    total: int
+    limit: int
+    offset: int
+    has_more: bool
 
 
 class SegmentPreviewOut(BaseModel):
@@ -380,4 +470,59 @@ class TimelineItem(BaseModel):
 class CustomerTimelineOut(BaseModel):
     customer: CustomerOut
     items: list[TimelineItem] = Field(default_factory=list)
+
+
+# --------------------------------------------------------------------------
+# Phase 4B — AI briefings
+# --------------------------------------------------------------------------
+
+
+class CustomerBriefingOut(BaseModel):
+    customer_id: str
+    content: str
+    model: str
+    timeline_hash: str
+    generated_at: datetime
+    cached: bool = False
+    score: float | None = None
+    disabled: bool = False
+    message: str | None = None
+
+
+class AiStatusOut(BaseModel):
+    enabled: bool
+    configured: bool
+    default_model: str
+    briefing_model: str
+    sentiment_model: str
+
+
+class HelpAskIn(BaseModel):
+    message: str = Field(min_length=2, max_length=4_000)
+
+
+class HelpGuideLinkOut(BaseModel):
+    title: str
+    href: str
+
+
+class HelpAskOut(BaseModel):
+    answer: str
+    guides: list[HelpGuideLinkOut]
+    ai: bool = True
+
+
+class HelpFeedbackIn(BaseModel):
+    message: str = Field(min_length=5, max_length=8_000)
+    page_path: str | None = Field(default=None, max_length=500)
+
+
+class HelpFeedbackOut(BaseModel):
+    id: str
+    staff_email: str
+    message: str
+    page_path: str | None = None
+    created_at: datetime
+    read_at: datetime | None = None
+    confirm: str = ""
 

@@ -4,10 +4,10 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
-  const next = requestUrl.searchParams.get("next") ?? "/admin/parts";
+  const next = requestUrl.searchParams.get("next") ?? "/workbench";
 
   if (!code) {
-    return NextResponse.redirect(new URL("/admin/login?error=auth", request.url));
+    return NextResponse.redirect(new URL("/workbench/login?error=auth", request.url));
   }
 
   const redirectUrl = new URL(next, request.url);
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
-    return NextResponse.redirect(new URL("/admin/login?error=auth", request.url));
+    return NextResponse.redirect(new URL("/workbench/login?error=auth", request.url));
   }
 
   return response;

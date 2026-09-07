@@ -33,7 +33,7 @@ type InsightPost = {
 const posts: InsightPost[] = [
   {
     featured: true,
-    image: IMAGES.servicesImage,
+    image: IMAGES.prototypeHero,
     imageAlt: "CT scanner and medical imaging technology",
     category: "Installation",
     date: "2026",
@@ -57,7 +57,7 @@ const posts: InsightPost[] = [
   },
   {
     featured: false,
-    image: IMAGES.scan,
+    image: IMAGES.prototypeBuySell,
     imageAlt: "CT/PET imaging scan",
     category: "Selling",
     date: "—",
@@ -72,14 +72,14 @@ export default function InsightsPage() {
   return (
     <>
       <PageHero
-        image={IMAGES.aboutUs}
+        image={IMAGES.prototypeHero}
         eyebrow="The Blog"
         title="Industry Insight"
         subtitle="Stay informed with in-depth resources on imaging equipment, best practices, and industry trends—built from decades of hands-on experience."
         contentClassName="max-w-2xl"
       />
 
-      <Section spacing="none" className="pb-24">
+      <Section spacing="none" className="pb-24 pt-10 md:pt-14">
         <Container maxWidth="wide">
           <div className="grid gap-6 md:grid-cols-2">
             {posts.map((post) => (
@@ -100,7 +100,7 @@ export default function InsightsPage() {
                 </div>
                 <div className="flex flex-col p-6">
                   <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
-                    <span className="font-display uppercase tracking-widest text-accent-titanium">
+                    <span className="font-display uppercase tracking-widest text-accent-ice">
                       {post.category}
                     </span>
                     <span className="text-text-muted">{post.date}</span>
@@ -117,7 +117,7 @@ export default function InsightsPage() {
                   ) : post.href ? (
                     <Link
                       href={post.href}
-                      className="mt-4 inline-flex text-sm font-semibold text-accent-titanium hover:underline"
+                      className="mt-4 inline-flex text-sm font-semibold text-accent-ice hover:underline"
                     >
                       {post.cta ?? "Read more →"}
                     </Link>
@@ -128,7 +128,7 @@ export default function InsightsPage() {
           </div>
           <p className="mt-10 text-center text-sm text-text-muted">
             Full article pages can be added when content is ready.{" "}
-            <Link href="/contact" className="text-accent-titanium underline">
+            <Link href="/contact" className="text-accent-ice underline">
               Contact us
             </Link>{" "}
             for questions.

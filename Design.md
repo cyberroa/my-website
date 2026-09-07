@@ -33,8 +33,16 @@ Defined in `tailwind.config.ts`. Use **semantic Tailwind classes**, not raw hex,
 | Raised surfaces | `bg-background-raised` | `#111111` | Header, footer, elevated panels |
 | Cards | `bg-background-card` | `#0a0a0a` | Form panels, error states |
 | Muted blocks | `bg-background-muted` | `#1e1e1e` | Secondary sections, loading skeletons |
-| Primary accent | `text-accent` / `bg-accent` | `#00ffd5` | Sparingly — highlights, links in special contexts |
-| Titanium accent | `text-accent-titanium` / `bg-accent-titanium` | `#a9b4c2` | Eyebrows, form submit, hover on white buttons |
+| Primary accent (public) | `text-accent-ice` / `bg-accent-ice` | `#6EC9F0` | Eyebrows, CTAs, stats, forms, widgets on public marketing pages |
+| Admin accent | `text-accent-admin` / `bg-accent-admin` | `#2BB4FF` | Workbench CTAs, nav, in-progress — electric mid-tone |
+| Highlight | `text-accent-highlight` | `#7DEAFF` | Icy Lambo highlight — scheduled / upcoming |
+| Deep | `text-accent-deep` | `#0076E6` | Cerulean shadows — pending / waiting |
+| Navy | `text-accent-navy` / `bg-accent-navy` | `#0B3D73` | Midnight contours — grounded chrome |
+| Engagement up | `text-accent-signal` | `#34D399` | Healthy activity, hot leads |
+| Watch / stale | `text-accent-caution` | `#FFFF84` | Quiet accounts, medium priority — pale yellow |
+| High priority | `text-accent-alert` | `#E07A5F` | Urgent labels only — terracotta, not brand red |
+| Titanium accent | `text-accent-titanium` / `bg-accent-titanium` | `#a9b4c2` | Unused legacy token — keep in config until removed; do not use in new code |
+| Primary accent (legacy) | `text-accent` / `bg-accent` | `#00ffd5` | Sparingly — special highlights |
 | Primary text | `text-text-primary` / `text-white` | `#ffffff` | Headings, body on dark |
 | Secondary text | `text-text-secondary` | `#bbbbbb` | Supporting copy, labels |
 | Muted text | `text-text-muted` | `#777777` | Captions, footnotes |
@@ -60,7 +68,7 @@ Fonts are loaded in root layout:
 | **Section subtitle (H3)** | `text-lg font-semibold` | Cards, accordion titles |
 | **Body** | `text-base text-text-secondary` | Default paragraph |
 | **Small / caption** | `text-sm text-text-muted` or `text-xs` | Footnotes, form hints |
-| **Eyebrow** | `font-display text-[11px] uppercase tracking-[0.25em] text-accent-titanium` | Label above H1; **one spec sitewide** (home currently uses `text-xs tracking-[0.35em]` — converge in refactor) |
+| **Eyebrow** | `font-display text-[11px] uppercase tracking-[0.25em] text-accent-ice` | Public pages use default `tone="ice"`; admin uses `tone="admin"` via `AdminPageHeader` |
 
 ### Metadata titles
 
@@ -74,8 +82,11 @@ Page `<title>` uses template `%s | TITAN IMAGING` from root layout. Keep route m
 
 From `(public)/layout.tsx`:
 
-- Fixed header → content wrapper: **`pt-[4.5rem] md:pt-24`**
-- Footer: **`mt-20`**, `border-t border-white/5`, `bg-background-raised`
+- **Header:** `PrototypeHeader` — fixed 48px bar, transparent → solid on scroll, mega-nav panels, ice Contact CTA
+- **Side vignette:** `PrototypeSideVignette` — desktop edge fades
+- **Main:** full-bleed black background; **no top padding offset** (heroes sit under transparent nav)
+- **Footer:** `PrototypeFooter` — 3-column explore/company links + `StaffAccessLink`
+- **Widgets:** `ChatWidget`, `PageViewTracker`, `ConsentBanner`
 
 ### Containers (canonical widths)
 
@@ -131,14 +142,14 @@ Uses `AdminShell` + sidebar nav. Page headers reuse **eyebrow + title + optional
 These class bundles are duplicated across pages. **Do not copy-paste new instances** — use the primitives once they exist, or match these exact strings:
 
 **Primary link button (marketing)**  
-`rounded-lg bg-white px-8 py-3 text-sm font-semibold text-black transition hover:bg-accent-titanium`  
+`rounded-lg bg-white px-8 py-3 text-sm font-semibold text-black transition hover:bg-accent-ice`  
 Sizes: `md` = `px-8 py-3`, `lg` = `px-8 py-4` (home CTAs).
 
 **Secondary / outline button**  
-`rounded-lg border-2 border-white px-8 py-4 text-sm font-semibold text-white transition hover:border-accent-titanium hover:text-accent-titanium`
+`rounded-lg border-2 border-white px-8 py-4 text-sm font-semibold text-white transition hover:border-accent-ice hover:text-accent-ice`
 
 **Form submit (accent fill)**  
-`w-full rounded-lg bg-accent-titanium py-4 text-sm font-semibold text-black transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70`
+`w-full rounded-lg bg-accent-ice py-4 text-sm font-semibold text-black transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70`
 
 ### UI primitives (`frontend/components/ui/`)
 
@@ -169,19 +180,19 @@ Optional hint: `<span className="font-normal text-text-muted">(optional)</span>`
 
 ```
 w-full rounded-lg border border-white/10 bg-background-card px-4 py-3.5 text-white
-outline-none ring-accent-titanium/20 placeholder:text-text-muted focus:ring-2
+outline-none ring-accent-ice/20 placeholder:text-text-muted focus:ring-2
 ```
 
 Textareas: add `min-h-[120px] resize-y`.
 
 ### Success message
 
-`rounded-lg border border-accent-titanium/20 bg-accent-titanium/10 px-4 py-3 text-center text-sm text-accent-titanium`
+`rounded-lg border border-accent-ice/20 bg-accent-ice/10 px-4 py-3 text-center text-sm text-accent-ice`
 
 ### Error message
 
 `rounded-lg border border-white/10 bg-background-card px-4 py-3 text-center text-sm text-text-secondary`  
-Use `text-accent-titanium underline` on inline phone/email links.
+Use `text-accent-ice underline` on inline phone/email links.
 
 ### Form layout
 
@@ -191,11 +202,13 @@ Use `text-accent-titanium underline` on inline phone/email links.
 
 ## Navigation
 
-**Header:** fixed, `z-50`, `border-b border-white/5`, `bg-background-raised`, logo `font-display` uppercase with responsive tracking.
+**Header:** `PrototypeHeader` — grouped mega-nav from `frontend/lib/prototype-nav.ts`; logo links to `/` (or `/prototype` on preview route).
 
-**Active nav link:** match pathname; keep hover states subtle (`text-accent-titanium` or underline — follow `Header.tsx`).
+**Active nav link:** pathname match; ice accent on hover/active in mega panels.
 
-**Mobile:** hamburger toggles full-width nav stack below logo row.
+**Staff access:** `StaffAccessLink` in header + footer — shows **Admin** when OAuth session active, **Staff login** otherwise.
+
+**Mobile:** hamburger toggles full-width nav stack.
 
 ---
 
@@ -209,12 +222,17 @@ Alt text: decorative hero backgrounds use `alt=""`; content images need descript
 
 ## Admin UI
 
-- Shell: `AdminShell` + top nav (`AdminNav`); dark theme consistent with the public site; data-dense tables and forms.
-- **Page headers:** use `AdminPageHeader` from `@/components/ui` — passes `eyebrow`, `title`, optional `description` (string or ReactNode for links), optional `actions`, and `align` (`center` | `start`).
-- **Login page:** full-screen centered layout; use `Eyebrow` for the brand label (not `AdminPageHeader`, since there is no admin shell).
-- **Tables:** `rounded-xl border border-white/10`, header row `bg-background-raised text-text-muted`, body rows `border-b border-white/5 hover:bg-white/[0.02]`.
-- **Forms:** inputs `rounded-md border border-white/10 bg-black/40 px-3 py-2`; cards `rounded-xl border border-white/10 bg-background-card p-6`.
-- Admin login primary button may reuse marketing **white primary** button classes.
+- Shell: Workbench wraps staff routes with `data-area="admin"` + `WorkbenchNav`; **electric blue** (`accent-admin`, `#2BB4FF`) distinguishes staff UI from public ice. Charcoal shell (`#101014`) with a soft electric-blue atmosphere and light grid.
+- **Nav:** grouped dropdowns from [`frontend/lib/workbench-nav.ts`](frontend/lib/workbench-nav.ts) — AI · CRM · Marketing · Sales & Pay · Inventory (hover/click panels on desktop; accordion on mobile). Do not add flat link lists to the header.
+- **AI Studio** (`/workbench/studio`): centered composer — large prompt shell, pill model menu, Text/Image mode, suggestion chips; electric-blue accent (not public ice, not papaya).
+- **Design.md presets:** Composer palette menu loads marketing design presets from [`frontend/lib/design-presets.ts`](frontend/lib/design-presets.ts) (condensed Design.md system prompts: Titan Imaging, Public Ice, Email Campaign, LinkedIn Social, Hero / Landing).
+- **Shared classes:** [`frontend/lib/workbench-ui.ts`](frontend/lib/workbench-ui.ts) — `workbenchBtnPrimary`, `workbenchCard`, `workbenchLink`, `workbenchMono`, etc.
+- **Buttons:** prefer `Button` / `LinkButton` with `variant="admin"` or `variant="adminOutline"` from `@/components/ui`.
+- **Page headers:** `WorkbenchPageHeader` with `tone="admin"` eyebrow.
+- **Login:** full-screen centered; electric-blue eyebrow + `bg-accent-admin` primary CTA (same atmosphere as shell).
+- **Tables:** `workbenchTableWrap` / `workbenchTableHead` / `workbenchTableRow` patterns; mono slugs and action links use `text-accent-admin`. Destructive actions use `text-red-300` only.
+- **Forms:** inputs inside `[data-area="admin"]` get lifted fills + electric-blue focus ring via `globals.css`; cards use lighter borders/shadows.
+- **Nav:** sticky glass bar; electric-blue brand; active links as electric-blue pills; outlined “View site”; electric-blue “Sign out”.
 
 ---
 
@@ -228,7 +246,7 @@ Alt text: decorative hero backgrounds use `alt=""`; content images need descript
 
 ## Accessibility
 
-- **Focus:** `focus:ring-2` with `ring-accent-titanium/20` on inputs; ensure keyboard nav works in mobile menu (`aria-expanded`, `aria-label` on menu button).
+- **Focus:** public inputs use `ring-accent-ice/20`; admin inputs (`[data-area="admin"]`) use an electric-blue focus ring in `globals.css`. Ensure keyboard nav works in mobile menu (`aria-expanded`, `aria-label` on menu button).
 - **Contrast:** White / `#bbbbbb` on `#000000` meets goals for body text; verify new accent combinations.
 - **Forms:** Every input has `htmlFor` / `id`; required fields marked in copy where helpful.
 - **Landmarks:** One `<main>` per page where possible; header/footer semantic elements already in layout components.
@@ -247,7 +265,7 @@ Alt text: decorative hero backgrounds use `alt=""`; content images need descript
 - [ ] `tailwind.config.ts` updated  
 - [ ] `Design.md` token table updated  
 - [ ] `components/ui/*` updated (when present)  
-- [ ] Spot-check: Home, Inventory, Contact, one admin page  
+- [ ] Spot-check: Home, Inventory, Contact, one Workbench page (electric-blue accent)  
 - [ ] `npm run lint` + visual check on Vercel preview  
 
 ---

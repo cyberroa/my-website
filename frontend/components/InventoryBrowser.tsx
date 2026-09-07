@@ -185,7 +185,7 @@ export function InventoryBrowser({
     <>
       <PageHero
         size="compact"
-        image={IMAGES.inventoryBanner}
+        image={IMAGES.prototypeParts}
         eyebrow="Live Inventory"
         title="We Have What You Need"
         subtitle={
@@ -193,7 +193,7 @@ export function InventoryBrowser({
             Search by part number or name. Call{" "}
             <a
               href="tel:9047426265"
-              className="font-semibold text-white underline-offset-2 hover:text-accent-titanium hover:underline"
+              className="font-semibold text-white underline-offset-2 hover:text-accent-ice hover:underline"
             >
               (904) 742-6265
             </a>{" "}
@@ -213,7 +213,7 @@ export function InventoryBrowser({
             />
             <button
               type="button"
-              className="bg-accent-titanium px-6 py-3.5 text-sm font-semibold text-black transition hover:brightness-110"
+              className="bg-accent-ice px-6 py-3.5 text-sm font-semibold text-black transition hover:brightness-110"
             >
               Search
             </button>
@@ -226,7 +226,7 @@ export function InventoryBrowser({
                 onClick={() => setFilter(key)}
                 className={`rounded-md border px-3 py-1.5 text-xs font-semibold transition ${
                   filter === key
-                    ? "border-accent-titanium bg-accent-titanium text-black"
+                    ? "border-accent-ice bg-accent-ice text-black"
                     : "border-white/15 text-text-muted hover:border-white/25 hover:text-text-secondary"
                 }`}
               >
@@ -257,7 +257,7 @@ export function InventoryBrowser({
             <p className="text-text-muted">{error}</p>
             <p className="mt-3 text-sm text-text-muted">
               Or call{" "}
-              <a href="tel:9047426265" className="font-semibold text-accent-titanium underline">
+              <a href="tel:9047426265" className="font-semibold text-accent-ice underline">
                 (904) 742-6265
               </a>{" "}
               for immediate help.
@@ -276,7 +276,7 @@ export function InventoryBrowser({
           <div className="rounded-xl border border-dashed border-white/15 bg-background-card py-16 text-center">
             <p className="text-text-muted">
               No parts match your search.{" "}
-              <Link href="/contact" className="font-semibold text-accent-titanium underline">
+              <Link href="/contact" className="font-semibold text-accent-ice underline">
                 Contact us
               </Link>
               —we may be able to source what you need.
@@ -298,7 +298,7 @@ export function InventoryBrowser({
                     })
                   }
                 >
-                  <p className="font-display text-xs tracking-wider text-accent-titanium">
+                  <p className="font-display text-xs tracking-wider text-accent-ice">
                     {p.partNumber}
                   </p>
                   <p className="mt-2 text-base font-semibold leading-snug">{p.name}</p>
@@ -309,7 +309,7 @@ export function InventoryBrowser({
                     <span
                       className={`rounded px-2 py-0.5 text-xs font-semibold ${
                         inStock
-                          ? "bg-accent-titanium/15 text-accent-titanium"
+                          ? "bg-accent-ice/15 text-accent-ice"
                           : "bg-white/5 text-text-muted"
                       }`}
                     >

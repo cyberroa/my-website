@@ -16,7 +16,7 @@ Estimated time: **~45 minutes** (mostly DNS/OAuth propagation waits).
 | D — Migrations on staging DB | **Done** |
 | E — Render `titan-imaging-api-staging` | **Done** (`https://titan-imaging-api-staging.onrender.com`) |
 | F — Vercel Preview env + domain alias | **Done** (`https://titan-imaging-staging.vercel.app`) |
-| G — Smoke tests (admin + tracking) | **Done** (inventory, OAuth, `/admin/live`, `/admin/parts`) |
+| G — Smoke tests (admin + tracking) | **Done** (inventory, OAuth, `/workbench/live`, `/workbench/parts`) |
 | H–J — Resend webhook, Make, campaign smoke | Optional when testing campaigns/social |
 | Delete remote `prod` branch | Recommended cleanup |
 
@@ -200,16 +200,16 @@ mechanism so the `staging` branch auto-deploys to a stable Preview URL.
 
 ## Step G — Smoke-test staging end-to-end (auth + admin + tracking)
 
-1. Open `https://titan-imaging-staging.vercel.app/admin` in an incognito
+1. Open `https://titan-imaging-staging.vercel.app/workbench` in an incognito
    window.
 2. Sign in with a Google account that's on
    `NEXT_PUBLIC_ADMIN_EMAIL_ALLOWLIST`. The redirect should land back on
-   `/admin`, not prod.
+   `/workbench`, not prod.
 3. Verify each admin page loads without errors:
-   - `/admin/parts`, `/admin/categories`, `/admin/import`
-   - `/admin/customers`, `/admin/templates`, `/admin/segments`,
-     `/admin/campaigns`, `/admin/social`
-   - `/admin/alerts`, `/admin/outreach`
+   - `/workbench/parts`, `/workbench/categories`, `/workbench/import`
+   - `/workbench/customers`, `/workbench/templates`, `/workbench/segments`,
+     `/workbench/campaigns`, `/workbench/social`
+   - `/workbench/alerts`, `/workbench/outreach`
 4. Open the public site `https://titan-imaging-staging.vercel.app` in a
    fresh incognito session → accept the consent banner → navigate to
    `/inventory` → in devtools Network tab, confirm `POST /api/v1/activity`
@@ -264,19 +264,19 @@ Either way: paste the new Make webhook URL into staging Render's
 
 This is the final "does everything actually work" test.
 
-1. In staging `/admin/customers`, add yourself as a customer with
+1. In staging `/workbench/customers`, add yourself as a customer with
    `consent_marketing = true`.
-2. In staging `/admin/templates`, create a template:
+2. In staging `/workbench/templates`, create a template:
    - Slug: `sanity-check`
    - Subject: `Staging sanity check`
    - Body (MD): `Hi {{ name }}, this is from staging.`
-3. In staging `/admin/segments`, create a segment with filter
+3. In staging `/workbench/segments`, create a segment with filter
    `{"consent_marketing": true}`. Preview should show 1 customer (you).
-4. In staging `/admin/campaigns`, compose a campaign pointing at the
+4. In staging `/workbench/campaigns`, compose a campaign pointing at the
    template + segment → **Send now**.
 5. Within a minute you should receive the email. Open it, click the
    unsubscribe link.
-6. Back in staging `/admin/campaigns/<id>`, the recipient row should flip
+6. Back in staging `/workbench/campaigns/<id>`, the recipient row should flip
    `sent → delivered → opened → unsubscribed` as Resend webhooks land.
 7. Confirm in Supabase Table Editor that:
    - `campaign_recipients` got a row.

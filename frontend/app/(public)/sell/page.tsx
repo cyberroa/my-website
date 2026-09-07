@@ -23,14 +23,14 @@ export default function SellPage() {
   return (
     <>
       <PageHero
-        image={IMAGES.sellToUs}
+        image={IMAGES.prototypeBuySell}
         eyebrow="Sell Your Equipment"
         title="Sell With Confidence"
         subtitle="Turn your PET/CT equipment into a fair offer. We buy systems, parts, and components—and make the process simple."
         contentClassName="max-w-2xl"
       />
 
-      <Container className="grid gap-10 pb-24 lg:grid-cols-2 lg:items-start">
+      <Container className="grid gap-10 pb-24 pt-10 md:pt-14 lg:grid-cols-2 lg:items-start">
         <div className="rounded-xl border border-white/10 bg-background-card/95 p-8">
           <div className="mb-8">
             <Eyebrow as="span" className="text-sm tracking-[0.15em]">
@@ -65,7 +65,7 @@ export default function SellPage() {
               ["Complete", "We handle logistics and payment so you can sell with confidence."],
             ].map(([title, text], i) => (
               <li key={title} className="flex gap-4">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accent-titanium/10 font-display text-sm font-bold text-accent-titanium">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accent-ice/10 font-display text-sm font-bold text-accent-ice">
                   {i + 1}
                 </span>
                 <div>
@@ -79,18 +79,18 @@ export default function SellPage() {
             {["CT Systems", "PET Systems", "Parts & Components"].map((label) => (
               <div
                 key={label}
-                className="flex min-w-[120px] flex-1 flex-col items-center rounded-lg border border-white/10 bg-accent-titanium/5 py-4 text-center"
+                className="flex min-w-[120px] flex-1 flex-col items-center rounded-lg border border-white/10 bg-accent-ice/5 py-4 text-center"
               >
-                <span className="text-lg text-accent-titanium" aria-hidden>
+                <span className="text-lg text-accent-ice" aria-hidden>
                   ◇
                 </span>
                 <span className="mt-2 text-xs font-semibold text-text-secondary">{label}</span>
               </div>
             ))}
           </div>
-          <p className="mt-8 rounded-lg border border-accent-titanium/15 bg-accent-titanium/5 px-4 py-3 text-center text-sm text-text-secondary">
+          <p className="mt-8 rounded-lg border border-accent-ice/15 bg-accent-ice/5 px-4 py-3 text-center text-sm text-text-secondary">
             Prefer to talk? Call{" "}
-            <Link href="tel:9047426265" className="font-semibold text-accent-titanium">
+            <Link href="tel:9047426265" className="font-semibold text-accent-ice">
               (904) 742-6265
             </Link>
             .
@@ -98,11 +98,11 @@ export default function SellPage() {
           <p className="mt-6 border-t border-white/10 pt-6 text-xs leading-relaxed text-text-muted">
             <strong className="text-text-secondary">Security note:</strong> verify communications by
             calling{" "}
-            <a href="tel:9047426265" className="text-accent-titanium underline">
+            <a href="tel:9047426265" className="text-accent-ice underline">
               (904) 742-6265
             </a>{" "}
             or{" "}
-            <a href="mailto:info@test.com" className="text-accent-titanium underline">
+            <a href="mailto:info@test.com" className="text-accent-ice underline">
               info@test.com
             </a>
             .

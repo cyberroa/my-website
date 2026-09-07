@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     description: defaultDescription,
     images: [
       {
-        url: IMAGES.titanBanner,
+        url: IMAGES.prototypeHero,
         width: 1920,
         height: 1080,
         alt: "Titan Imaging Service — medical imaging parts and service",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Titan Imaging Service | CT & PET Solutions",
     description: defaultDescription,
-    images: [IMAGES.titanBanner],
+    images: [IMAGES.prototypeHero],
   },
   robots: {
     index: true,

@@ -12,7 +12,7 @@ from app.settings import get_settings
 
 
 @dataclass(frozen=True)
-class AdminUser:
+class WorkbenchUser:
     sub: str
     email: str
 
@@ -65,14 +65,14 @@ def _decode_with_legacy_secret(token: str, settings) -> dict:
     return jwt.decode(token, settings.supabase_jwt_secret, **decode_kwargs)
 
 
-def decode_admin_token(authorization: str | None) -> AdminUser:
+def decode_workbench_token(authorization: str | None) -> WorkbenchUser:
     settings = get_settings()
     if not authorization or not authorization.lower().startswith("bearer "):
         raise HTTPException(status_code=401, detail="Missing bearer token")
     token = authorization.split(" ", 1)[1].strip()
 
     if not settings.supabase_url and not settings.supabase_jwt_secret:
-        raise HTTPException(status_code=503, detail="Admin auth not configured")
+        raise HTTPException(status_code=503, detail="Workbench auth not configured")
 
     decoded: dict | None = None
     last_error: PyJWTError | None = None
@@ -100,13 +100,13 @@ def decode_admin_token(authorization: str | None) -> AdminUser:
 
     allow = settings.admin_email_allowlist_set
     if allow and email.strip().lower() not in allow:
-        raise HTTPException(status_code=403, detail="Email not allowed for admin")
+        raise HTTPException(status_code=403, detail="Email not allowed for workbench")
 
     sub = decoded.get("sub")
     if not sub:
         raise HTTPException(status_code=401, detail="Invalid token")
-    return AdminUser(sub=str(sub), email=email.strip().lower())
+    return WorkbenchUser(sub=str(sub), email=email.strip().lower())
 
 
-async def get_current_admin(authorization: str | None = Header(None)) -> AdminUser:
-    return decode_admin_token(authorization)
+async def get_current_workbench_user(authorization: str | None = Header(None)) -> WorkbenchUser:
+    return decode_workbench_token(authorization)

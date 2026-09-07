@@ -14,7 +14,7 @@ export function ServiceAccordion({ items }: { items: ServiceItem[] }) {
           <div
             key={s.id}
             className={`rounded-xl border border-white/10 bg-gradient-to-br from-[#0d0d0d] to-[#111] transition ${
-              open ? "border-accent-titanium/30 shadow-lg shadow-black/40" : ""
+              open ? "border-accent-ice/30 shadow-lg shadow-black/40" : ""
             }`}
           >
             <button
@@ -24,14 +24,14 @@ export function ServiceAccordion({ items }: { items: ServiceItem[] }) {
               aria-expanded={open}
             >
               <div>
-                <div className="mb-1 flex items-center gap-2 text-accent-titanium">
+                <div className="mb-1 flex items-center gap-2 text-accent-ice">
                   <span aria-hidden>◇</span>
                   <span className="text-lg font-semibold text-white">{s.title}</span>
                 </div>
                 <p className="text-sm text-text-secondary">{s.preview}</p>
               </div>
               <span
-                className={`mt-1 shrink-0 text-accent-titanium transition ${
+                className={`mt-1 shrink-0 text-accent-ice transition ${
                   open ? "rotate-180" : ""
                 }`}
                 aria-hidden
@@ -45,7 +45,7 @@ export function ServiceAccordion({ items }: { items: ServiceItem[] }) {
                 <ul className="mt-4 space-y-2 text-sm text-text-secondary">
                   {s.bullets.map((b) => (
                     <li key={b} className="flex gap-2">
-                      <span className="text-accent-titanium">✓</span>
+                      <span className="text-accent-ice">✓</span>
                       <span>{b}</span>
                     </li>
                   ))}

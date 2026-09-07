@@ -6,7 +6,7 @@ import { apiFetch } from "@/lib/api";
 import { identify, track } from "@/lib/track";
 
 const inputClassName =
-  "w-full rounded-lg border border-white/10 bg-background-card px-4 py-3.5 text-white outline-none ring-accent-titanium/20 placeholder:text-text-muted focus:ring-2";
+  "w-full rounded-lg border border-white/10 bg-background-card px-4 py-3.5 text-white outline-none ring-accent-ice/20 placeholder:text-text-muted focus:ring-2";
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -128,7 +128,7 @@ export function ContactForm() {
         {status === "sending" ? "Sending…" : "Send Message"}
       </Button>
       {status === "sent" ? (
-        <p className="rounded-lg border border-accent-titanium/20 bg-accent-titanium/10 px-4 py-3 text-center text-sm text-accent-titanium">
+        <p className="rounded-lg border border-accent-ice/20 bg-accent-ice/10 px-4 py-3 text-center text-sm text-accent-ice">
           Thanks for reaching out. Your message has been sent. For immediate help, call{" "}
           <a href="tel:9047426265" className="font-semibold underline">
             (904) 742-6265
@@ -138,7 +138,7 @@ export function ContactForm() {
       ) : status === "error" ? (
         <p className="rounded-lg border border-white/10 bg-background-card px-4 py-3 text-center text-sm text-text-secondary">
           Something went wrong sending your message. Please try again, or call{" "}
-          <a href="tel:9047426265" className="font-semibold text-accent-titanium underline">
+          <a href="tel:9047426265" className="font-semibold text-accent-ice underline">
             (904) 742-6265
           </a>
           .
@@ -147,11 +147,11 @@ export function ContactForm() {
       <p className="border-t border-white/10 pt-4 text-xs leading-relaxed text-text-muted">
         <strong className="text-text-secondary">Security note:</strong> Be cautious of anyone
         impersonating Titan Imaging Service. Verify by calling{" "}
-        <a href="tel:9047426265" className="text-accent-titanium underline">
+        <a href="tel:9047426265" className="text-accent-ice underline">
           (904) 742-6265
         </a>{" "}
         or emailing{" "}
-        <a href="mailto:info@test.com" className="text-accent-titanium underline">
+        <a href="mailto:info@test.com" className="text-accent-ice underline">
           info@test.com
         </a>
         .

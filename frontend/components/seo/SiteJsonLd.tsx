@@ -15,7 +15,7 @@ export function SiteJsonLd() {
       description: DESCRIPTION,
       url,
       logo: `${url}${IMAGES.logo}`,
-      image: `${url}${IMAGES.titanBanner}`,
+      image: `${url}${IMAGES.prototypeHero}`,
       telephone: "+1-904-742-6265",
       email: "info@test.com",
       areaServed: {

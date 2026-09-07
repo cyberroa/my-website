@@ -129,6 +129,25 @@ async def send_bulk_emails(recipients: list[str], subject: str, text: str) -> in
     return n
 
 
+async def send_admin_email(to_email: str, subject: str, html: str, text: str | None = None) -> bool:
+    """Staff/internal email without marketing footer."""
+    settings = get_settings()
+    if not settings.resend_api_key:
+        return False
+    email_from = settings.email_from or settings.admin_notify_email
+    if not email_from:
+        return False
+    body: dict[str, Any] = {
+        "from": email_from,
+        "to": [to_email.strip()],
+        "subject": subject,
+        "html": html,
+        "text": text or subject,
+    }
+    ok, _, _ = await _send_via_resend(body)
+    return ok
+
+
 async def maybe_send_admin_email(subject: str, text: str, payload: dict) -> None:
     """
     Best-effort internal notification. Never raises; failures don't break form UX.

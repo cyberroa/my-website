@@ -6,7 +6,7 @@ inventory, customers, and campaign starter templates in a consistent way.
 ## Inventory (`inventory_import_template.csv`)
 
 Bulk-create or update rows in the `parts` table via **Admin → Import** (or
-`POST /api/v1/admin/parts/import`).
+`POST /api/v1/workbench/parts/import`).
 
 ### Files
 
@@ -39,7 +39,7 @@ Bulk-create or update rows in the `parts` table via **Admin → Import** (or
 ## Customers (`customer_import_template.csv`)
 
 Bulk-ingest Titan Imaging's contacts into the `customers` table via **Admin →
-Customers → Bulk import** (or `POST /api/v1/admin/customers/import`).
+Customers → Bulk import** (or `POST /api/v1/workbench/customers/import`).
 
 ### Columns
 

@@ -13,6 +13,7 @@ from app.models import (  # noqa: F401
     Category,
     ContactSubmission,
     Customer,
+    CustomerBriefing,
     EmailTemplate,
     Event,
     InventoryAlertSubscription,

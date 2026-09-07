@@ -75,7 +75,7 @@ privacy page; keep the operational notes for internal reference.
 ### Data subject requests
 
 - **Access**: run `SELECT * FROM customers WHERE email = $1` plus the
-  `/admin/customers/{id}/timeline` endpoint and email the result as JSON.
+  `/workbench/customers/{id}/timeline` endpoint and email the result as JSON.
 - **Delete**: delete the `customers` row; unsubscribe list entry is preserved.
   Event rows can be anonymized by nulling `customer_id` and `email` instead
   of hard-deleting.

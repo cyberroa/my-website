@@ -1,4 +1,4 @@
-export { AdminPageHeader } from "@/components/ui/AdminPageHeader";
+export { WorkbenchPageHeader } from "@/components/ui/WorkbenchPageHeader";
 export { Button, LinkButton, type ButtonSize, type ButtonVariant } from "@/components/ui/Button";
 export { Container } from "@/components/ui/Container";
 export { Eyebrow } from "@/components/ui/Eyebrow";

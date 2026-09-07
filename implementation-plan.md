@@ -10,7 +10,7 @@
 - **Phase 3 complete** — Google OAuth admin, inventory/customer CRUD, bulk Excel import, outreach, inventory alerts (Cal.com migration deferred — Calendly still in use)
 - **Phase 4A complete** — Email campaigns (Resend), engagement tracking, social composer (Make/LinkedIn), customer 360 timeline, segments + templates
 - **Phase 4.5 complete** — Design system governance ([`Design.md`](Design.md)); shared UI primitives, public page refactors, admin headers via `AdminPageHeader`
-- **Phase 4B in progress** — Sprint 1 started: engagement scoring, live visitors dashboard, adblock path rename (`/api/v1/activity`)
+- **Phase 4B in progress** — Sprint 1 done; Phases A–I AI + payroll implemented in code (migrate `20260823_0002` + `20260823_0003`, set `OPENROUTER_API_KEY` to activate)
 
 Operational items remaining for full production readiness:
 - Domain verification for `titanimagingservice.com` in Resend (waiting on uncle's DNS access)
@@ -35,6 +35,8 @@ Operational items remaining for full production readiness:
 11. [Continuing from Another Machine](#continuing-from-another-machine)
 12. [Pre-Implementation Checklist](#pre-implementation-checklist)
 13. [Summary Timeline](#summary-timeline)
+
+> **Roadmap (recommended):** For a single up-to-date view of phases A–I, admin URLs, API key activation, and laptop workflow, read **[`docs/roadmap.md`](docs/roadmap.md)**.
 
 ---
 
@@ -357,15 +359,16 @@ titan-imaging/
 - [ ] Optional: Slack or email notification to uncle when a known customer crosses threshold
 
 ### Sprint 2 — AI customer briefings + customer 360 enrichment (~1 week)
-- [ ] `backend/app/ai.py` abstraction (pluggable OpenAI / Anthropic / Gemini)
-- [ ] Customer detail "Briefing" panel: LLM-generated paragraph summarizing their timeline (browsing, inquiries, campaign engagement, prior buys)
-- [ ] Cached and regenerated on new events
-- [ ] Use case: staff opens customer page before sales call → 30-second prep instead of 30 minutes
+- [x] `backend/app/ai/` OpenRouter abstraction (pluggable models via env)
+- [x] Customer detail "Briefing" panel: LLM-generated paragraph summarizing their timeline
+- [x] Cached and regenerated on new events (`timeline_hash`) / explicit regenerate
+- [x] Contact/sell sentiment + intent + urgency (background task after form submit)
+- [ ] Use case validation: staff opens customer page before sales call → 30-second prep
 
 ### Sprint 3 — Competitive intelligence (~1 week)
-- [ ] Scheduled job ingests competitor public inventory pages (Block Imaging, MRI Resources, etc.)
-- [ ] Normalize into `competitor_listings` table
-- [ ] Dashboard: for each Titan top SKU, show competitor prices + availability
+- [x] Scheduled job ingests competitor public inventory pages via **Firecrawl** (Block Imaging, MRI Resources seeds; editable URLs)
+- [x] Normalize into `competitor_listings` / `competitor_sources` tables
+- [x] Dashboard: `/admin/competitors` compare tab — Titan SKU vs competitor price + availability
 - [ ] AI-generated weekly market briefing: what's moving, what's getting cheaper, gaps in Titan's catalog
 
 ### Sprint 4 — GraphQL layer (~3 days)
@@ -374,9 +377,9 @@ titan-imaging/
 - [ ] Optional Phase 4C: natural-language → GraphQL AI layer for ad-hoc queries
 
 ### Sprint 5 — Sentiment analysis (~3 days)
-- [ ] Run every `contact_submission` and `sell_submission` body through sentiment + intent classifier
-- [ ] Surface in customer detail: e.g. "3 contacts this year, mostly frustrated about availability"
-- [ ] Flag high-urgency inquiries for same-day follow-up
+- [x] Run every `contact_submission` and `sell_submission` body through sentiment + intent classifier (OpenRouter)
+- [x] Surface in customer timeline with sentiment / urgency badges
+- [ ] Flag high-urgency inquiries for same-day follow-up (list filter / alert)
 
 ### Prerequisite (before Sprint 1)
 - [x] Brave/adblock mitigation Option B: rename `/api/v1/events` → `/api/v1/activity` (see `docs/analytics-adblock-mitigation.md`)
@@ -392,10 +395,21 @@ titan-imaging/
 **Phase 4A (migration `20260418_0001_phase4a_campaigns.py`):**
 `customers`, `segments`, `templates`, `campaigns`, `campaign_recipients`, `unsubscribes`, `sessions`, `events`, `social_posts`
 
-**Phase 4B (planned, no migrations yet):**
-`competitor_listings` (Sprint 3), possibly `customer_scores` materialized view (Sprint 1)
+**Phase 4B (migrations `20260823_0001`–`20260823_0003`):**
+`customer_briefings`, sentiment columns, `customer_engagement_snapshots`, AI segment columns, `daily_briefings`, `ai_prompt_presets`, `ai_studio_runs`, payroll tables, `opportunity_snapshots`, `marketing_goals`, `competitor_sources`, `competitor_listings` (Firecrawl Sprint 3).
 
-**Auth:** Supabase Auth handles users; no `admin_users` table — admin authorization via email allowlist (`ADMIN_EMAIL_ALLOWLIST`).
+**Phase 4B AI phases (code complete; enable with env):**
+- [x] B — post-import profile enrichment + briefing seed
+- [x] C — daily engagement snapshots + warmth movers API
+- [x] D — AI segment propose / approve
+- [x] E — AI email + social draft endpoints
+- [x] F — Market Map graph API + `/admin/insights`
+- [x] G — Daily briefings + Resend/Slack deliver + cron jobs
+- [x] H — AI Studio at `/admin` (prompts, models, Gemini images when keyed)
+- [x] I — Staff payroll: team, My Pay accept, sales, payroll charts
+- [x] J — Marketing goals → opportunity detection → linked segment refresh ([`docs/roadmap.md`](docs/roadmap.md) Phase J)
+
+**Auth:** Supabase Auth + allowlist; `admin_staff` roster for payroll (owner via `OWNER_EMAILS`).
 
 ---
 
@@ -522,6 +536,7 @@ Frontend at http://localhost:3000, backend at http://localhost:8080. Make sure `
 
 ### 6. Read these in order before making changes
 
+- **[`docs/roadmap.md`](docs/roadmap.md)** — master roadmap, phases A–I, API keys, admin map
 - This file — overall plan and current state
 - [`Design.md`](Design.md) — UI tokens and patterns before editing `frontend/` styles
 - `README.md` — repo overview + quickstart

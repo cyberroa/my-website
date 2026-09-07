@@ -3,18 +3,21 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 const variantClasses = {
-  primary:
-    "bg-white text-black hover:bg-accent-titanium",
+  primary: "bg-white text-black hover:bg-accent-ice",
   secondary:
-    "border-2 border-white bg-transparent text-white hover:border-accent-titanium hover:text-accent-titanium",
-  accent:
-    "bg-accent-titanium text-black hover:brightness-110",
+    "border-2 border-white bg-transparent text-white hover:border-accent-ice hover:text-accent-ice",
+  accent: "bg-accent-ice text-black hover:brightness-110",
+  /** Admin backend — red accent */
+  admin: "bg-accent-admin text-black hover:brightness-110",
+  adminOutline:
+    "border-2 border-accent-admin/40 bg-transparent text-accent-admin hover:border-accent-admin hover:bg-accent-admin/10",
 } as const;
 
 const sizeClasses = {
   sm: "px-6 py-3 text-sm",
   md: "px-8 py-3 text-sm",
   lg: "px-8 py-4 text-sm",
+  admin: "px-6 py-2 text-sm",
 } as const;
 
 export type ButtonVariant = keyof typeof variantClasses;

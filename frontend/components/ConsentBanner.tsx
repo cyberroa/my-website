@@ -31,7 +31,7 @@ export function ConsentBanner() {
       <div className="mx-auto flex max-w-5xl flex-col items-start gap-3 px-6 py-4 text-sm sm:flex-row sm:items-center sm:justify-between">
         <p className="text-text-secondary">
           We use cookies to understand how you use our site and improve service. See our{" "}
-          <a href="/privacy" className="underline hover:text-accent-titanium">
+          <a href="/privacy" className="underline hover:text-accent-ice">
             privacy notice
           </a>
           .
@@ -55,7 +55,7 @@ export function ConsentBanner() {
                 });
               }
             }}
-            className="rounded-lg bg-accent-titanium px-4 py-1.5 text-sm font-semibold text-black"
+            className="rounded-lg bg-accent-ice px-4 py-1.5 text-sm font-semibold text-black"
           >
             Accept
           </button>

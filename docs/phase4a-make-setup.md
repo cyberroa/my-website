@@ -1,6 +1,6 @@
 # Phase 4A — Make scenario for LinkedIn posts
 
-Titan Imaging's admin social composer (`/admin/social`) POSTs to a Make (Integromat)
+Titan Imaging's admin social composer (`/workbench/social`) POSTs to a Make (Integromat)
 webhook. Make publishes to the Titan Imaging LinkedIn Company Page and then calls
 back to our API with the final status.
 
@@ -97,10 +97,10 @@ Headers include:
 ## 3. Test
 
 1. Point the admin UI at a non-prod Make scenario first.
-2. Submit a test post via `/admin/social`.
+2. Submit a test post via `/workbench/social`.
 3. Watch Make's scenario history — LinkedIn module should succeed.
 4. Our backend should flip the row to `status = "posted"` with `external_id`
-   populated. Check `/admin/social` — the table reflects it.
+   populated. Check `/workbench/social` — the table reflects it.
 
 ## 4. Going live
 

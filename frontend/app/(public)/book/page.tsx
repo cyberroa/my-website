@@ -25,7 +25,7 @@ export default function BookPage() {
         aria-hidden
       >
         <Image
-          src={IMAGES.servicesImage}
+          src={IMAGES.aboutTitant}
           alt=""
           fill
           className="object-cover"
@@ -36,7 +36,7 @@ export default function BookPage() {
         <div className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-black from-[12%] via-black/50 to-transparent" />
       </div>
 
-      <Container maxWidth="narrow" className="relative z-10 pt-12 text-center md:pt-16">
+      <Container maxWidth="narrow" className="relative z-10 pt-28 text-center md:pt-32">
         <Eyebrow>Scheduling</Eyebrow>
         <h1 className="mt-3 text-3xl font-bold md:text-4xl">Book an Appointment</h1>
         <p className="mx-auto mt-4 max-w-xl text-text-secondary">

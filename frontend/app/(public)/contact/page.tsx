@@ -30,18 +30,18 @@ export default function ContactPage() {
         <div className="mx-auto mt-8 flex flex-wrap justify-center gap-8 text-sm font-semibold">
           <a
             href="tel:9047426265"
-            className="flex items-center gap-2 text-text-secondary transition hover:text-accent-titanium"
+            className="flex items-center gap-2 text-text-secondary transition hover:text-accent-ice"
           >
-            <span className="text-accent-titanium" aria-hidden>
+            <span className="text-accent-ice" aria-hidden>
               ☎
             </span>
             (904) 742-6265
           </a>
           <a
             href="mailto:info@test.com"
-            className="flex items-center gap-2 text-text-secondary transition hover:text-accent-titanium"
+            className="flex items-center gap-2 text-text-secondary transition hover:text-accent-ice"
           >
-            <span className="text-accent-titanium" aria-hidden>
+            <span className="text-accent-ice" aria-hidden>
               ✉
             </span>
             info@test.com

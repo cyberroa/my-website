@@ -17,6 +17,7 @@ Public marketing site + admin analytics/CRM platform for Titan Imaging
 backend/               FastAPI app, Alembic migrations, requirements.txt
 frontend/              Next.js app
 docs/
+  roadmap.md                       **Master product roadmap** (status, phases A–I, API key checklist)
   analytics-adblock-mitigation.md  Strategy for Brave/uBlock/Pi-hole coverage loss
   deploy-staging.md                Staging environment setup (Supabase/Render/Vercel/Resend/Make)
   phase4a-make-setup.md            Make/LinkedIn runbook
@@ -29,7 +30,8 @@ inventory-templates/
   customer_import_template.csv
   campaigns/              Starter email templates (Markdown)
 Design.md                 Public/admin UI design system and governance
-implementation-plan.md  Phase-by-phase plan
+docs/roadmap.md           **Master roadmap** — phases, admin map, API key activation, laptop workflow
+implementation-plan.md  Phase-by-phase plan (detailed history)
 ```
 
 ## Design system
@@ -62,19 +64,21 @@ copy .env.example .env.local   # set NEXT_PUBLIC_API_URL=http://localhost:8000
 npm run dev
 ```
 
-Open http://localhost:3000. The admin app lives at `/admin`; sign in with a
+Open http://localhost:3000. The admin app lives at `/workbench`; sign in with a
 Google account whose email is on `NEXT_PUBLIC_ADMIN_EMAIL_ALLOWLIST` and
 `ADMIN_EMAIL_ALLOWLIST`.
 
 ## Admin features
 
+See **[`docs/roadmap.md`](docs/roadmap.md)** for the full admin URL map, AI phases, and payroll setup.
+
+- **AI Studio** (`/workbench`) — prompts, OpenRouter models, Gemini images, promote to templates/social.
+- **Live / Market Map / Briefings** — engagement, graph CRM, daily AI reports.
 - **Parts / Categories / Import** — inventory CRUD and bulk upload.
-- **Customers** — CRM with CSV/XLSX import, timeline view, tagging, consent.
-- **Templates / Segments / Campaigns** — build reusable email templates,
-  define customer segments (filter JSON), send batched campaigns via Resend
-  with open/click/bounce tracking.
-- **Alerts / Outreach** — legacy inventory alert subscribers + one-off blasts.
-- **Social** — compose LinkedIn posts that POST to a Make scenario.
+- **Customers** — CRM with CSV/XLSX import, timeline, AI briefing, tagging, consent.
+- **Templates / Segments / Campaigns** — email marketing with Resend tracking.
+- **Social** — LinkedIn posts via Make.
+- **Team / My Pay / Sales / Payroll** — staff profiles, pay acceptance, conversions, owner payout charts.
 
 ## Phase 4A deployment checklist
 

@@ -6,7 +6,7 @@ import { apiFetch } from "@/lib/api";
 import { identify, track } from "@/lib/track";
 
 const inputClassName =
-  "w-full rounded-lg border border-white/10 bg-background-card px-4 py-3.5 text-white outline-none ring-accent-titanium/20 placeholder:text-text-muted focus:ring-2";
+  "w-full rounded-lg border border-white/10 bg-background-card px-4 py-3.5 text-white outline-none ring-accent-ice/20 placeholder:text-text-muted focus:ring-2";
 
 export function SellForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -143,7 +143,7 @@ export function SellForm() {
         {status === "sending" ? "Submitting…" : "Submit for Quote"}
       </Button>
       {status === "sent" ? (
-        <p className="rounded-lg border border-accent-titanium/20 bg-accent-titanium/10 px-4 py-3 text-center text-sm text-accent-titanium">
+        <p className="rounded-lg border border-accent-ice/20 bg-accent-ice/10 px-4 py-3 text-center text-sm text-accent-ice">
           Thanks — we received your request. Call{" "}
           <a href="tel:9047426265" className="font-semibold underline">
             (904) 742-6265
@@ -153,7 +153,7 @@ export function SellForm() {
       ) : status === "error" ? (
         <p className="rounded-lg border border-white/10 bg-background-card px-4 py-3 text-center text-sm text-text-secondary">
           Something went wrong submitting your request. Please try again, or call{" "}
-          <a href="tel:9047426265" className="font-semibold text-accent-titanium underline">
+          <a href="tel:9047426265" className="font-semibold text-accent-ice underline">
             (904) 742-6265
           </a>
           .

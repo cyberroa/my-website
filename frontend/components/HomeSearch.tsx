@@ -17,7 +17,7 @@ export function HomeSearch() {
       }}
     >
       <input
-        className="min-w-0 flex-1 rounded-lg border border-white/10 bg-background-raised/90 px-4 py-3.5 text-base text-white outline-none ring-accent-titanium/30 placeholder:text-text-muted focus:ring-2"
+        className="min-w-0 flex-1 rounded-lg border border-white/10 bg-background-raised/90 px-4 py-3.5 text-base text-white outline-none ring-accent-ice/30 placeholder:text-text-muted focus:ring-2"
         placeholder="Search parts by number or name…"
         value={q}
         onChange={(e) => setQ(e.target.value)}
@@ -25,7 +25,7 @@ export function HomeSearch() {
       />
       <button
         type="submit"
-        className="rounded-lg bg-accent-titanium px-8 py-3.5 text-sm font-semibold text-black transition hover:brightness-110"
+        className="rounded-lg bg-accent-ice px-8 py-3.5 text-sm font-semibold text-black transition hover:brightness-110"
       >
         Search
       </button>
